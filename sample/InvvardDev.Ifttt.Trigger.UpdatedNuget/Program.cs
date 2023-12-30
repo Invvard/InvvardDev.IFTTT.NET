@@ -6,9 +6,9 @@ ConfigureServices(builder.Services);
 
 var webApp = builder.Build();
 
-Configure(app, builder.Environment);
+Configure(webApp, builder.Environment);
 
-app.Run();
+webApp.Run();
 
 void ConfigureServices(IServiceCollection services)
 {
