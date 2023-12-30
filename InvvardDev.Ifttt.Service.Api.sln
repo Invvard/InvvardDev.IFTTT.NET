@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InvvardDev.Ifttt.Service.Ap
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InvvardDev.Ifttt.Service.Api.Trigger", "src\InvvardDev.Ifttt.Service.Api.Trigger\InvvardDev.Ifttt.Service.Api.Trigger.csproj", "{7A94E577-6B7C-4AC5-A602-01FC41ED4D84}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{8217D2BC-C98F-444C-B8D7-47CB074F6A66}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

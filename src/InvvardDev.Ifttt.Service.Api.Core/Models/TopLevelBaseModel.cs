@@ -5,9 +5,9 @@ namespace InvvardDev.Ifttt.Service.Api.Core.Models;
 
 public record TopLevelBaseModel
 {
-    protected static readonly JsonSerializerOptions jsonSerializerOptions = new()
+    protected static readonly JsonSerializerOptions JsonSerializerOptions = new()
     {
         PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower,
-        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault | JsonIgnoreCondition.WhenWritingNull,
+        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault,
     };
 }
