@@ -6,7 +6,7 @@ ConfigureServices(builder.Services);
 
 var webApp = builder.Build();
 
-Configure(webApp, builder.Environment);
+Configure(webApp);
 
 webApp.Run();
 
@@ -16,17 +16,20 @@ void ConfigureServices(IServiceCollection services)
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
     services.AddEndpointsApiExplorer();
     services.AddSwaggerGen();
-    
+    services.AddControllers();
+
     services.AddTriggers();
 }
 
-void Configure(IApplicationBuilder app, IWebHostEnvironment environment)
+void Configure(WebApplication app)
 {
-    if (environment.IsDevelopment())
+    if (app.Environment.IsDevelopment())
     {
         app.UseSwagger();
         app.UseSwaggerUI();
     }
-
     app.UseHttpsRedirection();
+    app.MapControllers();
+    
+    app.ConfigureTriggers();
 }
