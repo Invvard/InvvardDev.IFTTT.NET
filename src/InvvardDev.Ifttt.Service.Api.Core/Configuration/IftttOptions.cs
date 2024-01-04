@@ -9,5 +9,7 @@ public class IftttOptions
     [Required]
     public required string ServiceKey { get; init; } = string.Empty;
 
+    public bool BypassServiceKey { get; init; } = false;
+
     public string RealTimeBaseAddress { get; set; } = "https://realtime.ifttt.com/v1/notifications/";
 }

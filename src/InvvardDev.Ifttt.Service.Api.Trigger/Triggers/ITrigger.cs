@@ -1,6 +1,8 @@
-﻿namespace InvvardDev.Ifttt.Service.Api.Trigger.Triggers;
+﻿using InvvardDev.Ifttt.Service.Api.Trigger.Models;
+
+namespace InvvardDev.Ifttt.Service.Api.Trigger.Triggers;
 
 public interface ITrigger
-{
-    Task ProcessAsync(CancellationToken cancellationToken = default);
+{   
+    Task ExecuteAsync(TriggerRequestBase triggerRequest, CancellationToken cancellationToken = default);
 }

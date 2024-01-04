@@ -6,12 +6,11 @@ namespace InvvardDev.Ifttt.Service.Api.Trigger.Attributes;
 
 internal static class TriggerAttributeLookup
 {
-    public static IEnumerable<Type> GetTriggers()
+    public static IEnumerable<Type> GetTriggerTypes()
     {
         var triggerTypes = new List<Type>();
         var assemblies = GetApplicationAssemblies();
 
-        // Iterate through each assembly and find types with TriggerAttribute
         foreach (var assembly in assemblies)
         {
             triggerTypes.AddRange(assembly.GetTypes()
@@ -24,21 +23,20 @@ internal static class TriggerAttributeLookup
 
     private static Assembly[] GetApplicationAssemblies()
     {
-        // Get the entry assembly
         var entryAssembly = Assembly.GetEntryAssembly();
-
-        // Get the list of assemblies in the application
+        
         if (DependencyContext.Default != null)
         {
             var applicationAssemblies = DependencyContext.Default
                                                          .GetDefaultAssemblyNames()
                                                          .Where(assembly => !IsFrameworkAssembly(assembly))
-                                                         .Select(Assembly.Load);
+                                                         .Select(Assembly.Load).ToList();
 
-            // Optionally, include the entry assembly
-            if (entryAssembly != null && !IsFrameworkAssembly(entryAssembly.GetName()))
+            if (entryAssembly != null
+                && !IsFrameworkAssembly(entryAssembly.GetName())
+                && applicationAssemblies.Any(assembly => assembly.GetName() == entryAssembly.GetName()))
             {
-                applicationAssemblies = applicationAssemblies.Append(entryAssembly);
+                applicationAssemblies.Add(entryAssembly);
             }
 
             return applicationAssemblies.ToArray();
@@ -48,7 +46,12 @@ internal static class TriggerAttributeLookup
     }
 
     private static bool IsFrameworkAssembly(AssemblyName assemblyName)
-        => assemblyName.FullName.StartsWith("System.") || assemblyName.FullName.StartsWith("Microsoft.");
+        => assemblyName.FullName.StartsWith("System.")
+           || assemblyName.FullName.Equals("System")
+           || assemblyName.FullName.Equals("mscorlib")
+           || assemblyName.FullName.Equals("netstandard")
+           || assemblyName.FullName.Equals("WindowsBase")
+           || assemblyName.FullName.StartsWith("Microsoft.");
 
     private static bool IsTrigger(Type type)
         => type is { IsClass: true, IsAbstract: false }

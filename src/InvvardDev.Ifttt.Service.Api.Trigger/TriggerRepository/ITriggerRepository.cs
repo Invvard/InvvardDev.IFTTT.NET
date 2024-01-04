@@ -1,7 +1,9 @@
+using InvvardDev.Ifttt.Service.Api.Trigger.Triggers;
+
 namespace InvvardDev.Ifttt.Service.Api.Trigger.TriggerRepository;
 
-internal interface ITriggerRepository
+public interface ITriggerRepository
 {
-        IReadOnlyCollection<Type> GetTriggerTypes();
-        void AddTriggerTypes(IList<Type> triggerTypes);
+        void AddTriggerTypes(IEnumerable<Type> triggerTypes);
+        ITrigger GetTriggerProcessorInstance(string triggerSlug);
 }

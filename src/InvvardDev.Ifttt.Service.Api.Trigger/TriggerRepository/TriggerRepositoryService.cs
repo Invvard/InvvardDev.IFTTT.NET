@@ -1,12 +1,34 @@
+using System.Reflection;
+using InvvardDev.Ifttt.Service.Api.Trigger.Attributes;
+using InvvardDev.Ifttt.Service.Api.Trigger.Triggers;
+
 namespace InvvardDev.Ifttt.Service.Api.Trigger.TriggerRepository;
 
 internal class TriggerRepositoryService : ITriggerRepository
 {
-    private readonly List<Type> triggerTypes = new();
-    
-    public IReadOnlyCollection<Type> GetTriggerTypes()
-        => triggerTypes;
+    private readonly Dictionary<string, ITrigger> triggers = new();
 
-    public void AddTriggerTypes(IList<Type> types)
-        => triggerTypes.AddRange(types);
+    public void AddTriggerTypes(IEnumerable<Type> types)
+    {
+        foreach (var triggerType in types)
+        {
+            if (triggerType.GetCustomAttribute<TriggerAttribute>() is { } triggerAttribute
+                && !triggers.ContainsKey(triggerAttribute.Slug))
+            {
+                var triggerInstance = Activator.CreateInstance(triggerType) as ITrigger
+                                      ?? throw new InvalidOperationException();
+                triggers.Add(triggerAttribute.Slug, triggerInstance);
+            }
+        }
+    }
+
+    public ITrigger GetTriggerProcessorInstance(string triggerSlug)
+    {
+        if (!triggers.TryGetValue(triggerSlug, out var triggerInstance))
+        {
+            throw new InvalidOperationException();
+        }
+
+        return triggerInstance;
+    }
 }

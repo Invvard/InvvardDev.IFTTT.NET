@@ -1,7 +1,6 @@
 ﻿using InvvardDev.Ifttt.Service.Api.Core.Authentication;
 using InvvardDev.Ifttt.Service.Api.Core.Configuration;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace InvvardDev.Ifttt.Service.Api.Core;
 
@@ -15,10 +14,14 @@ public static class ServiceCollectionExtensions
 
         return services;
     }
-    
-    public static IApplicationBuilder ConfigureIftttApiClient(this IApplicationBuilder app)
+
+    public static IApplicationBuilder ConfigureIftttApiClient(this WebApplication app)
     {
-        app.UseMiddleware<ServiceKeyMiddleware>();
+        var options = app.Services.GetService<IOptions<IftttOptions>>();
+        if (!app.Environment.IsDevelopment() || options?.Value.BypassServiceKey is false)
+        {
+            app.UseMiddleware<ServiceKeyMiddleware>();
+        }
 
         return app;
     }
