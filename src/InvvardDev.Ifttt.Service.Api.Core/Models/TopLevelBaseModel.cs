@@ -3,11 +3,12 @@ using System.Text.Json;
 
 namespace InvvardDev.Ifttt.Service.Api.Core.Models;
 
-public record TopLevelBaseModel
+public class TopLevelBaseModel
 {
     protected static readonly JsonSerializerOptions JsonSerializerOptions = new()
     {
         PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower,
-        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault,
+        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+        PropertyNameCaseInsensitive = true
     };
 }

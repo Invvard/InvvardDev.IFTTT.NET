@@ -1,15 +1,16 @@
 using System.Reflection;
 using InvvardDev.Ifttt.Service.Api.Trigger.Attributes;
-using InvvardDev.Ifttt.Service.Api.Trigger.Triggers;
+using InvvardDev.Ifttt.Service.Api.Trigger.Contracts;
 
-namespace InvvardDev.Ifttt.Service.Api.Trigger.TriggerRepository;
+namespace InvvardDev.Ifttt.Service.Api.Trigger.Repositories;
 
-internal class TriggerRepositoryService : ITriggerRepository
+internal class TriggerRepositoryService(IAttributeLookup triggerAttributeLookup) : ITriggerRepository
 {
     private readonly Dictionary<string, ITrigger> triggers = new();
 
-    public void AddTriggerTypes(IEnumerable<Type> types)
+    public void MapTriggerTypes()
     {
+        var types = triggerAttributeLookup.GetAnnotatedTypes();
         foreach (var triggerType in types)
         {
             if (triggerType.GetCustomAttribute<TriggerAttribute>() is { } triggerAttribute

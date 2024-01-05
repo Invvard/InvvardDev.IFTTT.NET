@@ -13,7 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sample", "Sample", "{D3D189
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InvvardDev.Ifttt.Trigger.UpdatedNuget", "sample\InvvardDev.Ifttt.Trigger.UpdatedNuget\InvvardDev.Ifttt.Trigger.UpdatedNuget.csproj", "{15680BDC-86C0-4810-87A4-02200D01CFC4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InvvardDev.Ifttt.Service.Trigger.Tests", "tests\InvvardDev.Ifttt.Service.Trigger.Tests\InvvardDev.Ifttt.Service.Trigger.Tests.csproj", "{F94D7981-BB31-467B-AA87-8924964CA186}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InvvardDev.Ifttt.Service.Api.Trigger.Tests", "tests\InvvardDev.Ifttt.Service.Api.Trigger.Tests\InvvardDev.Ifttt.Service.Api.Trigger.Tests.csproj", "{F94D7981-BB31-467B-AA87-8924964CA186}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

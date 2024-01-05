@@ -1,9 +1,10 @@
-﻿using System.Net.Mime;
+﻿using System.Net;
+using System.Net.Mime;
 using System.Text;
 using InvvardDev.Ifttt.Service.Api.Core.Configuration;
 using InvvardDev.Ifttt.Service.Api.Core.Models;
+using InvvardDev.Ifttt.Service.Api.Trigger.Contracts;
 using InvvardDev.Ifttt.Service.Api.Trigger.Models;
-using Microsoft.Extensions.Logging;
 
 namespace InvvardDev.Ifttt.Service.Api.Trigger.Hooks;
 
@@ -17,13 +18,13 @@ public class RealTimeNotificationWebHook : ITriggerHook
     {
         this.logger = logger;
         ArgumentNullException.ThrowIfNull(httpClientFactory);
-        
+
         httpClient = httpClientFactory.CreateClient(IftttConstants.TriggerHttpClientName);
     }
-    
-    public async Task SendNotification(IList<RealTimeNotificationModel> notificationData)
+
+    public async Task<HttpStatusCode> SendNotification(ICollection<RealTimeNotificationModel> notificationData)
     {
-        var content = new StringContent(TopLevelMessageModel.Serialize(notificationData),
+        var content = new StringContent(TopLevelMessageModel<List<RealTimeNotificationModel>>.Serialize(notificationData.ToList()),
                                         Encoding.UTF8,
                                         MediaTypeNames.Application.Json);
         var request = new HttpRequestMessage
@@ -44,5 +45,7 @@ public class RealTimeNotificationWebHook : ITriggerHook
                               response.StatusCode,
                               errorMessage);
         }
+
+        return response.StatusCode;
     }
 }

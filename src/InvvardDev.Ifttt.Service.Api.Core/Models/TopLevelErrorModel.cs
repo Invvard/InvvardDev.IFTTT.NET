@@ -2,7 +2,7 @@
 
 namespace InvvardDev.Ifttt.Service.Api.Core.Models;
 
-public record TopLevelErrorModel(IList<ErrorMessage> Errors) : TopLevelBaseModel
+public class TopLevelErrorModel(IList<ErrorMessage> Errors) : TopLevelBaseModel
 {
     public static string Serialize(IList<ErrorMessage> errors)
         => Serialize(errors, JsonSerializerOptions);

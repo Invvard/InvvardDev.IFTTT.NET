@@ -1,6 +1,6 @@
 using InvvardDev.Ifttt.Service.Api.Core.Configuration;
+using InvvardDev.Ifttt.Service.Api.Trigger.Contracts;
 using InvvardDev.Ifttt.Service.Api.Trigger.Models;
-using InvvardDev.Ifttt.Service.Api.Trigger.TriggerRepository;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InvvardDev.Ifttt.Service.Api.Trigger.Controllers;
