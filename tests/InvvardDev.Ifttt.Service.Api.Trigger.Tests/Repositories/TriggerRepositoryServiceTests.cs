@@ -34,7 +34,7 @@ internal class Trigger1 : ITrigger
 {
     public Task ExecuteAsync(TriggerRequestBase triggerRequest, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        return Task.CompletedTask;
     }
 }
 
@@ -43,6 +43,6 @@ internal class Trigger2 : ITrigger
 {
     public Task ExecuteAsync(TriggerRequestBase triggerRequest, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        return Task.CompletedTask;
     }
 }
