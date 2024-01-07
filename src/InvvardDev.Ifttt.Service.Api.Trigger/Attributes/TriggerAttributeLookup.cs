@@ -1,5 +1,3 @@
-using InvvardDev.Ifttt.Service.Api.Trigger.Contracts;
-
 namespace InvvardDev.Ifttt.Service.Api.Trigger.Attributes;
 
 internal class TriggerAttributeLookup : AttributeLookup

@@ -1,5 +1,4 @@
 using InvvardDev.Ifttt.Service.Api.Core.Configuration;
-using InvvardDev.Ifttt.Service.Api.Trigger.Contracts;
 using InvvardDev.Ifttt.Service.Api.Trigger.Models;
 using Microsoft.AspNetCore.Mvc;
 

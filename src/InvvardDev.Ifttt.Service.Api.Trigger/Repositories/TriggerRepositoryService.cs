@@ -1,10 +1,11 @@
 using System.Reflection;
 using InvvardDev.Ifttt.Service.Api.Trigger.Attributes;
-using InvvardDev.Ifttt.Service.Api.Trigger.Contracts;
 
 namespace InvvardDev.Ifttt.Service.Api.Trigger.Repositories;
 
-internal class TriggerRepositoryService(IAttributeLookup triggerAttributeLookup) : ITriggerRepository
+internal class TriggerRepositoryService(
+    [FromKeyedServices(nameof(TriggerAttributeLookup))]
+    IAttributeLookup triggerAttributeLookup) : ITriggerRepository
 {
     private readonly Dictionary<string, ITrigger> triggers = new();
 

@@ -1,7 +1,7 @@
-﻿using InvvardDev.Ifttt.Service.Api.Core;
+﻿using System.Reflection;
+using InvvardDev.Ifttt.Service.Api.Core;
 using InvvardDev.Ifttt.Service.Api.Core.Configuration;
 using InvvardDev.Ifttt.Service.Api.Trigger.Attributes;
-using InvvardDev.Ifttt.Service.Api.Trigger.Contracts;
 using InvvardDev.Ifttt.Service.Api.Trigger.Hooks;
 using InvvardDev.Ifttt.Service.Api.Trigger.Repositories;
 using Microsoft.Extensions.Options;
@@ -22,13 +22,14 @@ public static class ServiceCollectionExtensions
             client.DefaultRequestHeaders.Add(IftttConstants.ServiceKeyHeader, options.ServiceKey);
         });
 
-        services.AddControllers();
-
         services.AddTransient<ITriggerHook, RealTimeNotificationWebHook>();
         services.AddSingleton<ITriggerRepository, TriggerRepositoryService>();
-        services.AddTransient<IAttributeLookup, TriggerAttributeLookup>();
+        services.AddKeyedTransient<IAttributeLookup, TriggerAttributeLookup>(nameof(TriggerAttributeLookup));
+        services.AddKeyedTransient<IAttributeLookup, TriggerFieldsAttributeLookup>(nameof(TriggerFieldsAttributeLookup));
 
-        services.AddHttpContextAccessor();
+        services.AddControllers()
+                .AddApplicationPart(Assembly.GetAssembly(typeof(IftttConstants)) ?? throw new InvalidOperationException())
+                .AddControllersAsServices();
 
         return services;
     }
@@ -39,8 +40,8 @@ public static class ServiceCollectionExtensions
            .GetRequiredService<ITriggerRepository>()
            .MapTriggerTypes();
 
-        app.MapControllers();
         app.ConfigureIftttApiClient();
+        app.MapControllers();
         
         return app;
     }

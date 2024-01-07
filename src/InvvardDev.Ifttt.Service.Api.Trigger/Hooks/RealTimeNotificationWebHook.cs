@@ -3,7 +3,6 @@ using System.Net.Mime;
 using System.Text;
 using InvvardDev.Ifttt.Service.Api.Core.Configuration;
 using InvvardDev.Ifttt.Service.Api.Core.Models;
-using InvvardDev.Ifttt.Service.Api.Trigger.Contracts;
 using InvvardDev.Ifttt.Service.Api.Trigger.Models;
 
 namespace InvvardDev.Ifttt.Service.Api.Trigger.Hooks;
