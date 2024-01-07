@@ -9,7 +9,6 @@ public class ServiceKeyMiddleware(RequestDelegate next, IOptions<IftttOptions> o
 
     public async Task InvokeAsync(HttpContext context)
     {
-        IHttpContextAccessor httpContextAccessor = context.RequestServices.GetRequiredService<IHttpContextAccessor>();
         if (context.Request.Headers.TryGetValue(IftttConstants.ServiceKeyHeader, out var receivedServiceKey) && receivedServiceKey == serviceKey)
         {
             await next(context);

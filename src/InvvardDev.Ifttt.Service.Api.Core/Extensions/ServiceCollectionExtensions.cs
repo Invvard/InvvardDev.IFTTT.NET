@@ -11,7 +11,7 @@ public static class ServiceCollectionExtensions
         services.AddOptions<IftttOptions>()
                 .BindConfiguration(IftttOptions.DefaultSectionName)
                 .ValidateDataAnnotations();
-
+        
         return services;
     }
 
