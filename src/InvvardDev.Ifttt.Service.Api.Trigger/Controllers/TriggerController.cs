@@ -9,7 +9,7 @@ namespace InvvardDev.Ifttt.Service.Api.Trigger.Controllers;
 public class TriggerController(ITriggerRepository triggerRepository) : ControllerBase
 {
     [HttpPost("{triggerSlug}")]
-    public IActionResult ExecuteTrigger(string triggerSlug, TriggerRequestBase triggerRequest)
+    public IActionResult ExecuteTrigger(string triggerSlug, TriggerRequest triggerRequest)
     {
         var trigger = triggerRepository.GetTriggerProcessorInstance(triggerSlug);
 

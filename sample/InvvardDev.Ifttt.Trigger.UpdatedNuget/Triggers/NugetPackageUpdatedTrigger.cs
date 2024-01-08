@@ -9,8 +9,8 @@ public class NugetPackageUpdatedTrigger : ITrigger
 {
     internal const string TriggerSlug = "nuget_package_updated";
 
-    public Task ExecuteAsync(TriggerRequestBase triggerRequest, CancellationToken cancellationToken = default)
+    public Task ExecuteAsync(TriggerRequest triggerRequest, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        return Task.CompletedTask;
     }
 }

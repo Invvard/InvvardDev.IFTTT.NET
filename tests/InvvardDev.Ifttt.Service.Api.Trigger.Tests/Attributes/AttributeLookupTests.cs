@@ -24,7 +24,7 @@ public class AttributeLookupTests
     [Trigger("slug_1")]
     private class MatchingClass : ITrigger
     {
-        public Task ExecuteAsync(TriggerRequestBase triggerRequest, CancellationToken cancellationToken = default)
+        public Task ExecuteAsync(TriggerRequest triggerRequest, CancellationToken cancellationToken = default)
         {
             return Task.CompletedTask;
         }
@@ -35,7 +35,7 @@ public class AttributeLookupTests
 
     public class MissingAttribute : ITrigger
     {
-        public Task ExecuteAsync(TriggerRequestBase triggerRequest, CancellationToken cancellationToken = default)
+        public Task ExecuteAsync(TriggerRequest triggerRequest, CancellationToken cancellationToken = default)
         {
             return Task.CompletedTask;
         }

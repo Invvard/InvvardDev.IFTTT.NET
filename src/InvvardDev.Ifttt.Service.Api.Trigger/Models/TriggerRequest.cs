@@ -3,17 +3,16 @@ using InvvardDev.Ifttt.Service.Api.Core.Models;
 
 namespace InvvardDev.Ifttt.Service.Api.Trigger.Models;
 
-public class TriggerRequestBase
+public class TriggerRequest
 {
-        [JsonPropertyName("trigger_identity")]
-        public string TriggerIdentity { get; set; } = null!;
+    public string? TriggerIdentity { get; set; }
 
-        //public required T TriggerFields { get; set; }
+    public Dictionary<string, string> TriggerFields { get; set; } = new();
 
-        public int Limit { get; init; } = 50;
+    public int Limit { get; init; } = 50;
 
-        [JsonPropertyName("ifttt_source")]
-        public Source Source { get; set; } = default!;
+    [JsonPropertyName("ifttt_source")]
+    public Source Source { get; set; } = default!;
 
-        public User User { get; set; } = new User("America/Toronto");
+    public User User { get; set; } = new();
 }
