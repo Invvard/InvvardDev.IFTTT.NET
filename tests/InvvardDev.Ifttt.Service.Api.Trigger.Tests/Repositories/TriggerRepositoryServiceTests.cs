@@ -9,23 +9,72 @@ namespace InvvardDev.Ifttt.Service.Trigger.Tests.Repositories;
 
 public class TriggerRepositoryServiceTests
 {
-    // Create a test that verifies that the TriggerRepositoryService.MapTriggerTypes method register the types and their instance returned by IAttributeLookup.GetAnnotatedTypes
-    [Fact]
+    [Fact(DisplayName = "When MapTriggerTypes is called, Then it should register all annotated types")]
     public void MapTriggerTypes_ShouldRegisterAllAnnotatedTypes()
     {
         // Arrange
-        var attributeLookupMock = new Mock<IAttributeLookup>();
-        attributeLookupMock.Setup(x => x.GetAnnotatedTypes())
-                           .Returns(new[] { typeof(Trigger1), typeof(Trigger2) });
+        var triggerAttributeLookupMock = new Mock<IAttributeLookup>();
+        triggerAttributeLookupMock.Setup(x => x.GetAnnotatedTypes())
+                                  .Returns(new[] { typeof(Trigger1), typeof(Trigger2) });
 
-        var sut = new TriggerRepositoryService(attributeLookupMock.Object);
+        var sut = new TriggerRepositoryService(triggerAttributeLookupMock.Object, Mock.Of<IAttributeLookup>());
 
         // Act
         sut.MapTriggerTypes();
 
         // Assert
-        sut.GetTriggerProcessorInstance(nameof(Trigger1)).Should().BeOfType<Trigger1>();
-        sut.GetTriggerProcessorInstance(nameof(Trigger2)).Should().BeOfType<Trigger2>();
+        sut.GetTriggerProcessorInstance(nameof(Trigger1))
+           .Should()
+           .BeOfType<Trigger1>();
+        sut.GetTriggerProcessorInstance(nameof(Trigger2))
+           .Should()
+           .BeOfType<Trigger2>();
+    }
+
+    [Fact(DisplayName = "When MapTriggerFields is called, then it should register all annotated types that match a trigger type")]
+    public void MapTriggerFields_ShouldRegisterAllAnnotatedTypes()
+    {
+        // Arrange
+        var triggerAttributeLookupMock = new Mock<IAttributeLookup>();
+        triggerAttributeLookupMock.Setup(x => x.GetAnnotatedTypes())
+                                  .Returns(new[] { typeof(Trigger1) });
+
+        var triggerFieldsAttributeLookupMock = new Mock<IAttributeLookup>();
+        triggerFieldsAttributeLookupMock.Setup(x => x.GetAnnotatedTypes())
+                                        .Returns(new[] { typeof(Trigger1Fields) });
+
+        var sut = new TriggerRepositoryService(triggerAttributeLookupMock.Object,
+                                               triggerFieldsAttributeLookupMock.Object);
+
+        // Act
+        sut.MapTriggerTypes()
+           .MapTriggerFields();
+
+        // Assert
+        sut.GetTriggerFieldsType(nameof(Trigger1)).Should().Be<Trigger1Fields>();
+    }
+
+    [Fact(DisplayName = "When MapTriggerFields is called, when TriggerFields has no matching trigger, then it should not register type")]
+    public void MapTriggerFields_WhenTriggerFieldsHasNoMatchingTrigger_ShouldNotRegisterType()
+    {
+        // Arrange
+        var triggerAttributeLookupMock = new Mock<IAttributeLookup>();
+        triggerAttributeLookupMock.Setup(x => x.GetAnnotatedTypes())
+                                  .Returns(new[] { typeof(Trigger2) });
+
+        var triggerFieldsAttributeLookupMock = new Mock<IAttributeLookup>();
+        triggerFieldsAttributeLookupMock.Setup(x => x.GetAnnotatedTypes())
+                                        .Returns(new[] { typeof(Trigger1Fields) });
+
+        var sut = new TriggerRepositoryService(triggerAttributeLookupMock.Object,
+                                               triggerFieldsAttributeLookupMock.Object);
+
+        // Act
+        sut.MapTriggerTypes()
+           .MapTriggerFields();
+
+        // Assert
+        sut.GetTriggerFieldsType(nameof(Trigger1Fields)).Should().BeNull();
     }
 }
 
@@ -46,3 +95,6 @@ internal class Trigger2 : ITrigger
         return Task.CompletedTask;
     }
 }
+
+[TriggerFields(nameof(Trigger1))]
+internal class Trigger1Fields;

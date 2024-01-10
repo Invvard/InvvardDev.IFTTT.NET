@@ -38,11 +38,12 @@ public static class ServiceCollectionExtensions
     {
         app.Services
            .GetRequiredService<ITriggerRepository>()
-           .MapTriggerTypes();
+           .MapTriggerTypes()
+           .MapTriggerFields();
 
         app.ConfigureIftttApiClient();
         app.MapControllers();
-        
+
         return app;
     }
 }

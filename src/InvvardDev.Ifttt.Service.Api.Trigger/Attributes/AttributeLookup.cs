@@ -15,8 +15,8 @@ internal abstract class AttributeLookup : IAttributeLookup
         foreach (var assembly in assemblies)
         {
             annotatedTypes.AddRange(assembly.GetTypes()
-                                          .Where(IsMatching)
-                                          .ToList());
+                                            .Where(IsMatching)
+                                            .ToList());
         }
 
         return annotatedTypes;
@@ -25,7 +25,7 @@ internal abstract class AttributeLookup : IAttributeLookup
     private static Assembly[] GetApplicationAssemblies()
     {
         var entryAssembly = Assembly.GetEntryAssembly();
-        
+
         if (DependencyContext.Default != null)
         {
             var applicationAssemblies = DependencyContext.Default
