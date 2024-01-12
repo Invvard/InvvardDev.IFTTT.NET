@@ -1,6 +1,8 @@
-﻿using InvvardDev.Ifttt.Service.Api.Trigger.Attributes;
+﻿using InvvardDev.Ifttt.Service.Api.Trigger;
+using InvvardDev.Ifttt.Service.Api.Trigger.Attributes;
 using InvvardDev.Ifttt.Service.Api.Trigger.Contracts;
 using InvvardDev.Ifttt.Service.Api.Trigger.Models;
+using InvvardDev.Ifttt.Trigger.UpdatedNuget.Models;
 
 namespace InvvardDev.Ifttt.Trigger.UpdatedNuget.Triggers;
 
@@ -11,6 +13,7 @@ public class NugetPackageUpdatedTrigger : ITrigger
 
     public Task ExecuteAsync(TriggerRequest triggerRequest, CancellationToken cancellationToken = default)
     {
+        var triggerFields = triggerRequest.TriggerFields.To<WatchedNugetTriggerFields>();
         return Task.CompletedTask;
     }
 }

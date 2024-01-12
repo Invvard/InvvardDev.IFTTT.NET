@@ -32,6 +32,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\sample\InvvardDev.Ifttt.Trigger.UpdatedNuget\InvvardDev.Ifttt.Trigger.UpdatedNuget.csproj" />
       <ProjectReference Include="..\..\src\InvvardDev.Ifttt.Service.Api.Trigger\InvvardDev.Ifttt.Service.Api.Trigger.csproj" />
     </ItemGroup>
 

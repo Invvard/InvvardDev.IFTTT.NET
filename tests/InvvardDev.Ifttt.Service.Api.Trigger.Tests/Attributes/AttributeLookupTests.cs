@@ -2,6 +2,7 @@ using FluentAssertions;
 using InvvardDev.Ifttt.Service.Api.Trigger.Attributes;
 using InvvardDev.Ifttt.Service.Api.Trigger.Contracts;
 using InvvardDev.Ifttt.Service.Api.Trigger.Models;
+using InvvardDev.Ifttt.Service.Trigger.Tests.Factories;
 
 namespace InvvardDev.Ifttt.Service.Trigger.Tests.Attributes;
 

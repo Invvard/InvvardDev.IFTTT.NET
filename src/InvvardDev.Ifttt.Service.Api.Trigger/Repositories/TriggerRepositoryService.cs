@@ -6,7 +6,7 @@ namespace InvvardDev.Ifttt.Service.Api.Trigger.Repositories;
 
 internal class TriggerRepositoryService(
     [FromKeyedServices(nameof(TriggerAttributeLookup))] IAttributeLookup triggerAttributeLookup,
-    [FromKeyedServices(nameof(TriggerFieldsAttribute))] IAttributeLookup triggerFieldsAttributeLookup
+    [FromKeyedServices(nameof(TriggerFieldsAttributeLookup))] IAttributeLookup triggerFieldsAttributeLookup
 ) : ITriggerRepository
 {
     private readonly Dictionary<string, TriggerDataType> triggers = new();

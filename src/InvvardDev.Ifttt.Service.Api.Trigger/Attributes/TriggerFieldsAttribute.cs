@@ -1,5 +1,6 @@
 namespace InvvardDev.Ifttt.Service.Api.Trigger.Attributes;
-
+ 
+[AttributeUsage(AttributeTargets.Class)]
 public class TriggerFieldsAttribute : Attribute
 {
     public string TriggerSlug { get; set; }
