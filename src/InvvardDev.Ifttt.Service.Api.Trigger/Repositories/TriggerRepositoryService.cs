@@ -32,9 +32,9 @@ internal class TriggerRepositoryService(
         foreach (var triggerFieldsType in types)
         {
             if (triggerFieldsType.GetCustomAttribute<TriggerFieldsAttribute>() is { } triggerFieldsAttribute
-                && triggers.TryGetValue(triggerFieldsAttribute.TriggerSlug, out var triggerDataType))
+                && triggers.TryGetValue(triggerFieldsAttribute.Slug, out var triggerDataType))
             {
-                triggers[triggerFieldsAttribute.TriggerSlug] = triggerDataType with
+                triggers[triggerFieldsAttribute.Slug] = triggerDataType with
                                                                {
                                                                    TriggerFieldsType = triggerFieldsType
                                                                };
