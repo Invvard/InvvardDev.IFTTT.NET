@@ -15,7 +15,18 @@ public class TriggerController(ITriggerRepository triggerRepository) : Controlle
         var trigger = triggerRepository.GetTriggerProcessorInstance(triggerSlug);
 
         trigger.ExecuteAsync(triggerRequest);
-            
+
         return Ok();
+    }
+
+    [HttpPost("{triggerSlug}/fields/{fieldName}/validate")]
+    public IActionResult ValidateField(string triggerSlug, string fieldName, TriggerFieldValidationRequest triggerRequest)
+    {
+        var trigger = triggerRepository.GetTriggerProcessorInstance(triggerSlug);
+
+        //var validationResponse = trigger.ValidateField(fieldName, triggerRequest);
+
+        return Ok();
+        //return Ok(validationResponse);
     }
 }
