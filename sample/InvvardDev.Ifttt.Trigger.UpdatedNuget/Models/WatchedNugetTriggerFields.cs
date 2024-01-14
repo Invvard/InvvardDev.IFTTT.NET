@@ -1,5 +1,5 @@
-using InvvardDev.Ifttt.Service.Api.Trigger.Attributes;
-using InvvardDev.Ifttt.Service.Api.Trigger.Models;
+using InvvardDev.Ifttt.Trigger.Attributes;
+using InvvardDev.Ifttt.Trigger.Models;
 using InvvardDev.Ifttt.Trigger.UpdatedNuget.Triggers;
 
 namespace InvvardDev.Ifttt.Trigger.UpdatedNuget.Models;
@@ -8,10 +8,10 @@ namespace InvvardDev.Ifttt.Trigger.UpdatedNuget.Models;
 public class WatchedNugetTriggerFields : TriggerFieldsBase
 {
     [TriggerField("nuget_package_name")]
-    public string NugetPackageName { get; init; }
+    public string NugetPackageName { get; init; } = default!;
 
     [TriggerField("updated_version")]
-    public string UpdatedVersion { get; init; }
+    public string UpdatedVersion { get; init; } = default!;
 
     [TriggerField("updated_date")]
     public DateTime UpdatedDate { get; init; }

@@ -1,7 +1,6 @@
-﻿using InvvardDev.Ifttt.Service.Api.Trigger;
-using InvvardDev.Ifttt.Service.Api.Trigger.Attributes;
-using InvvardDev.Ifttt.Service.Api.Trigger.Contracts;
-using InvvardDev.Ifttt.Service.Api.Trigger.Models;
+﻿using InvvardDev.Ifttt.Trigger.Attributes;
+using InvvardDev.Ifttt.Trigger.Contracts;
+using InvvardDev.Ifttt.Trigger.Models;
 using InvvardDev.Ifttt.Trigger.UpdatedNuget.Models;
 
 namespace InvvardDev.Ifttt.Trigger.UpdatedNuget.Triggers;

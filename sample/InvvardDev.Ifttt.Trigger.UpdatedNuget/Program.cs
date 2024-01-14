@@ -1,4 +1,4 @@
-using InvvardDev.Ifttt.Service.Api.Trigger;
+using InvvardDev.Ifttt.Trigger;
 
 var builder = WebApplication.CreateBuilder(args);
 
