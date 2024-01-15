@@ -1,48 +1,38 @@
-using System.Reflection;
-using InvvardDev.Ifttt.Trigger.Attributes;
 using InvvardDev.Ifttt.Trigger.Contracts;
 using InvvardDev.Ifttt.Trigger.Models;
 
 namespace InvvardDev.Ifttt.Trigger.Repositories;
 
-internal class TriggerRepositoryService(
-    [FromKeyedServices(nameof(TriggerAttributeLookup))] IAttributeLookup triggerAttributeLookup,
-    [FromKeyedServices(nameof(TriggerFieldsAttributeLookup))] IAttributeLookup triggerFieldsAttributeLookup
-) : ITriggerRepository
+internal class TriggerRepositoryService : ITriggerRepository
 {
     private readonly Dictionary<string, TriggerDataType> triggers = new();
 
-    public ITriggerRepository MapTriggerTypes()
+    public void AddOrUpdateTrigger(string triggerSlug, Type triggerType)
     {
-        var types = triggerAttributeLookup.GetAnnotatedTypes();
-        foreach (var triggerType in types)
+        if (!triggers.TryGetValue(triggerSlug, out var triggerData))
         {
-            if (triggerType.GetCustomAttribute<TriggerAttribute>() is { } triggerAttribute
-                && !triggers.ContainsKey(triggerAttribute.Slug))
-            {
-                triggers.Add(triggerAttribute.Slug, new TriggerDataType(triggerAttribute.Slug, triggerType));
-            }
+            triggers.Add(triggerSlug, new TriggerDataType(triggerSlug, triggerType));
         }
-
-        return this;
+        else
+        {
+            triggers[triggerSlug] = triggerData with
+                                    {
+                                        TriggerType = triggerType
+                                    };
+        }
     }
 
-    public ITriggerRepository MapTriggerFields()
+    public void AddOrUpdateTriggerFields(string triggerSlug, Type triggerFieldsType)
     {
-        var types = triggerFieldsAttributeLookup.GetAnnotatedTypes();
-        foreach (var triggerFieldsType in types)
+        if (!triggers.TryGetValue(triggerSlug, out var triggerData))
         {
-            if (triggerFieldsType.GetCustomAttribute<TriggerFieldsAttribute>() is { } triggerFieldsAttribute
-                && triggers.TryGetValue(triggerFieldsAttribute.Slug, out var triggerDataType))
-            {
-                triggers[triggerFieldsAttribute.Slug] = triggerDataType with
-                                                               {
-                                                                   TriggerFieldsType = triggerFieldsType
-                                                               };
-            }
+            throw new InvalidOperationException($"Trigger '{triggerSlug}' was not found.");
         }
 
-        return this;
+        triggers[triggerSlug] = triggerData with
+                                {
+                                    TriggerFieldsType = triggerFieldsType
+                                };
     }
 
     public ITrigger GetTriggerProcessorInstance(string triggerSlug)
@@ -50,7 +40,7 @@ internal class TriggerRepositoryService(
         if (!triggers.TryGetValue(triggerSlug, out var triggerDataType)
             || Activator.CreateInstance(triggerDataType.TriggerType) is not ITrigger triggerInstance)
         {
-            throw new InvalidOperationException();
+            throw new InvalidOperationException($"Trigger '{triggerSlug}' was not found.");
         }
 
         return triggerInstance;

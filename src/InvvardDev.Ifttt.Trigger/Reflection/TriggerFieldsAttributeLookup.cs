@@ -1,4 +1,6 @@
-namespace InvvardDev.Ifttt.Trigger.Attributes;
+using InvvardDev.Ifttt.Trigger.Attributes;
+
+namespace InvvardDev.Ifttt.Trigger.Reflection;
 
 internal class TriggerFieldsAttributeLookup : AttributeLookup
 {

@@ -2,7 +2,7 @@
 using InvvardDev.Ifttt.Trigger.Contracts;
 using Microsoft.Extensions.DependencyModel;
 
-namespace InvvardDev.Ifttt.Trigger.Attributes;
+namespace InvvardDev.Ifttt.Trigger.Reflection;
 
 internal abstract class AttributeLookup : IAttributeLookup
 {
