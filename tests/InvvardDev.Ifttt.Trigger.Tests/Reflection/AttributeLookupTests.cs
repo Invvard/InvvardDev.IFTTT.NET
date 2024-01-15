@@ -3,11 +3,25 @@ using InvvardDev.Ifttt.Trigger.Attributes;
 using InvvardDev.Ifttt.Trigger.Contracts;
 using InvvardDev.Ifttt.Trigger.Models;
 using InvvardDev.Ifttt.Trigger.Reflection;
+using InvvardDev.Ifttt.Trigger.Tests.Factories;
 
-namespace InvvardDev.Ifttt.Trigger.Tests.Attributes;
+namespace InvvardDev.Ifttt.Trigger.Tests.Reflection;
 
 public class AttributeLookupTests
 {
+    [Fact]
+    public void Test()
+    {
+        // Arrange
+        var expectedSlug = "my_new_trigger_slug";
+        
+        // Act
+        var actualSlug = TestClassFactory.GivenATrigger(expectedSlug);
+        
+        // Assert
+        actualSlug.Should().Be(expectedSlug);
+    }
+    
     [Fact(DisplayName = "GetAnnotatedTypes should return all matching Trigger types")]
     public void GetAnnotatedTypes_ShouldReturnAllMatchingTriggerTypes()
     {

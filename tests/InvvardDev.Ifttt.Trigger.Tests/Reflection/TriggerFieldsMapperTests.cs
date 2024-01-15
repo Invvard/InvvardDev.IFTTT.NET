@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using InvvardDev.Ifttt.Trigger.UpdatedNuget.Models;
 
-namespace InvvardDev.Ifttt.Trigger.Tests.Attributes;
+namespace InvvardDev.Ifttt.Trigger.Tests.Reflection;
 
 public class TriggerFieldsMapperTests
 {
