@@ -35,12 +35,12 @@ internal class TriggerRepositoryService : ITriggerRepository
                                 };
     }
 
-    public ITrigger GetTriggerProcessorInstance(string triggerSlug)
+    public ITrigger? GetTriggerProcessorInstance(string triggerSlug)
     {
         if (!triggers.TryGetValue(triggerSlug, out var triggerDataType)
             || Activator.CreateInstance(triggerDataType.TriggerType) is not ITrigger triggerInstance)
         {
-            throw new InvalidOperationException($"Trigger '{triggerSlug}' was not found.");
+            return null;
         }
 
         return triggerInstance;

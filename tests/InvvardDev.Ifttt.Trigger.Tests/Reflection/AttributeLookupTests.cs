@@ -34,21 +34,21 @@ public class AttributeLookupTests
     public void TriggerFieldsAttributeLookup_GetAnnotatedTypes_ShouldReturnAllMatchingTriggerTypes()
     {
         // Arrange
-        var missingTriggerFieldsAttribute = TriggerClassFactory.MissingTriggerFieldsAttribute();
-        var missingAttribute = TriggerClassFactory.MissingTriggerAttribute();
-        var matchingClass = TriggerClassFactory.MatchingClass();
+        TriggerFieldsClassFactory.MissingTriggerFieldsAttribute();
+        TriggerFieldsClassFactory.MissingTriggerFieldProperty();
+        var matchingTriggerFieldsClass = TriggerFieldsClassFactory.MatchingTriggerFieldsClass();
 
         var assemblyAccessor = Mock.Of<IAssemblyAccessor>(m => m.GetApplicationAssemblies() == new[]
                                                               {
-                                                                  matchingClass.Assembly
+                                                                  matchingTriggerFieldsClass.Assembly
                                                               });
 
-        var sut = new TriggerAttributeLookup(assemblyAccessor);
+        var sut = new TriggerFieldsAttributeLookup(assemblyAccessor);
 
         // Act
         var types = sut.GetAnnotatedTypes();
 
         // Assert
-        types.Should().ContainSingle().Which.FullName.Should().Be(matchingClass.FullName);
+        types.Should().ContainSingle().Which.FullName.Should().Be(matchingTriggerFieldsClass.FullName);
     }
 }

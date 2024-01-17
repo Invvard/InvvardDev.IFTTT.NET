@@ -6,7 +6,7 @@ public interface ITriggerRepository
 
     void AddOrUpdateTriggerFields(string triggerSlug, Type triggerFieldsType);
 
-    ITrigger GetTriggerProcessorInstance(string triggerSlug);
+    ITrigger? GetTriggerProcessorInstance(string triggerSlug);
 
     Type? GetTriggerFieldsType(string triggerSlug);
 }

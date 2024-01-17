@@ -8,21 +8,18 @@ internal static class CreateType
     private const string DynamicAssemblyName = "DynamicAssembly";
     private const string DynamicModuleName = "DynamicModule";
 
-    private static readonly ModuleBuilder ModuleBuilder = AssemblyBuilder
-                                                          .DefineDynamicAssembly(new AssemblyName(DynamicAssemblyName),
-                                                                                 AssemblyBuilderAccess.Run)
-                                                          .DefineDynamicModule(DynamicModuleName);
-
-
     public static TypeBuilder Called(string typeName)
-        => ModuleBuilder.DefineType(typeName, TypeAttributes.Public);
+        => AssemblyBuilder.DefineDynamicAssembly(new AssemblyName(DynamicAssemblyName), AssemblyBuilderAccess.Run)
+                          .DefineDynamicModule(DynamicModuleName)
+                          .DefineType(typeName, TypeAttributes.Public);
 
     public static TypeBuilder WithAttribute<TAttribute>(this TypeBuilder typeBuilder, params object[] attributeParams)
         where TAttribute : Attribute
     {
         var attributeParamTypes = attributeParams.Select(param => param.GetType()).ToArray();
-        typeBuilder.SetCustomAttribute(new CustomAttributeBuilder(typeof(TAttribute).GetConstructor(attributeParamTypes)!,
-                                                                  attributeParams));
+        var constructorInfo = typeof(TAttribute).GetConstructor(attributeParamTypes)!;
+        var con = new CustomAttributeBuilder(constructorInfo, attributeParams);
+        typeBuilder.SetCustomAttribute(con);
 
         return typeBuilder;
     }
@@ -45,6 +42,29 @@ internal static class CreateType
                                                       string propertyName,
                                                       bool writeable = true,
                                                       bool readable = true)
+    {
+        typeBuilder.CreateProperty<TProperty>(propertyName, writeable, readable);
+
+        return typeBuilder;
+    }
+
+    public static TypeBuilder WithPropertyAttribute<TProperty, TAttribute>(this TypeBuilder typeBuilder,
+                                                                           string propertyName,
+                                                                           params object[] attributeParams)
+        where TAttribute : Attribute
+    {
+        var propertyBuilder = typeBuilder.CreateProperty<TProperty>(propertyName, true, true);
+        var attributeParamTypes = attributeParams.Select(param => param.GetType()).ToArray();
+        propertyBuilder.SetCustomAttribute(new CustomAttributeBuilder(typeof(TAttribute).GetConstructor(attributeParamTypes)!,
+                                                                      attributeParams));
+
+        return typeBuilder;
+    }
+
+    private static PropertyBuilder CreateProperty<TProperty>(this TypeBuilder typeBuilder,
+                                                             string propertyName,
+                                                             bool writeable,
+                                                             bool readable)
     {
         if (writeable && !readable)
         {
@@ -70,24 +90,7 @@ internal static class CreateType
         setMethodIlGenerator.Emit(OpCodes.Ret);
         propertyBuilder.SetSetMethod(setMethodBuilder);
 
-        typeBuilder.GetProperties().Single()
-
-        return typeBuilder;
-    }
-
-    public static TypeBuilder WithPropertyAttribute<TAttribute>(this TypeBuilder typeBuilder,
-                                                                string propertyName,
-                                                                params object[] attributeParams)
-        where TAttribute : Attribute
-    {
-        var attributeParamTypes = attributeParams.Select(param => param.GetType()).ToArray();
-        var propertyInfo = typeBuilder.GetProperties().Single(p => p.Name == propertyName);
-        
-        
-        typeBuilder.SetCustomAttribute(new CustomAttributeBuilder(typeof(TAttribute).GetConstructor(attributeParamTypes)!,
-                                                                  new object[] { propertyName, slug }));
-
-        return typeBuilder;
+        return propertyBuilder;
     }
 
     public static TypeBuilder WithMethod(this TypeBuilder typeBuilder,
