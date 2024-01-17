@@ -1,58 +1,54 @@
 using FluentAssertions;
-using InvvardDev.Ifttt.Trigger.Attributes;
 using InvvardDev.Ifttt.Trigger.Contracts;
-using InvvardDev.Ifttt.Trigger.Models;
 using InvvardDev.Ifttt.Trigger.Reflection;
 using InvvardDev.Ifttt.Trigger.Tests.Factories;
+using Moq;
 
 namespace InvvardDev.Ifttt.Trigger.Tests.Reflection;
 
 public class AttributeLookupTests
 {
-    [Fact]
-    public void Test()
+    [Fact(DisplayName = "TriggerAttributeLookup.GetAnnotatedTypes should return all matching Trigger types")]
+    public void TriggerAttributeLookup_GetAnnotatedTypes_ShouldReturnAllMatchingTriggerTypes()
     {
         // Arrange
-        var expectedSlug = "my_new_trigger_slug";
-        
-        // Act
-        var actualSlug = TestClassFactory.GivenATrigger(expectedSlug);
-        
-        // Assert
-        actualSlug.Should().Be(expectedSlug);
-    }
-    
-    [Fact(DisplayName = "GetAnnotatedTypes should return all matching Trigger types")]
-    public void GetAnnotatedTypes_ShouldReturnAllMatchingTriggerTypes()
-    {
-        // Arrange
-        var sut = new TriggerAttributeLookup();
-        var expectedAssemblyFullName = typeof(MatchingClass).FullName;
+        var missingInterface = TriggerClassFactory.MissingITriggerInterface();
+        var missingAttribute = TriggerClassFactory.MissingTriggerAttribute();
+        var matchingClass = TriggerClassFactory.MatchingClass();
+
+        var assemblyAccessor = Mock.Of<IAssemblyAccessor>(m => m.GetApplicationAssemblies() == new[]
+                                                              {
+                                                                  matchingClass.Assembly
+                                                              });
+
+        var sut = new TriggerAttributeLookup(assemblyAccessor);
 
         // Act
         var types = sut.GetAnnotatedTypes();
 
         // Assert
-        types.Should().ContainSingle().Which.FullName.Should().Be(expectedAssemblyFullName);
+        types.Should().ContainSingle().Which.FullName.Should().Be(matchingClass.FullName);
     }
     
-    [Trigger("slug_1")]
-    private class MatchingClass : ITrigger
+    [Fact(DisplayName = "TriggerFieldsAttributeLookup.GetAnnotatedTypes should return all matching TriggerFields types")]
+    public void TriggerFieldsAttributeLookup_GetAnnotatedTypes_ShouldReturnAllMatchingTriggerTypes()
     {
-        public Task ExecuteAsync(TriggerRequest triggerRequest, CancellationToken cancellationToken = default)
-        {
-            return Task.CompletedTask;
-        }
-    }
+        // Arrange
+        var missingTriggerFieldsAttribute = TriggerClassFactory.MissingTriggerFieldsAttribute();
+        var missingAttribute = TriggerClassFactory.MissingTriggerAttribute();
+        var matchingClass = TriggerClassFactory.MatchingClass();
 
-    [Trigger("slug_2")]
-    public class MissingInterface { }
+        var assemblyAccessor = Mock.Of<IAssemblyAccessor>(m => m.GetApplicationAssemblies() == new[]
+                                                              {
+                                                                  matchingClass.Assembly
+                                                              });
 
-    public class MissingAttribute : ITrigger
-    {
-        public Task ExecuteAsync(TriggerRequest triggerRequest, CancellationToken cancellationToken = default)
-        {
-            return Task.CompletedTask;
-        }
+        var sut = new TriggerAttributeLookup(assemblyAccessor);
+
+        // Act
+        var types = sut.GetAnnotatedTypes();
+
+        // Assert
+        types.Should().ContainSingle().Which.FullName.Should().Be(matchingClass.FullName);
     }
 }
