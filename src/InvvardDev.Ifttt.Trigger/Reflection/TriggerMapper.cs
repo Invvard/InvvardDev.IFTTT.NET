@@ -6,6 +6,7 @@ namespace InvvardDev.Ifttt.Trigger.Reflection;
 
 internal class TriggerMapper(
     ITriggerRepository triggerRepository,
+    IAssemblyAccessor assemblyAccessor,
     [FromKeyedServices(nameof(TriggerAttributeLookup))] IAttributeLookup triggerAttributeLookup,
     [FromKeyedServices(nameof(TriggerFieldsAttributeLookup))] IAttributeLookup triggerFieldsAttributeLookup) : ITriggerMapper
 {
@@ -14,7 +15,7 @@ internal class TriggerMapper(
         var types = triggerAttributeLookup.GetAnnotatedTypes();
         foreach (var triggerType in types)
         {
-            if (triggerType.GetCustomAttribute<TriggerAttribute>() is { } triggerAttribute)
+            if (assemblyAccessor.GetAttribute<TriggerAttribute>(triggerType) is { } triggerAttribute)
             {
                 triggerRepository.AddOrUpdateTrigger(triggerAttribute.Slug, triggerType);
             }

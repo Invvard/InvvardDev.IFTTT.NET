@@ -3,7 +3,8 @@ using InvvardDev.Ifttt.Trigger.Contracts;
 
 namespace InvvardDev.Ifttt.Trigger.Reflection;
 
-internal class TriggerAttributeLookup : AttributeLookup
+internal class TriggerAttributeLookup(IAssemblyAccessor assemblyAccessor)
+    : AttributeLookup(assemblyAccessor)
 {
     protected override bool IsMatching(Type type)
         => type is { IsClass: true, IsAbstract: false }
