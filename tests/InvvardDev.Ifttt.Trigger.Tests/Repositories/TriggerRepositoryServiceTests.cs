@@ -11,7 +11,7 @@ public class TriggerRepositoryServiceTests
     {
         // Arrange
         const string expectedTriggerSlug = "trigger1";
-        var expectedTriggerType = TriggerClassFactory.MatchingClass(typeName: "Trigger1", expectedTriggerSlug);
+        var expectedTriggerType = TriggerClassFactory.MatchingClass(typeName: "Trigger1", triggerSlug: expectedTriggerSlug);
 
         var sut = new TriggerRepositoryService();
         sut.GetTriggerProcessorInstance(expectedTriggerSlug).Should().BeNull();
@@ -32,8 +32,8 @@ public class TriggerRepositoryServiceTests
     {
         // Arrange
         const string expectedTriggerSlug = "trigger1";
-        var anyType = TriggerClassFactory.MatchingClass(typeName: "AnyType", expectedSlug: expectedTriggerSlug);
-        var expectedTriggerType = TriggerClassFactory.MatchingClass(typeName: "Trigger1", expectedTriggerSlug);
+        var anyType = TriggerClassFactory.MatchingClass(triggerSlug: expectedTriggerSlug);
+        var expectedTriggerType = TriggerClassFactory.MatchingClass(triggerSlug: expectedTriggerSlug);
 
         var sut = new TriggerRepositoryService();
         sut.AddOrUpdateTrigger(expectedTriggerSlug, anyType);
@@ -52,10 +52,9 @@ public class TriggerRepositoryServiceTests
         // Arrange
         const string triggerSlug = "trigger1";
         const string unknownTriggerSlug = "unknown_trigger_slug";
-        
-        var triggerType = TriggerClassFactory.MatchingClass(typeName: "Trigger1", triggerSlug);
-        var expectedTriggerFieldsType
-            = TriggerFieldsClassFactory.MatchingTriggerFieldsClass(typeName: "Trigger1Fields", unknownTriggerSlug);
+
+        var triggerType = TriggerClassFactory.MatchingClass(triggerSlug: triggerSlug);
+        var expectedTriggerFieldsType = TriggerFieldsClassFactory.MatchingTriggerFieldsClass(triggerSlug: unknownTriggerSlug);
 
         var sut = new TriggerRepositoryService();
         sut.AddOrUpdateTrigger(triggerSlug, triggerType);
@@ -82,9 +81,9 @@ public class TriggerRepositoryServiceTests
     {
         // Arrange
         const string expectedTriggerSlug = "trigger1";
-        var triggerType = TriggerClassFactory.MatchingClass(typeName: "Trigger1", expectedTriggerSlug);
+        var triggerType = TriggerClassFactory.MatchingClass(triggerSlug: expectedTriggerSlug);
         var expectedTriggerFieldsType
-            = TriggerFieldsClassFactory.MatchingTriggerFieldsClass(typeName: "TriggerFields1", expectedTriggerSlug);
+            = TriggerFieldsClassFactory.MatchingTriggerFieldsClass(triggerSlug: expectedTriggerSlug);
 
         var sut = new TriggerRepositoryService();
         sut.AddOrUpdateTrigger(expectedTriggerSlug, triggerType);

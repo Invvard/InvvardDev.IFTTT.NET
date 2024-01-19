@@ -7,23 +7,29 @@ internal static class TriggerFieldsClassFactory
     public static Type MissingTriggerFieldsAttribute(string? typeName = null, string? propertyName = null)
     {
         propertyName = propertyName.NewName();
-        return CreateType.Called(typeName.NewName())
-                         .WithPropertyAttribute<string, TriggerFieldAttribute>(propertyName, $"{propertyName}_slug")
+        return DefineType.Called(typeName.NewName())
+                         .WithProperty<string>(propertyName.NewName())
+                         .WithCustomAttribute<TriggerFieldAttribute>(propertyName, $"{propertyName}_slug")
                          .Build();
     }
 
-    public static Type MissingTriggerFieldProperty(string? typeName = null, string? expectedSlug = null, string? propertyName = null)
-        => CreateType.Called(typeName.NewName())
-                     .WithAttribute<TriggerFieldsAttribute>(expectedSlug.NewName())
-                     .WithProperty<string>(propertyName.NewName())
-                     .Build();
-
-    public static Type MatchingTriggerFieldsClass(string? typeName = null, string? expectedSlug = null, string? propertyName = null)
+    public static Type MissingTriggerFieldProperty(string? typeName = null, string? propertyName = null, string? triggerSlug = null)
     {
+        typeName = typeName.NewName();
+        return DefineType.Called(typeName)
+                         .WithCustomAttribute<TriggerFieldsAttribute>(typeName, triggerSlug.NewName())
+                         .WithProperty<string>(propertyName.NewName())
+                         .Build();
+    }
+
+    public static Type MatchingTriggerFieldsClass(string? typeName = null, string? propertyName = null, string? triggerSlug = null, string? triggerFieldSlug = null)
+    {
+        typeName = typeName.NewName();
         propertyName = propertyName.NewName();
-        return CreateType.Called(typeName.NewName())
-                         .WithAttribute<TriggerFieldsAttribute>(expectedSlug.NewName())
-                         .WithPropertyAttribute<string, TriggerFieldAttribute>(propertyName, $"{propertyName}_slug")
+        return DefineType.Called(typeName)
+                         .WithCustomAttribute<TriggerFieldsAttribute>(typeName, triggerSlug.NewName())
+                         .WithProperty<string>(propertyName)
+                         .WithCustomAttribute<TriggerFieldAttribute>(propertyName, $"{propertyName}_slug")
                          .Build();
     }
 }

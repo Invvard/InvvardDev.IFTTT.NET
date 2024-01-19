@@ -12,15 +12,15 @@ public class AttributeLookupTests
     public void TriggerAttributeLookup_GetAnnotatedTypes_ShouldReturnAllMatchingTriggerTypes()
     {
         // Arrange
-        var missingInterface = TriggerClassFactory.MissingITriggerInterface();
-        var missingAttribute = TriggerClassFactory.MissingTriggerAttribute();
+        TriggerClassFactory.MissingITriggerInterface();
+        TriggerClassFactory.MissingTriggerAttribute();
         var matchingClass = TriggerClassFactory.MatchingClass();
 
         var assemblyAccessor = Mock.Of<IAssemblyAccessor>(m => m.GetApplicationAssemblies() == new[]
                                                               {
                                                                   matchingClass.Assembly
                                                               });
-
+        
         var sut = new TriggerAttributeLookup(assemblyAccessor);
 
         // Act
@@ -29,7 +29,7 @@ public class AttributeLookupTests
         // Assert
         types.Should().ContainSingle().Which.FullName.Should().Be(matchingClass.FullName);
     }
-    
+
     [Fact(DisplayName = "TriggerFieldsAttributeLookup.GetAnnotatedTypes should return all matching TriggerFields types")]
     public void TriggerFieldsAttributeLookup_GetAnnotatedTypes_ShouldReturnAllMatchingTriggerTypes()
     {
