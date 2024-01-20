@@ -15,4 +15,4 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - uses: ./.github/workflows/dotnet-job-build-test
+      - uses: ./.github/workflows/dotnet-job-build-test.yml
