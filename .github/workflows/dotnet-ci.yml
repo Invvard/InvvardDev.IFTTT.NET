@@ -9,10 +9,4 @@ on:
 
 jobs:
   build_and_test:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-
-      - uses: ./.github/workflows/dotnet-job-build-test.yml
+    uses: ./.github/workflows/dotnet-job-build-test.yml
