@@ -3,17 +3,12 @@ name: NuGet Publish
 on:
   workflow_call:
     inputs:
-      nuget_api_key:
-        required: true
-        type: string
       push_package:
         default: false
         type: boolean
     
 jobs:
   publish-nuget:
-    environment:
-      name: Development
     name: Publish NuGet Package
     runs-on: ubuntu-latest
 
@@ -25,4 +20,4 @@ jobs:
         if: inputs.push_package
         run: dotnet nuget push nupkg/*.nupkg --source https://api.nuget.org/v3/index.json
         env:
-          NUGET_API_KEY: ${{ inputs.nuget_api_key }}
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY_TEST }}
