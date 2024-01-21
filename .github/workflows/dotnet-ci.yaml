@@ -9,4 +9,4 @@ on:
 
 jobs:
   build_and_test:
-    uses: ./.github/workflows/dotnet-job-build-test.yml
+    uses: ./.github/workflows/dotnet-job-build-test.yaml
