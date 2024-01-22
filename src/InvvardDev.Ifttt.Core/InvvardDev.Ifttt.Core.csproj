@@ -6,6 +6,13 @@
         <Nullable>enable</Nullable>
         <OutputType>Library</OutputType>
         <IsPackable>true</IsPackable>
+        <Version>0.1.0</Version>
+        <Title>IFTTT.NET Core package</Title>
+        <Authors>Pierre Cavaroc</Authors>
+        <PackageTags>ifttt</PackageTags>
+        <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+        <Copyright>Copyright (c) Pierre Cavaroc 2024</Copyright>
+        <PackageProjectUrl>https://github.com/Invvard/InvvardDev.IFTTT.NET</PackageProjectUrl>
     </PropertyGroup>
 
     <ItemGroup>
