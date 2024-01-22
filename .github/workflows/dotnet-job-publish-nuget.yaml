@@ -19,7 +19,7 @@ jobs:
         uses: actions/checkout@v3
         
       - name: Pack
-        run: dotnet pack ./src/**/*.csproj --configuration Release --output ${{ env.package_path }}
+        run: dotnet pack --configuration Release --output ${{ env.package_path }}
 
       - name: Upload packages
         uses: actions/upload-artifact@v2
