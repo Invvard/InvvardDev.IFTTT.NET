@@ -11,22 +11,25 @@ jobs:
   publish-nuget:
     name: Publish NuGet Package
     runs-on: ubuntu-latest
+    env:
+      package_path: nupkgs
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
         
       - name: Pack
-        run: dotnet pack --configuration Release --output nupkg
+        run: dotnet pack ./src/**/*.csproj --configuration Release --output ${{ env.package_path }}
 
       - name: Upload packages
         uses: actions/upload-artifact@v2
         with:
           name: nuget_packages
-          path: nupkg
+          path: ${{ env.package_path }}
+
 
       - name: Publish to NuGet
         if: inputs.push_package
-        run: dotnet nuget push nupkg/*.nupkg --source https://api.nuget.org/v3/index.json
+        run: dotnet nuget push ${{ env.package_path }}/*.nupkg --source https://api.nuget.org/v3/index.json
         env:
           NUGET_API_KEY: ${{ secrets.NUGET_API_KEY_TEST }}
