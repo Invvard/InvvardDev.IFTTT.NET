@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>InvvardDev.Ifttt.Trigger</id>
+    <version>0.1.0</version>
+    <description>Introducing IFTTT.NET, a comprehensive toolkit designed to empower C# developers in crafting IFTTT (If This Then That) integrations. Unleash your creativity as you delve into the logic of IFTTT triggers, queries, and actions, all while liberating yourself from the burdensome boilerplate code. With IFTTT.NET, streamline your development process and elevate your projects to new heights with simplicity and efficiency.</description>
+    <authors>Pierre Cavaroc</authors>
+    <title>IFTTT.NET Trigger package</title>
+    <readme>README.md</readme>
+    <copyright>Copyright (c) Pierre Cavaroc 2024</copyright>
+    <projectUrl>https://github.com/Invvard/InvvardDev.IFTTT.NET</projectUrl>
+    <repository type="git" url="https://github.com/Invvard/InvvardDev.IFTTT.NET"/>
+    <license type="expression">MIT</license>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <tags>ifttt triggers actions queries</tags>
+  </metadata>
+  <files>
+    <file src="../../README.md" target="/" />
+    <file src="../../LICENSE.md" target="/" />
+  </files>
+</package>
