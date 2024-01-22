@@ -16,6 +16,12 @@ jobs:
       - name: Pack
         run: dotnet pack --configuration Release --output nupkg
 
+      - name: Upload packages
+        uses: actions/upload-artifact@v2
+        with:
+          name: nuget_packages
+          path: nupkg
+
       - name: Publish to NuGet
         if: inputs.push_package
         run: dotnet nuget push nupkg/*.nupkg --source https://api.nuget.org/v3/index.json
