@@ -24,4 +24,4 @@ jobs:
         run: dotnet build --no-restore --configuration Pipeline
 
       - name: Test
-        run: dotnet test --no-build --verbosity normal
+        run: dotnet test --no-build --verbosity normal --configuration Pipeline
