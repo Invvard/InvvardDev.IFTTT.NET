@@ -19,7 +19,7 @@ jobs:
         uses: actions/checkout@v3
         
       - name: Pack
-        run: dotnet pack --output ${{ env.package_path }}
+        run: dotnet pack --output ${{ env.package_path }} --configuration Pipeline
 
       - name: Upload packages
         uses: actions/upload-artifact@v2
