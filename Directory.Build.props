@@ -3,5 +3,6 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
+	<NuspecFile>.nuspec</NuspecFile>
   </PropertyGroup>
 </Project>

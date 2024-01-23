@@ -15,7 +15,7 @@
     <tags>ifttt triggers actions queries</tags>
   </metadata>
   <files>
-    <file src="../../README.md" target="/" />
-    <file src="../../LICENSE.md" target="/" />
+    <file src="..\..\README.md" target="\" />
+    <file src="..\..\LICENSE.md" target="\" />
   </files>
 </package>
