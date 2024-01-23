@@ -4,11 +4,8 @@
         <TargetFramework>net8.0</TargetFramework>
         <OutputType>Library</OutputType>
         <IsPackable>true</IsPackable>
-        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         
         <Title>IFTTT.NET Trigger package</Title>
-        
-        <Version>0.1.0</Version>
     </PropertyGroup>
 
     <ItemGroup>

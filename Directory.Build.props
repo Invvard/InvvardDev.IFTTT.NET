@@ -1,19 +1,36 @@
 <Project>
-  <PropertyGroup>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <IsPackable>false</IsPackable>
+    <Target Name="PackDir" BeforeTargets="Build" Condition=" $([System.String]::Copy('$(ProjectDir)').Contains('src')) ">
+        <PropertyGroup>
+            <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 
-    <PackageId>$(AssemblyName)</PackageId>
-    <PackageVersion>$(Version)</PackageVersion>
-    <Authors>Pierre Cavaroc</Authors>
-    <Description>Introducing IFTTT.NET, your C# toolkit for painless IFTTT integrations. Forget the boilerplate code and focus on your Trigger, Query, and Action logic. Simplify your development without the unnecessary fuss.</Description>
-    <Copyright>Copyright (c) Pierre Cavaroc 2024</Copyright>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/Invvard/InvvardDev.IFTTT.NET</PackageProjectUrl>
-    <PackageTags>ifttt triggers actions queries</PackageTags>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
-    <RepositoryUrl>https://github.com/Invvard/InvvardDev.IFTTT.NET.git</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-  </PropertyGroup>
+            <IncludeSymbols>true</IncludeSymbols>
+            <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+            <PackageId>$(AssemblyName)</PackageId>
+            <PackageVersion>$(Version)</PackageVersion>
+            <Authors>Pierre Cavaroc</Authors>
+            <Description>Introducing IFTTT.NET, your C# toolkit for painless IFTTT integrations. Forget the boilerplate code and focus on your Trigger, Query, and Action logic. Simplify your development without the unnecessary fuss.</Description>
+            <Copyright>Copyright (c) Pierre Cavaroc 2024</Copyright>
+            <PackageLicenseExpression>MIT</PackageLicenseExpression>
+            <PackageProjectUrl>https://github.com/Invvard/InvvardDev.IFTTT.NET</PackageProjectUrl>
+            <PackageTags>ifttt triggers actions queries</PackageTags>
+            <PackageReadmeFile>README.md</PackageReadmeFile>
+            <RepositoryUrl>https://github.com/Invvard/InvvardDev.IFTTT.NET.git</RepositoryUrl>
+            <RepositoryType>git</RepositoryType>
+        </PropertyGroup>
+    </Target>
+
+    <PropertyGroup Condition=" $(Configuration) == 'Debug' ">
+        <VersionSuffix>dev</VersionSuffix>
+        <SymbolPackageOutputPath>$(SolutionDir)packages</SymbolPackageOutputPath>
+        <PackageOutputPath>$(SolutionDir)packages</PackageOutputPath>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <VersionPrefix>0.1.0</VersionPrefix>
+        
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+
+        <IsPackable>false</IsPackable>
+    </PropertyGroup>
 </Project>
