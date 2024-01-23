@@ -3,6 +3,17 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
-	<NuspecFile>.nuspec</NuspecFile>
+
+    <PackageId>$(AssemblyName)</PackageId>
+    <PackageVersion>$(Version)</PackageVersion>
+    <Authors>Pierre Cavaroc</Authors>
+    <Description>Introducing IFTTT.NET, your C# toolkit for painless IFTTT integrations. Forget the boilerplate code and focus on your Trigger, Query, and Action logic. Simplify your development without the unnecessary fuss.</Description>
+    <Copyright>Copyright (c) Pierre Cavaroc 2024</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/Invvard/InvvardDev.IFTTT.NET</PackageProjectUrl>
+    <PackageTags>ifttt triggers actions queries</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/Invvard/InvvardDev.IFTTT.NET.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 </Project>
