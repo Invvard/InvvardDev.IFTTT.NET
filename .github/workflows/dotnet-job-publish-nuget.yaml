@@ -12,14 +12,26 @@ jobs:
     name: Publish NuGet Package
     runs-on: ubuntu-latest
     env:
+      buildConfiguration: Pipeline
       package_path: nupkgs
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
         
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Restore dependencies
+        run: dotnet restore --configfile NuGetDefaults.config
+
+      - name: Build
+        run: dotnet build --no-restore --configuration ${{ env.buildConfiguration }}
+        
       - name: Pack
-        run: dotnet pack --output ${{ env.package_path }} --configuration Pipeline --no-restore
+        run: dotnet pack --output ${{ env.package_path }} --configuration Pipeline --no-restore --no-build
 
       - name: Upload packages
         uses: actions/upload-artifact@v2
