@@ -20,7 +20,7 @@ jobs:
 
     steps:
       - name: Pack
-        run: dotnet pack InvvardDev.Ifttt.sln --output ${{ env.package_path }} --configuration ${{ inputs.buildConfiguration }}
+        run: dotnet pack $GITHUB_WORKSPACE/InvvardDev.Ifttt.sln --output ${{ env.package_path }} --configuration ${{ inputs.buildConfiguration }}
 
       - name: Publish to NuGet
         if: inputs.push_package
