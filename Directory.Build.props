@@ -26,14 +26,10 @@
         <VersionSuffix>dev</VersionSuffix>
     </PropertyGroup>
 
-    <Choose>
-        <When Condition=" '$(Configuration)' != 'Pipeline' ">
-            <PropertyGroup>
-                <SymbolPackageOutputPath>$(SolutionDir)packages</SymbolPackageOutputPath>
-                <PackageOutputPath>$(SolutionDir)packages</PackageOutputPath>
-            </PropertyGroup>
-        </When>
-    </Choose>
+    <PropertyGroup Condition=" '$(Configuration)' != 'Pipeline' ">
+        <SymbolPackageOutputPath>$(SolutionDir)packages</SymbolPackageOutputPath>
+        <PackageOutputPath>$(SolutionDir)packages</PackageOutputPath>
+    </PropertyGroup>
 
     <PropertyGroup>
         <VersionPrefix>0.1.0</VersionPrefix>
