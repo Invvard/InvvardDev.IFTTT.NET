@@ -19,6 +19,9 @@ jobs:
       package_path: nupkgs
 
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        
       - name: Pack
         run: dotnet pack $GITHUB_WORKSPACE/InvvardDev.Ifttt.sln --output ${{ env.package_path }} --configuration ${{ inputs.buildConfiguration }}
 
