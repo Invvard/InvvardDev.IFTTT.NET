@@ -24,9 +24,6 @@
 
     <PropertyGroup Condition=" $(Configuration) == 'Debug' ">
         <VersionSuffix>dev</VersionSuffix>
-    </PropertyGroup>
-
-    <PropertyGroup Condition=" '$(Configuration)' != 'Pipeline' ">
         <SymbolPackageOutputPath>$(SolutionDir)packages</SymbolPackageOutputPath>
         <PackageOutputPath>$(SolutionDir)packages</PackageOutputPath>
     </PropertyGroup>
@@ -43,8 +40,5 @@
         <Nullable>enable</Nullable>
 
         <IsPackable>false</IsPackable>
-        
-        <Configurations>Debug;Release;Pipeline</Configurations>
-        <Platforms>AnyCPU</Platforms>
     </PropertyGroup>
 </Project>

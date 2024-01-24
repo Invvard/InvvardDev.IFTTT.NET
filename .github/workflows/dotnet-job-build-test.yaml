@@ -7,7 +7,7 @@ on:
       buildConfiguration:
         description: 'Build Configuration'
         type: string
-        default: 'Pipeline'
+        default: 'Release'
 
 jobs:
   build-project:

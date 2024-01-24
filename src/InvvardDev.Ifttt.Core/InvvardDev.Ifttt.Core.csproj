@@ -6,9 +6,6 @@
         <IsPackable>true</IsPackable>
 
         <Title>IFTTT.NET Core package</Title>
-    </PropertyGroup>
-
-    <PropertyGroup Condition=" '$(Configuration)' != 'Pipeline' ">
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     </PropertyGroup>
 
