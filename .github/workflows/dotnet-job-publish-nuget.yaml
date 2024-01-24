@@ -25,6 +25,12 @@ jobs:
       - name: Pack
         run: dotnet pack $GITHUB_WORKSPACE/InvvardDev.Ifttt.sln --output ${{ env.package_path }} --configuration ${{ inputs.buildConfiguration }}  -p:GeneratePackageOnBuild=false
 
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: nuget-packages
+          path: ${{ env.package_path }}
+
       - name: Publish to NuGet
         if: inputs.push_package
         run: dotnet nuget push ${{ env.package_path }}/*.nupkg --source https://api.nuget.org/v3/index.json
