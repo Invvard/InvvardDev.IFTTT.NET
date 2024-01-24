@@ -1,4 +1,5 @@
 name: Workflow In Progress
+run-name: Workflow In Progress
 
 on:
   workflow_dispatch:

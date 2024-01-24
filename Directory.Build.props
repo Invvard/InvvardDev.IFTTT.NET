@@ -1,8 +1,6 @@
 <Project>
     <Target Name="PackDir" BeforeTargets="Build" Condition=" $([System.String]::Copy('$(ProjectDir)').Contains('src')) ">
         <PropertyGroup>
-            <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-
             <IncludeSymbols>true</IncludeSymbols>
             <SymbolPackageFormat>snupkg</SymbolPackageFormat>
             <PackageId>$(AssemblyName)</PackageId>
@@ -16,6 +14,12 @@
             <RepositoryUrl>https://github.com/Invvard/InvvardDev.IFTTT.NET.git</RepositoryUrl>
             <RepositoryType>git</RepositoryType>
         </PropertyGroup>
+        
+        <ItemGroup>
+            <None Include="..\..\README.md" Pack="true" PackagePath="\" />
+            <None Include="..\..\LICENSE.md" Pack="true" PackagePath="\" />
+        </ItemGroup>
+
     </Target>
 
     <PropertyGroup Condition=" $(Configuration) == 'Debug' ">
@@ -23,7 +27,7 @@
     </PropertyGroup>
 
     <Choose>
-        <When Condition=" '$(Configuration)|$(Platform)' != 'Pipeline|AnyCPU' ">
+        <When Condition=" '$(Configuration)' != 'Pipeline' ">
             <PropertyGroup>
                 <SymbolPackageOutputPath>$(SolutionDir)packages</SymbolPackageOutputPath>
                 <PackageOutputPath>$(SolutionDir)packages</PackageOutputPath>

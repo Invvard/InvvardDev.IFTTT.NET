@@ -1,21 +1,25 @@
 name: .NET Build & Test
+run-name: Build & Test
 
 on:
   workflow_call:
+    inputs:
+      buildConfiguration:
+        description: 'Build Configuration'
+        type: string
+        default: 'Pipeline'
 
 jobs:
   build-project:
     name: Build Project & Test
     runs-on: ubuntu-latest
-    env:
-      buildConfiguration: Pipeline
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
         
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v3
+      - name: Setup .NET Core SDK
+        uses: actions/setup-dotnet@v4.0.0
         with:
           dotnet-version: 8.0.x
 
@@ -23,7 +27,7 @@ jobs:
         run: dotnet restore --configfile NuGetDefaults.config
 
       - name: Build
-        run: dotnet build --no-restore --configuration ${{ env.buildConfiguration }}
+        run: dotnet build --no-restore --configuration ${{ inputs.buildConfiguration }}
 
       - name: Test
-        run: dotnet test --no-build --verbosity normal --configuration  ${{ env.buildConfiguration }}
+        run: dotnet test --no-build --verbosity normal --configuration  ${{ inputs.buildConfiguration }}
