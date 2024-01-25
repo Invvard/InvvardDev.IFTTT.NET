@@ -19,33 +19,24 @@ Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-		Pipeline|Any CPU = Pipeline|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{2A300429-5FD8-40E3-BECD-6CDBE16F2CD6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2A300429-5FD8-40E3-BECD-6CDBE16F2CD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2A300429-5FD8-40E3-BECD-6CDBE16F2CD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2A300429-5FD8-40E3-BECD-6CDBE16F2CD6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2A300429-5FD8-40E3-BECD-6CDBE16F2CD6}.Pipeline|Any CPU.ActiveCfg = Pipeline|Any CPU
-		{2A300429-5FD8-40E3-BECD-6CDBE16F2CD6}.Pipeline|Any CPU.Build.0 = Pipeline|Any CPU
 		{7A94E577-6B7C-4AC5-A602-01FC41ED4D84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7A94E577-6B7C-4AC5-A602-01FC41ED4D84}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7A94E577-6B7C-4AC5-A602-01FC41ED4D84}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7A94E577-6B7C-4AC5-A602-01FC41ED4D84}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7A94E577-6B7C-4AC5-A602-01FC41ED4D84}.Pipeline|Any CPU.ActiveCfg = Pipeline|Any CPU
-		{7A94E577-6B7C-4AC5-A602-01FC41ED4D84}.Pipeline|Any CPU.Build.0 = Pipeline|Any CPU
 		{15680BDC-86C0-4810-87A4-02200D01CFC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{15680BDC-86C0-4810-87A4-02200D01CFC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{15680BDC-86C0-4810-87A4-02200D01CFC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{15680BDC-86C0-4810-87A4-02200D01CFC4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{15680BDC-86C0-4810-87A4-02200D01CFC4}.Pipeline|Any CPU.ActiveCfg = Pipeline|Any CPU
-		{15680BDC-86C0-4810-87A4-02200D01CFC4}.Pipeline|Any CPU.Build.0 = Pipeline|Any CPU
 		{F94D7981-BB31-467B-AA87-8924964CA186}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F94D7981-BB31-467B-AA87-8924964CA186}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F94D7981-BB31-467B-AA87-8924964CA186}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F94D7981-BB31-467B-AA87-8924964CA186}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F94D7981-BB31-467B-AA87-8924964CA186}.Pipeline|Any CPU.ActiveCfg = Pipeline|Any CPU
-		{F94D7981-BB31-467B-AA87-8924964CA186}.Pipeline|Any CPU.Build.0 = Pipeline|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
