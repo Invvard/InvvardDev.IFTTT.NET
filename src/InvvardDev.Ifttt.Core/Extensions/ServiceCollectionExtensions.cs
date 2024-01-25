@@ -12,6 +12,15 @@ public static class ServiceCollectionExtensions
                 .BindConfiguration(IftttOptions.DefaultSectionName)
                 .ValidateDataAnnotations();
 
+#if NET6_0 || NET7_0
+        services.AddControllers()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.PropertyNamingPolicy = SnakeCaseNamingPolicy.SnakeCaseLower;
+                    options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+                });
+#endif
+
         return services;
     }
 

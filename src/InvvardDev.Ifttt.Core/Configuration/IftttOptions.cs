@@ -7,7 +7,11 @@ public class IftttOptions
     public const string DefaultSectionName = nameof(IftttOptions);
 
     [Required]
+#if NET7_0_OR_GREATER
     public required string ServiceKey { get; init; } = string.Empty;
+#else
+    public string ServiceKey { get; init; } = string.Empty;
+#endif
 
     public bool BypassServiceKey { get; init; } = false;
 
