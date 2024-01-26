@@ -1,0 +1,51 @@
+<Project>
+    
+    <PropertyGroup>
+        <TargetFrameworks>net8.0;net6.0;net7.0</TargetFrameworks>
+        <LangVersion>12</LangVersion>
+
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+
+        <IsPackable>true</IsPackable>
+        <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    </PropertyGroup>
+
+    <PropertyGroup Label="Nuget Specs">
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <PackageId>$(AssemblyName)</PackageId>
+        <PackageVersion>$(Version)</PackageVersion>
+        <Authors>Pierre Cavaroc</Authors>
+        <Copyright>Copyright (c) Pierre Cavaroc 2024</Copyright>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageProjectUrl>https://github.com/Invvard/InvvardDev.IFTTT.NET</PackageProjectUrl>
+        <PackageTags>ifttt triggers actions queries</PackageTags>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <RepositoryUrl>https://github.com/Invvard/InvvardDev.IFTTT.NET.git</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <VersionPrefix>0.1.0</VersionPrefix>
+        <Description>
+            Introducing IFTTT.NET, your C# toolkit for painless IFTTT integrations.
+            Forget the boilerplate code and focus on your Trigger, Query, and Action logic.
+            Simplify your development without the unnecessary fuss.
+        </Description>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" $(Configuration) == 'Debug' ">
+        <VersionSuffix>dev</VersionSuffix>
+        <SymbolPackageOutputPath>$(SolutionDir)packages</SymbolPackageOutputPath>
+        <PackageOutputPath>$(SolutionDir)packages</PackageOutputPath>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="..\..\README.md" Pack="true" PackagePath="\"/>
+        <None Include="..\..\LICENSE.md" Pack="true" PackagePath="\"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+            <_Parameter1>$(AssemblyName).Tests</_Parameter1>
+        </AssemblyAttribute>
+    </ItemGroup>
+</Project>

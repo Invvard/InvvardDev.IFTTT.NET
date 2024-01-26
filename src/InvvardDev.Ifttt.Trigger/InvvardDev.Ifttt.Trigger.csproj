@@ -1,14 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
-        <TargetFrameworks>net6.0;net7.0;net8.0;net6.0-windows;net7.0-windows;net8.0-windows</TargetFrameworks>
-        <LangVersion>12</LangVersion>
-        
         <OutputType>Library</OutputType>
-        <IsPackable>true</IsPackable>
         
         <Title>IFTTT.NET Trigger package</Title>
-        <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     </PropertyGroup>
 
     <ItemGroup>
@@ -18,12 +13,5 @@
 
     <ItemGroup>
         <ProjectReference Include="..\InvvardDev.Ifttt.Core\InvvardDev.Ifttt.Core.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
-            <_Parameter1>$(AssemblyName).Tests</_Parameter1>
-        </AssemblyAttribute>
-    </ItemGroup>
-    
+    </ItemGroup>    
 </Project>
