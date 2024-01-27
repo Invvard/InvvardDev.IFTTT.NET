@@ -14,5 +14,5 @@ jobs:
     publish_nuget:
       uses: ./.github/workflows/dotnet-job-publish-nuget.yaml
       with:
-        push_package: false
+        push_package: true
         
