@@ -27,7 +27,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\sample\InvvardDev.Ifttt.Trigger.UpdatedNuget\InvvardDev.Ifttt.Trigger.UpdatedNuget.csproj" />
       <ProjectReference Include="..\..\src\InvvardDev.Ifttt.Trigger\InvvardDev.Ifttt.Trigger.csproj" />
     </ItemGroup>
 
