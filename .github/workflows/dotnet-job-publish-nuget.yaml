@@ -33,6 +33,6 @@ jobs:
 
       - name: Publish to NuGet
         if: inputs.push_package
-        run: dotnet nuget push ${{ env.package_path }}/*.* --source https://api.nuget.org/v3/index.json
+        run: dotnet nuget push ${{ env.package_path }}/*.* --source https://api.nuget.org/v3/index.json --skip-duplicate --api-key $NUGET_API_KEY
         env:
           NUGET_API_KEY: ${{ secrets.NUGET_API_KEY_TEST }}
