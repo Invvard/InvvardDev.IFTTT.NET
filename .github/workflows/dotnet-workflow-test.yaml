@@ -15,4 +15,6 @@ jobs:
       uses: ./.github/workflows/dotnet-job-publish-nuget.yaml
       with:
         push_package: true
+      secrets:
+        nuget_api_key: ${{ secrets.NUGET_API_KEY_TEST }}
         

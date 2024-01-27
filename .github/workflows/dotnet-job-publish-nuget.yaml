@@ -10,6 +10,10 @@ on:
         description: 'Build Configuration'
         type: string
         default: 'Release'
+    secrets:
+      nuget_api_key:
+        description: 'NuGet API Key'
+        required: true
     
 jobs:
   publish-nuget:
@@ -33,6 +37,6 @@ jobs:
 
       - name: Publish to NuGet
         if: inputs.push_package
-        run: dotnet nuget push ${{ env.package_path }}/*.* --source https://api.nuget.org/v3/index.json --skip-duplicate --api-key $NUGET_API_KEY
+        run: dotnet nuget push ${{ env.package_path }}/*.* --source https://api.nuget.org/v3/index.json --skip-duplicate --api-key $nuget_api_key
         env:
-          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY_TEST }}
+          nuget_api_key: ${{ secrets.nuget_api_key }}
