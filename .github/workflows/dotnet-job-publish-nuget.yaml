@@ -1,0 +1,46 @@
+name: NuGet Publish
+
+on:
+  workflow_call:
+    inputs:
+      push_package:
+        type: boolean
+        default: false
+      build_configuration:
+        description: 'Build Configuration'
+        type: string
+        default: 'Release'
+      version_suffix:
+        description: 'Version Suffix'
+        type: string
+        default: ''
+    secrets:
+      nuget_api_key:
+        description: 'NuGet API Key'
+        required: true
+    
+jobs:
+  publish-nuget:
+    name: Publish NuGet Package
+    runs-on: ubuntu-latest
+    env:
+      package_path: nupkgs
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        
+      - name: Pack
+        run: dotnet pack $GITHUB_WORKSPACE/InvvardDev.Ifttt.sln --output ${{ env.package_path }} --configuration ${{ inputs.build_configuration }}  -p:GeneratePackageOnBuild=false
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: nuget-packages
+          path: ${{ env.package_path }}
+
+      - name: Publish to NuGet
+        if: inputs.push_package
+        run: dotnet nuget push ${{ env.package_path }}/*.* --source https://api.nuget.org/v3/index.json --skip-duplicate --api-key $nuget_api_key
+        env:
+          nuget_api_key: ${{ secrets.nuget_api_key }}

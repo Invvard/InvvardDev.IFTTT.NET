@@ -1,0 +1,33 @@
+name: Build & Test
+run-name: Build & Test
+
+on:
+  workflow_call:
+    inputs:
+      buildConfiguration:
+        description: 'Build Configuration'
+        type: string
+        default: 'Release'
+
+jobs:
+  build-project:
+    name: Build Project & Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        
+      - name: Setup .NET Core SDK
+        uses: actions/setup-dotnet@v4.0.0
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --no-restore --configuration ${{ inputs.buildConfiguration }}
+
+      - name: Test
+        run: dotnet test --no-build --verbosity normal --configuration  ${{ inputs.buildConfiguration }}

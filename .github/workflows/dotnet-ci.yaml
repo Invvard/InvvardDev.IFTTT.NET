@@ -1,0 +1,12 @@
+name: .NET CI
+
+on:
+  push:
+    branches: [ "feature/*" ]
+  pull_request:
+    branches: [ "main" ]
+    types: [opened, synchronize, reopened, closed]
+
+jobs:
+  build_and_test:
+    uses: ./.github/workflows/dotnet-job-build-test.yaml
