@@ -4,12 +4,16 @@ on:
   workflow_call:
     inputs:
       push_package:
-        default: false
         type: boolean
-      buildConfiguration:
+        default: false
+      build_configuration:
         description: 'Build Configuration'
         type: string
         default: 'Release'
+      version_suffix:
+        description: 'Version Suffix'
+        type: string
+        default: ''
     secrets:
       nuget_api_key:
         description: 'NuGet API Key'
@@ -27,7 +31,7 @@ jobs:
         uses: actions/checkout@v4
         
       - name: Pack
-        run: dotnet pack $GITHUB_WORKSPACE/InvvardDev.Ifttt.sln --output ${{ env.package_path }} --configuration ${{ inputs.buildConfiguration }}  -p:GeneratePackageOnBuild=false
+        run: dotnet pack $GITHUB_WORKSPACE/InvvardDev.Ifttt.sln --output ${{ env.package_path }} --configuration ${{ inputs.build_configuration }}  -p:GeneratePackageOnBuild=false
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4

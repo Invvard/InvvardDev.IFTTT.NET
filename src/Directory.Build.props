@@ -15,7 +15,10 @@
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
         <PackageId>$(AssemblyName)</PackageId>
+        
+        <VersionPrefix>0.1.0</VersionPrefix>
         <PackageVersion>$(Version)</PackageVersion>
+        
         <Authors>Pierre Cavaroc</Authors>
         <Copyright>Copyright (c) Pierre Cavaroc 2024</Copyright>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -24,7 +27,6 @@
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <RepositoryUrl>https://github.com/Invvard/InvvardDev.IFTTT.NET.git</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
-        <VersionPrefix>0.1.0</VersionPrefix>
         <Description>
             Introducing IFTTT.NET, your C# toolkit for painless IFTTT integrations.
             Forget the boilerplate code and focus on your Trigger, Query, and Action logic.

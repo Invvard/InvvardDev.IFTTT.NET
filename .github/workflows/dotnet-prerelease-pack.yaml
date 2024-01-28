@@ -1,0 +1,52 @@
+name: Create pre-release NuGet package
+run-name: Create pre-release NuGet package
+
+on:
+  workflow_dispatch:
+    inputs:
+      push_package:
+        description: 'Push package to NuGet.org'
+        type: boolean
+        default: false
+      version_suffix:
+        description: 'Version suffix'
+        type: choice
+        default: 'alpha'
+        options:
+          - 'alpha'
+          - 'beta'
+          - 'rc'
+      version_custom:
+        description: 'Custom version suffix or version suffix index'
+        type: string
+        required: true
+        default: '1'
+      
+  push:
+    branches: [ "wip/*" ]
+
+jobs:
+  setup_env:
+    name: Setup environment
+    runs-on: ubuntu-latest
+
+    outputs:
+      version_suffix: ${{ steps.set_version_suffix.outputs.version_suffix }}
+      
+    steps:
+      - name: sets env var version_suffix
+        id: set_version_suffix
+        run: echo "version_suffix=${{ format('{0}{1}', github.event.inputs.version_suffix, github.event.inputs.version_custom) }}" >> "$GITHUB_OUTPUT"
+
+  build_and_test:
+    uses: ./.github/workflows/dotnet-job-build-test.yaml
+
+  publish_nuget:
+    needs: [build_and_test, setup_env]
+    uses: ./.github/workflows/dotnet-job-publish-nuget.yaml
+    with:
+      push_package: ${{ github.event.inputs.push_package }}
+      version_suffix: ${{ needs.setup_env.outputs.version_suffix }}
+    secrets:
+      nuget_api_key: ${{ secrets.NUGET_API_KEY_TEST }}
+        

@@ -5,11 +5,9 @@ on:
     branches: [ "release/*" ]
 
 jobs:
-    build_and_test:
-      uses: ./.github/workflows/dotnet-job-build-test.yaml
-
-    publish_nuget:
-      uses: ./.github/workflows/dotnet-job-publish-nuget.yaml
-      with:
-          nuget_api_key: ${{ secrets.NUGET_API_KEY }}
-          push_package: true
+  publish_nuget:
+    uses: ./.github/workflows/dotnet-job-publish-nuget.yaml
+    with:
+      push_package: true
+    secrets:
+      nuget_api_key: ${{ secrets.NUGET_API_KEY_TEST }}
