@@ -21,10 +21,7 @@ on:
         type: string
         required: true
         default: '1'
-      
-  push:
-    branches: [ "wip/*" ]
-
+   
 jobs:
   setup_env:
     name: Setup environment
@@ -35,6 +32,7 @@ jobs:
       
     steps:
       - name: sets env var version_suffix
+        if: github.event_name == 'workflow_dispatch'
         id: set_version_suffix
         run: echo "version_suffix=${{ format('{0}{1}', github.event.inputs.version_suffix, github.event.inputs.version_custom) }}" >> "$GITHUB_OUTPUT"
 
