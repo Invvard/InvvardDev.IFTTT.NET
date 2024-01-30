@@ -1,12 +1,18 @@
 name: .NET CI
+run-name: Continuous Integration
 
 on:
   push:
     branches: [ "feature/*" ]
-  pull_request:
+  pull_request_target:
     branches: [ "main" ]
-    types: [opened, synchronize, reopened, closed]
+    types: [closed]
+    
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.actor_id }}
+  cancel-in-progress: true
 
 jobs:
   build_and_test:
-    uses: ./.github/workflows/dotnet-job-build-test.yaml
+    name: Build and Test
+    uses: ./.github/workflows/wf-build-test.yaml

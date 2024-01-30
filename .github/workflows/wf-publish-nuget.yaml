@@ -1,4 +1,5 @@
-name: NuGet Publish
+name: wf_nuget_publish
+run-name: Publish NuGet Package
 
 on:
   workflow_call:
@@ -30,8 +31,11 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
         
+      - name: Create packages directory
+        run: mkdir -p packages
+      
       - name: Pack
-        run: dotnet pack $GITHUB_WORKSPACE/InvvardDev.Ifttt.sln --output ${{ env.package_path }} --configuration ${{ inputs.build_configuration }}  -p:GeneratePackageOnBuild=false
+        run: dotnet pack $GITHUB_WORKSPACE/InvvardDev.Ifttt.sln --output ${{ env.package_path }} --configuration ${{ inputs.build_configuration }}  -p:GeneratePackageOnBuild=falsedot
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
