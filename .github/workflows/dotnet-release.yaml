@@ -5,6 +5,10 @@ on:
   push:
     branches: [ "release/*" ]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+    
 jobs:
   publish_nuget:
     uses: ./.github/workflows/wf-publish-nuget.yaml
