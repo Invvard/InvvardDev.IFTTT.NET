@@ -1,4 +1,5 @@
 name: .NET CI
+run-name: Continuous Integration
 
 on:
   push:
@@ -9,4 +10,5 @@ on:
 
 jobs:
   build_and_test:
-    uses: ./.github/workflows/dotnet-job-build-test.yaml
+    name: Build and Test
+    uses: ./.github/workflows/wf-build-test.yaml

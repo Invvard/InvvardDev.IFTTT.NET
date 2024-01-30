@@ -1,5 +1,5 @@
-name: Create pre-release NuGet package
-run-name: Create pre-release NuGet package
+name: .Nuget Pre-release
+run-name: Create pre-release NuGet packages
 
 on:
   workflow_dispatch:
@@ -37,11 +37,13 @@ jobs:
         run: echo "version_suffix=${{ format('{0}{1}', github.event.inputs.version_suffix, github.event.inputs.version_custom) }}" >> "$GITHUB_OUTPUT"
 
   build_and_test:
-    uses: ./.github/workflows/dotnet-job-build-test.yaml
+    name: Build and test
+    uses: ./.github/workflows/wf-build-test.yaml
 
   publish_nuget:
     needs: [build_and_test, setup_env]
-    uses: ./.github/workflows/dotnet-job-publish-nuget.yaml
+    name: Publish NuGet packages
+    uses: ./.github/workflows/wf-publish-nuget.yaml
     with:
       push_package: ${{ github.event.inputs.push_package }}
       version_suffix: ${{ needs.setup_env.outputs.version_suffix }}

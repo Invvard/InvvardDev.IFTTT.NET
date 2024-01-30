@@ -1,4 +1,5 @@
 name: .NET Release
+run-name: Release ${{ github.ref_name }}
 
 on:
   push:
@@ -6,7 +7,7 @@ on:
 
 jobs:
   publish_nuget:
-    uses: ./.github/workflows/dotnet-job-publish-nuget.yaml
+    uses: ./.github/workflows/wf-publish-nuget.yaml
     with:
       push_package: true
     secrets:

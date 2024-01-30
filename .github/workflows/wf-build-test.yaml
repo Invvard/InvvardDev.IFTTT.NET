@@ -1,4 +1,4 @@
-name: Build & Test
+name: wf_build_and_test
 run-name: Build & Test
 
 on:
@@ -24,9 +24,7 @@ jobs:
           dotnet-version: 8.0.x
 
       - name: Create packages directory
-        run: |
-          mkdir -p packages
-          ls -la
+        run: mkdir -p packages
         
       - name: Restore dependencies
         run: dotnet restore
