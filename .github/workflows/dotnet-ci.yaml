@@ -4,9 +4,9 @@ run-name: Continuous Integration
 on:
   push:
     branches: [ "feature/*" ]
-  pull_request:
+  pull_request_target:
     branches: [ "main" ]
-    types: [synchronize, reopened, closed]
+    types: [closed]
     
 concurrency:
   group: ci-${{ github.workflow }}-${{ github.actor_id }}
