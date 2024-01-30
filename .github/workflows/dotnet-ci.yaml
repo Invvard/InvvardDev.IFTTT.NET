@@ -7,20 +7,12 @@ on:
   pull_request:
     branches: [ "main" ]
     types: [synchronize, reopened, closed]
-
+    
 concurrency:
-  group: ${{ github.actor_id }}-${{ github.workflow }}
+  group: ci-${{ github.workflow }}-${{ github.actor_id }}
   cancel-in-progress: true
 
 jobs:
-  display:
-    name: Build Project & Test
-    runs-on: ubuntu-latest
-    
-    steps:
-      - name: group name
-        run: echo "group name" ${{ github.actor_id }}-${{ github.workflow }}
-
   build_and_test:
     name: Build and Test
     uses: ./.github/workflows/wf-build-test.yaml
