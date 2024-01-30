@@ -9,7 +9,7 @@ on:
     types: [synchronize, reopened, closed]
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.actor_id }}-${{ github.workflow }}
   cancel-in-progress: true
 
 jobs:
@@ -19,7 +19,7 @@ jobs:
     
     steps:
       - name: group name
-        run: echo "group name" ${{ github.workflow }}-${{ github.ref }}
+        run: echo "group name" ${{ github.actor_id }}-${{ github.workflow }}
 
   build_and_test:
     name: Build and Test
