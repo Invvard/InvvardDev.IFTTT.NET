@@ -4,7 +4,6 @@ using InvvardDev.Ifttt.Core.Configuration;
 using InvvardDev.Ifttt.Trigger.Contracts;
 using InvvardDev.Ifttt.Trigger.Hooks;
 using InvvardDev.Ifttt.Trigger.Reflection;
-using InvvardDev.Ifttt.Trigger.Repositories;
 using Microsoft.Extensions.Options;
 
 namespace InvvardDev.Ifttt.Trigger;
@@ -26,7 +25,6 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IAssemblyAccessor, AssemblyAccessor>();
         services.AddTransient<ITriggerMapper, TriggerMapper>();
         services.AddTransient<ITriggerHook, RealTimeNotificationWebHook>();
-        services.AddSingleton<ITriggerRepository, TriggerRepositoryService>();
         services.AddKeyedTransient<IAttributeLookup, TriggerAttributeLookup>(nameof(TriggerAttributeLookup));
         services.AddKeyedTransient<IAttributeLookup, TriggerFieldsAttributeLookup>(nameof(TriggerFieldsAttributeLookup));
 
