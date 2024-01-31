@@ -1,7 +1,7 @@
 using FluentAssertions;
+using InvvardDev.Ifttt.TestFactories.Triggers;
 using InvvardDev.Ifttt.Trigger.Contracts;
 using InvvardDev.Ifttt.Trigger.Reflection;
-using InvvardDev.Ifttt.Trigger.Tests.Factories;
 using Moq;
 
 namespace InvvardDev.Ifttt.Trigger.Tests.Reflection;

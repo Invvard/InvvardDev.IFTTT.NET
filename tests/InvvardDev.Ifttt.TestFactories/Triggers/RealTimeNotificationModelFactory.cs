@@ -1,7 +1,7 @@
 using Bogus;
 using InvvardDev.Ifttt.Trigger.Models;
 
-namespace InvvardDev.Ifttt.Trigger.Tests.Factories;
+namespace InvvardDev.Ifttt.TestFactories.Triggers;
 
 public class RealTimeNotificationModelFactory : Faker<RealTimeNotificationModel>
 {
@@ -12,7 +12,7 @@ public class RealTimeNotificationModelFactory : Faker<RealTimeNotificationModel>
 
     private const string UserIdRuleSet = "userId";
 
-    public RealTimeNotificationModelFactory()
+    private RealTimeNotificationModelFactory()
     {
         base.RuleSet(TriggerIdentityRuleSet,
                      rule => rule.CustomInstantiator(f => RealTimeNotificationModel.CreateTriggerIdentity(f.Random.AlphaNumeric(10))))

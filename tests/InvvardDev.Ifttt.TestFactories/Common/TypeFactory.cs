@@ -1,7 +1,7 @@
 using System.Reflection;
 using System.Reflection.Emit;
 
-namespace InvvardDev.Ifttt.Trigger.Tests.Factories;
+namespace InvvardDev.Ifttt.TestFactories.Common;
 
 internal class TypeFactory
 {
