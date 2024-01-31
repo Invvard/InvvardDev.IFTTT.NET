@@ -1,7 +1,9 @@
 ﻿using FluentAssertions;
+using InvvardDev.Ifttt.Core.Contracts;
 using InvvardDev.Ifttt.Core.Services;
 using InvvardDev.Ifttt.TestFactories.Triggers;
 using InvvardDev.Ifttt.Trigger.Contracts;
+using Moq;
 
 namespace InvvardDev.Ifttt.Core.Tests.Services;
 
@@ -15,20 +17,20 @@ public class ProcessorRepositoryTests
         var expectedTriggerType = TriggerClassFactory.MatchingClass(typeName: "Trigger1", triggerSlug: expectedTriggerSlug);
 
         var sut = new ProcessorRepository();
-        sut.GetProcessorInstance<ITrigger>(expectedTriggerSlug).Should().BeNull();
+        sut.GetInstance<ITrigger>(expectedTriggerSlug).Should().BeNull();
 
         // Act
-        sut.UpsertProcessorType(expectedTriggerSlug, expectedTriggerType);
+        sut.UpsertType(expectedTriggerSlug, expectedTriggerType);
 
         // Assert
-        sut.GetProcessorInstance<ITrigger>(expectedTriggerSlug)
+        sut.GetInstance<ITrigger>(expectedTriggerSlug)
            .Should()
            .NotBeNull()
            .And
            .BeOfType(expectedTriggerType);
     }
 
-    [Fact(DisplayName = "UpsertProcessorType, when a Trigger is already registered, should update TriggerType")]
+    [Fact(DisplayName = "UpsertType, when a Trigger is already registered, should update TriggerType")]
     public void UpsertProcessorType_WhenTriggerAlreadyRegistered_ShouldUpdateTriggerType()
     {
         // Arrange
@@ -37,17 +39,17 @@ public class ProcessorRepositoryTests
         var expectedTriggerType = TriggerClassFactory.MatchingClass(triggerSlug: expectedTriggerSlug);
 
         var sut = new ProcessorRepository();
-        sut.UpsertProcessorType(expectedTriggerSlug, anyType);
-        sut.GetProcessorInstance<ITrigger>(expectedTriggerSlug).Should().BeOfType(anyType);
+        sut.UpsertType(expectedTriggerSlug, anyType);
+        sut.GetInstance<ITrigger>(expectedTriggerSlug).Should().BeOfType(anyType);
 
         // Act
-        sut.UpsertProcessorType(expectedTriggerSlug, expectedTriggerType);
+        sut.UpsertType(expectedTriggerSlug, expectedTriggerType);
 
         // Assert
-        sut.GetProcessorInstance<ITrigger>(expectedTriggerSlug).Should().BeOfType(expectedTriggerType);
+        sut.GetInstance<ITrigger>(expectedTriggerSlug).Should().BeOfType(expectedTriggerType);
     }
 
-    [Fact(DisplayName = "UpsertDataFieldsType, when TriggerFields has no matching trigger, then it should throw")]
+    [Fact(DisplayName = "UpsertType, when TriggerFields has no matching trigger, then it should throw")]
     public void UpsertDataFieldsType_WhenTriggerFieldsHasNoMatchingTrigger_ShouldThrow()
     {
         // Arrange
@@ -58,10 +60,10 @@ public class ProcessorRepositoryTests
         var expectedTriggerFieldsType = TriggerFieldsClassFactory.MatchingTriggerFieldsClass(triggerSlug: unknownTriggerSlug);
 
         var sut = new ProcessorRepository();
-        sut.UpsertProcessorType(triggerSlug, triggerType);
+        sut.UpsertType(triggerSlug, triggerType);
 
         // Act
-        var act = () => sut.UpsertDataFieldsType(unknownTriggerSlug, expectedTriggerFieldsType);
+        var act = () => sut.UpsertType(unknownTriggerSlug, expectedTriggerFieldsType);
 
         // Assert
         act.Should()
@@ -72,27 +74,26 @@ public class ProcessorRepositoryTests
            .Which
            .Message
            .Should()
-           .Be($"Data type '{unknownTriggerSlug}' was not found.");
+           .Be($"Unable to find a processor with '{unknownTriggerSlug}' to attach Data Fields to.");
 
-        sut.GetDataFieldsType(unknownTriggerSlug).Should().BeNull();
+        sut.GetDataType(unknownTriggerSlug).Should().BeNull();
     }
 
-    [Fact(DisplayName = "UpsertDataFieldsType, when TriggerFields has a matching trigger, then it should register new type")]
+    [Fact(DisplayName = "UpsertType, when TriggerFields has a matching trigger, then it should register new type")]
     public void UpsertDataFieldsType_WhenTriggerFieldsHasMatchingTrigger_ShouldRegister()
     {
         // Arrange
         const string expectedTriggerSlug = "trigger1";
         var triggerType = TriggerClassFactory.MatchingClass(triggerSlug: expectedTriggerSlug);
-        var expectedTriggerFieldsType
-            = TriggerFieldsClassFactory.MatchingTriggerFieldsClass(triggerSlug: expectedTriggerSlug);
+        var expectedTriggerFieldsType = TriggerFieldsClassFactory.MatchingTriggerFieldsClass(triggerSlug: expectedTriggerSlug);
 
-        var sut = new ProcessorRepository();
-        sut.UpsertProcessorType(expectedTriggerSlug, triggerType);
+        var triggerRepository = Mock.Of<IRepository>(x => x.GetDataType(expectedTriggerSlug) == triggerType);
+        var sut = new DataFieldsRepository(triggerRepository);
 
         // Act
-        sut.UpsertDataFieldsType(expectedTriggerSlug, expectedTriggerFieldsType);
+        sut.UpsertType(expectedTriggerSlug, expectedTriggerFieldsType);
 
         // Assert
-        sut.GetDataFieldsType(expectedTriggerSlug).Should().NotBeNull().And.Be(expectedTriggerFieldsType);
+        sut.GetDataType(expectedTriggerSlug).Should().NotBeNull().And.Be(expectedTriggerFieldsType);
     }
 }

@@ -8,12 +8,12 @@ namespace InvvardDev.Ifttt.Trigger.Controllers;
 
 [ApiController]
 [Route(IftttConstants.BaseTriggersApiPath)]
-public class TriggerController(IServiceRepository triggerRepository) : ControllerBase
+public class TriggerController(IRepository triggerRepository) : ControllerBase
 {
     [HttpPost("{triggerSlug}")]
     public IActionResult ExecuteTrigger(string triggerSlug, TriggerRequest triggerRequest)
     {
-        if (triggerRepository.GetProcessorInstance<ITrigger>(triggerSlug) is not { } trigger)
+        if (triggerRepository.GetInstance<ITrigger>(triggerSlug) is not { } trigger)
         {
             return NotFound();
         }

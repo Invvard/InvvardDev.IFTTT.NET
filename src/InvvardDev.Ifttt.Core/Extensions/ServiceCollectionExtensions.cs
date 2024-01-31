@@ -23,7 +23,8 @@ public static class ServiceCollectionExtensions
                 });
 #endif
 
-        services.AddSingleton<IServiceRepository, ProcessorRepository>();
+        services.AddKeyedSingleton<IRepository, ProcessorRepository>(nameof(ProcessorRepository));
+        services.AddKeyedSingleton<IRepository, DataFieldsRepository>(nameof(DataFieldsRepository));
         
         return services;
     }
