@@ -13,7 +13,9 @@ jobs:
   build-project:
     name: Build Project & Test
     runs-on: ubuntu-latest
-
+    env:
+      NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages
+      
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -21,7 +23,13 @@ jobs:
       - name: Setup .NET Core SDK
         uses: actions/setup-dotnet@v4.0.0
         with:
-          dotnet-version: 8.0.x
+          dotnet-version: |
+            6.0.x
+            7.0.x
+            8.0.x
+          dotnet-quality: ga
+          cache: true
+          cache-dependency-path: src/**/packages.lock.json
 
       - name: Create packages directory
         run: mkdir -p packages
@@ -30,7 +38,7 @@ jobs:
         run: dotnet restore
 
       - name: Build
-        run: dotnet build --no-restore --configuration ${{ inputs.buildConfiguration }}
+        run: dotnet build --no-restore --configuration ${{ inputs.buildConfiguration }} -p:GeneratePackageOnBuild=false
 
       - name: Test
         run: dotnet test --no-build --verbosity normal --configuration  ${{ inputs.buildConfiguration }}

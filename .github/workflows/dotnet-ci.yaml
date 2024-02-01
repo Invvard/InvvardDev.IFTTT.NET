@@ -4,6 +4,8 @@ run-name: Continuous Integration
 on:
   push:
     branches: [ "feature/*" ]
+    paths-ignore:
+      - 'samples/**'
   pull_request_target:
     branches: [ "main" ]
     types: [closed]
