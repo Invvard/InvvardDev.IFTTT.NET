@@ -1,0 +1,30 @@
+using System;
+using System.Reflection;
+
+// Get the type of the class
+Type type = typeof(MyClass);
+
+// Get the attribute applied to the class
+if (Attribute.GetCustomAttribute(type, typeof(MyAttribute)) is MyAttribute attribute)
+{
+    attribute.ClassName = type.Name;
+    // The attribute is applied to the class
+    Console.WriteLine($"The attribute is applied to the class {attribute.ClassName}.");
+}
+else
+{
+    // The attribute is not applied to the class
+    Console.WriteLine("The attribute is not applied to the class.");
+}
+
+[AttributeUsage(AttributeTargets.Class)]
+public class MyAttribute : Attribute
+{
+    public string? ClassName { get; set; }
+}
+
+[MyAttribute]
+public class MyClass
+{
+    // Class code here
+}

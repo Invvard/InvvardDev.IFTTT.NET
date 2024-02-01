@@ -14,4 +14,12 @@ public class TestSetupController : ControllerBase
     {
         return Task.FromResult<IActionResult>(Ok());
     }
+
+#if DEBUG
+    [HttpGet("setup_listing")]
+    public Task<IActionResult> GetSetupListing()
+    {
+        return Task.FromResult<IActionResult>(Ok());
+    }
+#endif
 }
