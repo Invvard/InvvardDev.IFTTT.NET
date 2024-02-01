@@ -59,8 +59,8 @@ public class ProcessorRepositoryTests
         var triggerType = TriggerClassFactory.MatchingClass(triggerSlug: triggerSlug);
         var expectedTriggerFieldsType = TriggerFieldsClassFactory.MatchingTriggerFieldsClass(triggerSlug: unknownTriggerSlug);
 
-        var sut = new ProcessorRepository();
-        sut.UpsertType(triggerSlug, triggerType);
+        var triggerRepository = Mock.Of<IRepository>(x => x.GetDataType(triggerSlug) == triggerType);
+        var sut = new DataFieldsRepository(triggerRepository);
 
         // Act
         var act = () => sut.UpsertType(unknownTriggerSlug, expectedTriggerFieldsType);
