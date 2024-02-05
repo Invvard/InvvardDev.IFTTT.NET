@@ -1,10 +1,10 @@
 ﻿using System.Net;
 using System.Net.Mime;
 using System.Text;
-using InvvardDev.Ifttt.Core.Configuration;
-using InvvardDev.Ifttt.Core.Models;
-using InvvardDev.Ifttt.Trigger.Contracts;
+using InvvardDev.Ifttt.Shared.Configuration;
+using InvvardDev.Ifttt.Shared.Models;
 using InvvardDev.Ifttt.Trigger.Models;
+using InvvardDev.Ifttt.Trigger.Models.Contracts;
 
 namespace InvvardDev.Ifttt.Trigger.Hooks;
 

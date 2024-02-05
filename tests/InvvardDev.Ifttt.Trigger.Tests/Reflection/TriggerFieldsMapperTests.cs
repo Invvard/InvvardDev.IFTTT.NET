@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
-using InvvardDev.Ifttt.Trigger.Attributes;
+using InvvardDev.Ifttt.Trigger;
 using InvvardDev.Ifttt.Trigger.Models;
+using InvvardDev.Ifttt.Trigger.Models.Attributes;
 
 namespace InvvardDev.Ifttt.Trigger.Tests.Reflection;
 

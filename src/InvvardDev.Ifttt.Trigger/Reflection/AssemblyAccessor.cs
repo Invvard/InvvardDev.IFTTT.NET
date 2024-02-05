@@ -6,6 +6,8 @@ namespace InvvardDev.Ifttt.Trigger.Reflection;
 
 internal class AssemblyAccessor : IAssemblyAccessor
 {
+    private List<Assembly>? applicationAssemblies;
+
     private readonly List<string> assemblyNamesToFilterOut =
     [
         "Microsoft.",
@@ -19,13 +21,14 @@ internal class AssemblyAccessor : IAssemblyAccessor
 
     public IEnumerable<Assembly> GetApplicationAssemblies()
     {
+        if (applicationAssemblies is { } list) return list.ToArray();
+
         if (DependencyContext.Default is not { } defaultDependency) return Array.Empty<Assembly>();
 
-        var applicationAssemblies = defaultDependency
-                                    .GetDefaultAssemblyNames()
-                                    .Where(assembly => !IsFrameworkAssembly(assembly.Name))
-                                    .Select(Assembly.Load)
-                                    .ToList();
+        applicationAssemblies = new List<Assembly>(defaultDependency
+                                                   .GetDefaultAssemblyNames()
+                                                   .Where(assembly => !IsFrameworkAssembly(assembly.Name))
+                                                   .Select(Assembly.Load));
 
         if (Assembly.GetEntryAssembly() is not { } entryAssembly) return applicationAssemblies.ToArray();
 

@@ -1,8 +1,6 @@
 ﻿using FluentAssertions;
-using InvvardDev.Ifttt.Core.Contracts;
-using InvvardDev.Ifttt.Core.Services;
 using InvvardDev.Ifttt.TestFactories.Triggers;
-using InvvardDev.Ifttt.Trigger.Contracts;
+using InvvardDev.Ifttt.Trigger.Models.Contracts;
 using Moq;
 
 namespace InvvardDev.Ifttt.Core.Tests.Services;

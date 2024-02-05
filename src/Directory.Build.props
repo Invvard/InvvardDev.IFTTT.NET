@@ -7,12 +7,12 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
 
-        <IsPackable>true</IsPackable>
-        <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+        <IsPackable>false</IsPackable>
         <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
     </PropertyGroup>
 
-    <PropertyGroup Label="Nuget Specs">
+    <PropertyGroup Label="Nuget Specs" Condition=" '$(IsPackable)' == 'true' ">
+        <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
         <PackageId>$(AssemblyName)</PackageId>
@@ -35,16 +35,20 @@
         </Description>
     </PropertyGroup>
 
+    <ItemGroup Condition=" '$(IsPackable)' == 'true' ">
+        <None Include="..\..\README.md" Pack="true" PackagePath="\"/>
+        <None Include="..\..\LICENSE.md" Pack="true" PackagePath="\"/>
+    </ItemGroup>
+
     <PropertyGroup Condition=" $(Configuration) == 'Debug' ">
         <VersionSuffix>dev</VersionSuffix>
         <SymbolPackageOutputPath>$(SolutionDir)packages</SymbolPackageOutputPath>
         <PackageOutputPath>$(SolutionDir)packages</PackageOutputPath>
     </PropertyGroup>
-
-    <ItemGroup>
-        <None Include="..\..\README.md" Pack="true" PackagePath="\"/>
-        <None Include="..\..\LICENSE.md" Pack="true" PackagePath="\"/>
-    </ItemGroup>
+    
+    <PropertyGroup>
+        <DefaultItemExcludes>$(DefaultItemExcludes);**/*.csproj.DotSettings;packages.lock.json</DefaultItemExcludes>
+    </PropertyGroup>
 
     <ItemGroup>
         <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">

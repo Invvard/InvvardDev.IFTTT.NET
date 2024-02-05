@@ -1,4 +1,4 @@
-using InvvardDev.Ifttt.Core.Configuration;
+using InvvardDev.Ifttt.Shared.Configuration;
 using Microsoft.Extensions.Options;
 
 namespace InvvardDev.Ifttt.Core.Authentication;

@@ -1,4 +1,4 @@
-using InvvardDev.Ifttt.Core.Configuration;
+using InvvardDev.Ifttt.Shared.Configuration;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InvvardDev.Ifttt.Core.Controllers;

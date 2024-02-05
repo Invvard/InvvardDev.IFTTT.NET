@@ -33,14 +33,6 @@
           "Microsoft.Extensions.Primitives": "8.0.0"
         }
       },
-      "Microsoft.Extensions.Configuration.Binder": {
-        "type": "Transitive",
-        "resolved": "8.0.0",
-        "contentHash": "mBMoXLsr5s1y2zOHWmKsE9veDcx8h1x/c3rz4baEdQKTeDcmQAPNbB54Pi/lhFO3K431eEq6PFbMgLaa6PHFfA==",
-        "dependencies": {
-          "Microsoft.Extensions.Configuration.Abstractions": "8.0.0"
-        }
-      },
       "Microsoft.Extensions.DependencyInjection": {
         "type": "Transitive",
         "resolved": "8.0.0",
@@ -81,27 +73,6 @@
           "Microsoft.Extensions.Primitives": "8.0.0"
         }
       },
-      "Microsoft.Extensions.Options.ConfigurationExtensions": {
-        "type": "Transitive",
-        "resolved": "8.0.0",
-        "contentHash": "0f4DMRqEd50zQh+UyJc+/HiBsZ3vhAQALgdkcQEalSH1L2isdC7Yj54M3cyo5e+BeO5fcBQ7Dxly8XiBBcvRgw==",
-        "dependencies": {
-          "Microsoft.Extensions.Configuration.Abstractions": "8.0.0",
-          "Microsoft.Extensions.Configuration.Binder": "8.0.0",
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "8.0.0",
-          "Microsoft.Extensions.Options": "8.0.0",
-          "Microsoft.Extensions.Primitives": "8.0.0"
-        }
-      },
-      "Microsoft.Extensions.Options.DataAnnotations": {
-        "type": "Transitive",
-        "resolved": "8.0.0",
-        "contentHash": "z6p6q/N/hiU19A9tK7pjhXHpiYArO4oIICipxUviBEIOiDIoKRO7k6qItvw7alKcLtfHZOWmspuSKpvIvH0N8w==",
-        "dependencies": {
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "8.0.0",
-          "Microsoft.Extensions.Options": "8.0.0"
-        }
-      },
       "Microsoft.Extensions.Primitives": {
         "type": "Transitive",
         "resolved": "8.0.0",
@@ -132,13 +103,13 @@
           "System.Text.Encodings.Web": "8.0.0"
         }
       },
-      "invvarddev.ifttt.core": {
+      "invvarddev.ifttt.shared": {
+        "type": "Project"
+      },
+      "invvarddev.ifttt.trigger.models": {
         "type": "Project",
         "dependencies": {
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "[8.0.0, )",
-          "Microsoft.Extensions.Options": "[8.0.0, )",
-          "Microsoft.Extensions.Options.ConfigurationExtensions": "[8.0.0, )",
-          "Microsoft.Extensions.Options.DataAnnotations": "[8.0.0, )"
+          "InvvardDev.Ifttt.Shared": "[1.0.0-dev, )"
         }
       }
     },
@@ -174,14 +145,6 @@
           "Microsoft.Extensions.Primitives": "8.0.0"
         }
       },
-      "Microsoft.Extensions.Configuration.Binder": {
-        "type": "Transitive",
-        "resolved": "8.0.0",
-        "contentHash": "mBMoXLsr5s1y2zOHWmKsE9veDcx8h1x/c3rz4baEdQKTeDcmQAPNbB54Pi/lhFO3K431eEq6PFbMgLaa6PHFfA==",
-        "dependencies": {
-          "Microsoft.Extensions.Configuration.Abstractions": "8.0.0"
-        }
-      },
       "Microsoft.Extensions.DependencyInjection": {
         "type": "Transitive",
         "resolved": "8.0.0",
@@ -222,27 +185,6 @@
           "Microsoft.Extensions.Primitives": "8.0.0"
         }
       },
-      "Microsoft.Extensions.Options.ConfigurationExtensions": {
-        "type": "Transitive",
-        "resolved": "8.0.0",
-        "contentHash": "0f4DMRqEd50zQh+UyJc+/HiBsZ3vhAQALgdkcQEalSH1L2isdC7Yj54M3cyo5e+BeO5fcBQ7Dxly8XiBBcvRgw==",
-        "dependencies": {
-          "Microsoft.Extensions.Configuration.Abstractions": "8.0.0",
-          "Microsoft.Extensions.Configuration.Binder": "8.0.0",
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "8.0.0",
-          "Microsoft.Extensions.Options": "8.0.0",
-          "Microsoft.Extensions.Primitives": "8.0.0"
-        }
-      },
-      "Microsoft.Extensions.Options.DataAnnotations": {
-        "type": "Transitive",
-        "resolved": "8.0.0",
-        "contentHash": "z6p6q/N/hiU19A9tK7pjhXHpiYArO4oIICipxUviBEIOiDIoKRO7k6qItvw7alKcLtfHZOWmspuSKpvIvH0N8w==",
-        "dependencies": {
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "8.0.0",
-          "Microsoft.Extensions.Options": "8.0.0"
-        }
-      },
       "Microsoft.Extensions.Primitives": {
         "type": "Transitive",
         "resolved": "8.0.0",
@@ -261,13 +203,13 @@
           "System.Text.Encodings.Web": "8.0.0"
         }
       },
-      "invvarddev.ifttt.core": {
+      "invvarddev.ifttt.shared": {
+        "type": "Project"
+      },
+      "invvarddev.ifttt.trigger.models": {
         "type": "Project",
         "dependencies": {
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "[8.0.0, )",
-          "Microsoft.Extensions.Options": "[8.0.0, )",
-          "Microsoft.Extensions.Options.ConfigurationExtensions": "[8.0.0, )",
-          "Microsoft.Extensions.Options.DataAnnotations": "[8.0.0, )"
+          "InvvardDev.Ifttt.Shared": "[1.0.0-dev, )"
         }
       }
     },
@@ -393,15 +335,6 @@
           "Microsoft.Extensions.Primitives": "8.0.0"
         }
       },
-      "Microsoft.Extensions.Options.DataAnnotations": {
-        "type": "Transitive",
-        "resolved": "8.0.0",
-        "contentHash": "z6p6q/N/hiU19A9tK7pjhXHpiYArO4oIICipxUviBEIOiDIoKRO7k6qItvw7alKcLtfHZOWmspuSKpvIvH0N8w==",
-        "dependencies": {
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "8.0.0",
-          "Microsoft.Extensions.Options": "8.0.0"
-        }
-      },
       "Microsoft.Extensions.Primitives": {
         "type": "Transitive",
         "resolved": "8.0.0",
@@ -425,13 +358,13 @@
           "System.Text.Encodings.Web": "8.0.0"
         }
       },
-      "invvarddev.ifttt.core": {
+      "invvarddev.ifttt.shared": {
+        "type": "Project"
+      },
+      "invvarddev.ifttt.trigger.models": {
         "type": "Project",
         "dependencies": {
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "[8.0.0, )",
-          "Microsoft.Extensions.Options": "[8.0.0, )",
-          "Microsoft.Extensions.Options.ConfigurationExtensions": "[8.0.0, )",
-          "Microsoft.Extensions.Options.DataAnnotations": "[8.0.0, )"
+          "InvvardDev.Ifttt.Shared": "[1.0.0-dev, )"
         }
       }
     }

@@ -1,26 +1,25 @@
 using System.Reflection;
-using InvvardDev.Ifttt.Core.Contracts;
-using InvvardDev.Ifttt.Core.Services;
-using InvvardDev.Ifttt.Trigger.Attributes;
+using InvvardDev.Ifttt.Shared.Contracts;
 using InvvardDev.Ifttt.Trigger.Contracts;
+using InvvardDev.Ifttt.Trigger.Models;
+using InvvardDev.Ifttt.Trigger.Models.Attributes;
 
 namespace InvvardDev.Ifttt.Trigger.Reflection;
 
 internal class TriggerMapper(
-    [FromKeyedServices(nameof(ProcessorRepository))] IRepository triggerRepository,
-    [FromKeyedServices(nameof(DataFieldsRepository))] IRepository triggerFieldsRepository,
+    IProcessorRepository<TriggerMap> triggerRepository,
     IAssemblyAccessor assemblyAccessor,
     [FromKeyedServices(nameof(TriggerAttributeLookup))] IAttributeLookup triggerAttributeLookup,
     [FromKeyedServices(nameof(TriggerFieldsAttributeLookup))] IAttributeLookup triggerFieldsAttributeLookup) : ITriggerMapper
 {
-    public ITriggerMapper MapTriggerTypes()
+    public ITriggerMapper MapTriggerProcessors()
     {
         var types = triggerAttributeLookup.GetAnnotatedTypes();
         foreach (var triggerType in types)
         {
             if (assemblyAccessor.GetAttribute<TriggerAttribute>(triggerType) is { } triggerAttribute)
             {
-                triggerRepository.UpsertType(triggerAttribute.Slug, triggerType);
+                triggerRepository.UpsertProcessor(triggerAttribute.Slug, triggerType);
             }
         }
 
@@ -34,7 +33,7 @@ internal class TriggerMapper(
         {
             if (triggerFieldsType.GetCustomAttribute<TriggerFieldsAttribute>() is { } triggerFieldsAttribute)
             {
-                triggerFieldsRepository.UpsertType(triggerFieldsAttribute.Slug, triggerFieldsType);
+                triggerRepository.UpsertType(triggerFieldsAttribute.Slug, triggerFieldsType);
             }
         }
 

@@ -1,7 +1,5 @@
 ﻿using InvvardDev.Ifttt.Core.Authentication;
-using InvvardDev.Ifttt.Core.Configuration;
-using InvvardDev.Ifttt.Core.Contracts;
-using InvvardDev.Ifttt.Core.Services;
+using InvvardDev.Ifttt.Shared.Configuration;
 using Microsoft.Extensions.Options;
 
 namespace InvvardDev.Ifttt.Core;
@@ -23,9 +21,8 @@ public static class ServiceCollectionExtensions
                 });
 #endif
 
-        services.AddKeyedSingleton<IRepository, ProcessorRepository>(nameof(ProcessorRepository));
-        services.AddKeyedSingleton<IRepository, DataFieldsRepository>(nameof(DataFieldsRepository));
-        
+        services.AllowResolvingKeyedServicesAsDictionary();
+
         return services;
     }
 

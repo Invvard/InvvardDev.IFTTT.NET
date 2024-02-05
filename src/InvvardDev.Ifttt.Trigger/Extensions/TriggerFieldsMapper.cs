@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Reflection;
-using InvvardDev.Ifttt.Trigger.Attributes;
 using InvvardDev.Ifttt.Trigger.Models;
+using InvvardDev.Ifttt.Trigger.Models.Attributes;
 
 namespace InvvardDev.Ifttt.Trigger;
 
