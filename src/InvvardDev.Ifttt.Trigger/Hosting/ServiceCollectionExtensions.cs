@@ -13,9 +13,9 @@ namespace InvvardDev.Ifttt.Trigger;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddTriggers(this IServiceCollection services)
+    public static IIftttServiceBuilder AddTriggers(this IIftttServiceBuilder builder)
     {
-        services.AddHttpClient(IftttConstants.TriggerHttpClientName, (sp, client) =>
+        builder.Services.AddHttpClient(IftttConstants.TriggerHttpClientName, (sp, client) =>
         {
             var options = sp.GetRequiredService<IOptions<IftttOptions>>().Value;
 
@@ -23,18 +23,18 @@ public static class ServiceCollectionExtensions
             client.DefaultRequestHeaders.Add(IftttConstants.ServiceKeyHeader, options.ServiceKey);
         });
 
-        services.AddSingleton<IProcessorRepository<TriggerMap>, TriggerRepository>();
-        services.AddScoped<IAssemblyAccessor, AssemblyAccessor>();
-        services.AddTransient<ITriggerMapper, TriggerMapper>();
-        services.AddTransient<ITriggerHook, RealTimeNotificationWebHook>();
-        services.AddKeyedTransient<IAttributeLookup, TriggerAttributeLookup>(nameof(TriggerAttributeLookup));
-        services.AddKeyedTransient<IAttributeLookup, TriggerFieldsAttributeLookup>(nameof(TriggerFieldsAttributeLookup));
+        builder.AddSingleton<IProcessorRepository<TriggerMap>, TriggerRepository>();
+        builder.AddScoped<IAssemblyAccessor, AssemblyAccessor>();
+        builder.AddTransient<ITriggerMapper, TriggerMapper>();
+        builder.AddTransient<ITriggerHook, RealTimeNotificationWebHook>();
+        builder.AddKeyedTransient<IAttributeLookup, TriggerAttributeLookup>(nameof(TriggerAttributeLookup));
+        builder.AddKeyedTransient<IAttributeLookup, TriggerFieldsAttributeLookup>(nameof(TriggerFieldsAttributeLookup));
 
-        services.AddControllers()
+        builder.AddControllers()
                 .AddApplicationPart(Assembly.GetAssembly(typeof(IftttConstants)) ?? throw new InvalidOperationException())
                 .AddControllersAsServices();
 
-        return services;
+        return builder;
     }
 
     public static IApplicationBuilder ConfigureTriggers(this WebApplication app)

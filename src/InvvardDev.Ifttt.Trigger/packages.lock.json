@@ -104,7 +104,10 @@
         }
       },
       "invvarddev.ifttt.shared": {
-        "type": "Project"
+        "type": "Project",
+        "dependencies": {
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "[8.0.0, )"
+        }
       },
       "invvarddev.ifttt.trigger.models": {
         "type": "Project",
@@ -204,7 +207,10 @@
         }
       },
       "invvarddev.ifttt.shared": {
-        "type": "Project"
+        "type": "Project",
+        "dependencies": {
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "[8.0.0, )"
+        }
       },
       "invvarddev.ifttt.trigger.models": {
         "type": "Project",
@@ -359,7 +365,10 @@
         }
       },
       "invvarddev.ifttt.shared": {
-        "type": "Project"
+        "type": "Project",
+        "dependencies": {
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "[8.0.0, )"
+        }
       },
       "invvarddev.ifttt.trigger.models": {
         "type": "Project",
