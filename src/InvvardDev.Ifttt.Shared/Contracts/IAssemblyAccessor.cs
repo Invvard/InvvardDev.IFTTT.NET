@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace InvvardDev.Ifttt.Trigger.Contracts;
+namespace InvvardDev.Ifttt.Shared.Contracts;
 
 public interface IAssemblyAccessor
 {

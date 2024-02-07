@@ -5,5 +5,4 @@ public interface ITriggerMapper
     ITriggerMapper MapTriggerProcessors();
     
     ITriggerMapper MapTriggerFields();
-
 }

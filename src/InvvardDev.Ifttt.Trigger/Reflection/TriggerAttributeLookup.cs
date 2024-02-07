@@ -1,3 +1,4 @@
+using InvvardDev.Ifttt.Shared.Contracts;
 using InvvardDev.Ifttt.Trigger.Contracts;
 using InvvardDev.Ifttt.Trigger.Models.Attributes;
 using InvvardDev.Ifttt.Trigger.Models.Contracts;

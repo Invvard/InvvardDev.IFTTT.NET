@@ -103,10 +103,17 @@
           "System.Text.Encodings.Web": "8.0.0"
         }
       },
+      "invvarddev.ifttt.core": {
+        "type": "Project",
+        "dependencies": {
+          "InvvardDev.Ifttt.Shared": "[1.0.0-dev, )"
+        }
+      },
       "invvarddev.ifttt.shared": {
         "type": "Project",
         "dependencies": {
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "[8.0.0, )"
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "[8.0.0, )",
+          "microsoft.extensions.dependencymodel": "[8.0.0, )"
         }
       },
       "invvarddev.ifttt.trigger.models": {
@@ -206,10 +213,17 @@
           "System.Text.Encodings.Web": "8.0.0"
         }
       },
+      "invvarddev.ifttt.core": {
+        "type": "Project",
+        "dependencies": {
+          "InvvardDev.Ifttt.Shared": "[1.0.0-dev, )"
+        }
+      },
       "invvarddev.ifttt.shared": {
         "type": "Project",
         "dependencies": {
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "[8.0.0, )"
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "[8.0.0, )",
+          "microsoft.extensions.dependencymodel": "[8.0.0, )"
         }
       },
       "invvarddev.ifttt.trigger.models": {
@@ -364,10 +378,17 @@
           "System.Text.Encodings.Web": "8.0.0"
         }
       },
+      "invvarddev.ifttt.core": {
+        "type": "Project",
+        "dependencies": {
+          "InvvardDev.Ifttt.Shared": "[1.0.0-dev, )"
+        }
+      },
       "invvarddev.ifttt.shared": {
         "type": "Project",
         "dependencies": {
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "[8.0.0, )"
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "[8.0.0, )",
+          "microsoft.extensions.dependencymodel": "[8.0.0, )"
         }
       },
       "invvarddev.ifttt.trigger.models": {

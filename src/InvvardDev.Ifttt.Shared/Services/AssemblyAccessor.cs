@@ -1,10 +1,10 @@
 ﻿using System.Reflection;
-using InvvardDev.Ifttt.Trigger.Contracts;
+using InvvardDev.Ifttt.Shared.Contracts;
 using Microsoft.Extensions.DependencyModel;
 
-namespace InvvardDev.Ifttt.Trigger.Reflection;
+namespace InvvardDev.Ifttt.Shared.Services;
 
-internal class AssemblyAccessor : IAssemblyAccessor
+public class AssemblyAccessor : IAssemblyAccessor
 {
     private List<Assembly>? applicationAssemblies;
 

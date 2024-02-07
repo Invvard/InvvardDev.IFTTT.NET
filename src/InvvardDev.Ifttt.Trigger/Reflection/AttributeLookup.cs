@@ -1,4 +1,5 @@
-﻿using InvvardDev.Ifttt.Trigger.Contracts;
+﻿using InvvardDev.Ifttt.Shared.Contracts;
+using InvvardDev.Ifttt.Trigger.Contracts;
 
 namespace InvvardDev.Ifttt.Trigger.Reflection;
 

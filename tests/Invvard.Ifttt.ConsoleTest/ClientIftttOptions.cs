@@ -2,14 +2,12 @@
 
 namespace Invvard.Ifttt.ConsoleTest;
 
-public class IftttOptions
+public class ClientIftttOptions
 {
-    public const string DefaultSectionName = nameof(IftttOptions);
+    public const string DefaultSectionName = nameof(ClientIftttOptions);
 
     [Required]
     public required string ServiceKey { get; init; } = string.Empty;
 
     public bool BypassServiceKey { get; init; }
-
-    public string RealTimeBaseAddress { get; set; } = "https://realtime.ifttt.com/v1/notifications/";
 }

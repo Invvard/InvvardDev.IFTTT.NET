@@ -31,8 +31,4 @@
       <ProjectReference Include="..\InvvardDev.Ifttt.TestFactories\InvvardDev.Ifttt.TestFactories.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Repositories\" />
-    </ItemGroup>
-
 </Project>

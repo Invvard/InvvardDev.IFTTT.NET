@@ -1,21 +1,27 @@
-﻿// See https://aka.ms/new-console-template for more information
-
-using Invvard.Ifttt.ConsoleTest;
+﻿using Invvard.Ifttt.ConsoleTest;
 using InvvardDev.Ifttt.Core.Hosting;
-using InvvardDev.Ifttt.Trigger;
+using InvvardDev.Ifttt.Trigger.Hosting;
 using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
 
 var builder = WebHost.CreateDefaultBuilder(args);
 
-builder.AddIftttToolkit((ctx, serviceBuilder) =>
+builder.ConfigureServices((ctx, services) =>
 {
-    var iftttConfiguration = ctx.Configuration.GetSection(IftttOptions.DefaultSectionName).Get<IftttOptions>()!;
-
-    if (!iftttConfiguration.BypassServiceKey)
+    var opt = ctx.Configuration.GetSection(ClientIftttOptions.DefaultSectionName).Get<ClientIftttOptions>();
+    builder.AddIftttToolkit((iftttBuilder, options) =>
     {
-        serviceBuilder.AddAuthentication(iftttConfiguration.ServiceKey);
-    }
-    serviceBuilder.AddTriggers();
+        iftttBuilder.UseServiceKeyAuthentication(opt!.ServiceKey)
+                    .AddTriggers()
+                    .AddTriggerAutoMapper();
+    });
 });
+
+builder.ConfigureIftttToolkit(iftttAppBuilder =>
+{
+    iftttAppBuilder.UseAuthentication()
+                   .ConfigureTriggers();
+});
+
+builder.Build().Run();
