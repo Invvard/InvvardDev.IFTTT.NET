@@ -1,6 +1,6 @@
 using System.Net;
 using FluentAssertions;
-using InvvardDev.Ifttt.Core.Models;
+using InvvardDev.Ifttt.Shared.Models;
 using InvvardDev.Ifttt.TestFactories.Triggers;
 using InvvardDev.Ifttt.Trigger.Hooks;
 using InvvardDev.Ifttt.Trigger.Models;
@@ -44,7 +44,7 @@ public class RealTimeNotificationWebHookTests
         var json = await actualRequest.ReadAsStringAsync();
         var actualContent = TopLevelMessageModel<List<RealTimeNotificationModel>>.Deserialize(json);
         actualContent.Should().NotBeNull();
-        actualContent!.Data.Should().BeEquivalentTo(payload);
+        actualContent.Data.Should().BeEquivalentTo(payload);
     }
 
     // Advised way in order to capture on a ProtectedSetup:

@@ -17,6 +17,14 @@ public class TriggerRepository : ProcessorRepository<TriggerMap>
         return default;
     }
 
+    public override void UpsertDataField(string processorSlug, string dataFieldSlug, Type dataFieldType)
+    {
+        if (GetProcessor(processorSlug) is { } triggerMap)
+        {
+            triggerMap.TriggerFields.Add(new TriggerField(dataFieldSlug, dataFieldType));
+        }
+    }
+
     public override Type? GetDataFieldType(string processorSlug, string dataFieldSlug)
     {
         if (GetProcessor(processorSlug) is { } triggerMap

@@ -19,7 +19,7 @@ internal class TriggerMapper(
     public ITriggerMapper MapTriggerFields()
         => MapAttribute<TriggerFieldsAttribute>(triggerFieldsAttributeLookup.GetAnnotatedTypes(),
                                                 (attribute, _) => triggerRepository.GetProcessor(attribute.Slug));
-1
+
     private static List<TriggerField> MapTriggerFieldProperties(Type parentType)
     {
         var properties = parentType.GetProperties();

@@ -1,6 +1,6 @@
 using InvvardDev.Ifttt.Trigger.Contracts;
 
-namespace InvvardDev.Ifttt.Trigger.Reflection;
+namespace InvvardDev.Ifttt.Trigger.Services;
 
 public class TriggerAutoMapperService(ILogger<TriggerAutoMapperService> logger, ITriggerMapper triggerMapper) : BackgroundService
 {

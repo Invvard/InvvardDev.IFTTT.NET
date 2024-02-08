@@ -11,6 +11,8 @@ public abstract class ProcessorRepository<T> : IProcessorRepository<T>
         Processors[processorSlug] = processorType;
     }
 
+    public abstract void UpsertDataField(string processorSlug, string dataFieldSlug, Type dataFieldType);
+
     public T? GetProcessor(string processorSlug) 
         => Processors.GetValueOrDefault(processorSlug);
 

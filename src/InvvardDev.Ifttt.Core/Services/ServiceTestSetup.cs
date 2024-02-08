@@ -3,7 +3,7 @@ using InvvardDev.Ifttt.Shared.Services;
 using InvvardDev.Ifttt.Core.Contracts;
 
 namespace InvvardDev.Ifttt.Core.Services;
-
+/*
 public class ServiceTestSetup(IRepository[] repositories) : IIftttSetup
 {
     public Task<object> GetSetupListing()
@@ -17,11 +17,11 @@ public class ServiceTestSetup(IRepository[] repositories) : IIftttSetup
             }
         }
         
-
         return Task.FromResult<object>(repositories);
     }
 
     private IProcessorRepository<T>? GetRepository<T>()
         where T: IProcessorRepository<T>
-        => repositories.(nameof(T));
+        => repositories.Ge(nameof(T));
 }
+*/
