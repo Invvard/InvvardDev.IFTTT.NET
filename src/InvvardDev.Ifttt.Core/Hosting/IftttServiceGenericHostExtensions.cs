@@ -28,7 +28,6 @@ public static class IftttServiceGenericHostExtensions
         ArgumentNullException.ThrowIfNull(hostBuilder);
         ArgumentNullException.ThrowIfNull(configureAppDelegate);
         
-        
         return hostBuilder.Configure((context, applicationBuilder) =>
         {
             configureAppDelegate(new DefaultIftttAppBuilder(applicationBuilder));
