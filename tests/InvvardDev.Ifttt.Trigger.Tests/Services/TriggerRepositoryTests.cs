@@ -53,8 +53,8 @@ public class TriggerRepositoryTests
         sut.GetProcessor(expectedTriggerSlug).Should().BeEquivalentTo(expectedTriggerMap);
     }
 
-    [Fact(DisplayName = "UpsertType, when TriggerFields has no matching trigger, then it returns null")]
-    public void UpsertDataFieldsType_WhenTriggerFieldsHasNoMatchingTrigger_ShouldBeNull()
+    [Fact(DisplayName = "UpsertDataField, when TriggerFields has no matching trigger, then it returns null")]
+    public void UpsertDataField_WhenTriggerFieldsHasNoMatchingTrigger_ShouldBeNull()
     {
         // Arrange
         const string unknownTriggerSlug = "unknown_trigger_slug";
@@ -69,8 +69,8 @@ public class TriggerRepositoryTests
         sut.GetDataFieldType(unknownTriggerSlug, newTriggerFieldSlug).Should().BeNull();
     }
 
-    [Fact(DisplayName = "UpsertType, when TriggerFields has a matching trigger, then it should register new type")]
-    public void UpsertDataFieldsType_WhenTriggerFieldsHasMatchingTrigger_ShouldRegister()
+    [Fact(DisplayName = "UpsertDataField, when TriggerFields has a matching trigger, then it should register new type")]
+    public void UpsertDataField_WhenTriggerFieldsHasMatchingTrigger_ShouldRegister()
     {
         // Arrange
         const string expectedTriggerSlug = "trigger1";

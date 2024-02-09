@@ -13,8 +13,12 @@ internal class TriggerMapper(
 {
     public ITriggerMapper MapTriggerProcessors()
         => MapAttribute<TriggerAttribute>(triggerAttributeLookup.GetAnnotatedTypes(),
-                                          (attribute, type) => triggerRepository.GetProcessor(attribute.Slug)
-                                                               ?? new TriggerMap(attribute.Slug, type));
+                                          (attribute, type) => triggerRepository.GetProcessor(attribute.Slug) switch
+                                                               {
+                                                                   { } triggerMap when triggerMap.TriggerType == type => triggerMap,
+                                                                   not null => throw new InvalidOperationException("Trigger has already been registered"),
+                                                                   _ => new TriggerMap(attribute.Slug, type)
+                                                               });
 
     public ITriggerMapper MapTriggerFields()
         => MapAttribute<TriggerFieldsAttribute>(triggerFieldsAttributeLookup.GetAnnotatedTypes(),
@@ -35,18 +39,18 @@ internal class TriggerMapper(
         return triggerFields;
     }
 
-    private TriggerMapper MapAttribute<TAttribute>(IEnumerable<Type> types, Func<TAttribute, Type, TriggerMap?> upsertProcessor)
+    private TriggerMapper MapAttribute<TAttribute>(IEnumerable<Type> types, Func<TAttribute, Type, TriggerMap?> getProcessor)
         where TAttribute : Attribute
     {
         foreach (var type in types)
         {
             if (type.GetCustomAttribute<TAttribute>() is not { } attribute
-                || upsertProcessor(attribute, type) is not { } triggerMap) continue;
+                || getProcessor(attribute, type) is not { } triggerMap) continue;
 
             triggerMap.TriggerFields.AddRange(MapTriggerFieldProperties(type));
             triggerRepository.UpsertProcessor(triggerMap.TriggerSlug, triggerMap);
         }
-        
+
         return this;
     }
 }
