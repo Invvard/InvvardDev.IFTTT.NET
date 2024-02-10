@@ -11,8 +11,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\src\InvvardDev.Ifttt.Trigger.Models\InvvardDev.Ifttt.Trigger.Models.csproj" />
-      <ProjectReference Include="..\..\src\InvvardDev.Ifttt.Trigger\InvvardDev.Ifttt.Trigger.csproj" />
+      <ProjectReference Include="..\..\src\InvvardDev.Ifttt.csproj" />
     </ItemGroup>
 
 </Project>

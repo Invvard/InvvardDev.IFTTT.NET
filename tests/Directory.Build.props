@@ -5,4 +5,9 @@
 
         <IsPackable>false</IsPackable>
     </PropertyGroup>
+    
+    <PropertyGroup>
+        <DefaultItemExcludes>$(DefaultItemExcludes);**/*.csproj.DotSettings;packages.lock.json</DefaultItemExcludes>
+    </PropertyGroup>
+
 </Project>

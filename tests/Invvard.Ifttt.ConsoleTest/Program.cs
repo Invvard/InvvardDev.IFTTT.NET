@@ -1,6 +1,5 @@
 ﻿using Invvard.Ifttt.ConsoleTest;
-using InvvardDev.Ifttt.Core.Hosting;
-using InvvardDev.Ifttt.Trigger.Hosting;
+using InvvardDev.Ifttt.Hosting;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;

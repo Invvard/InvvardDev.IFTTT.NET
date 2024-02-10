@@ -1,5 +1,5 @@
 using Bogus;
-using InvvardDev.Ifttt.Trigger.Models;
+using InvvardDev.Ifttt.Models.Trigger;
 
 namespace InvvardDev.Ifttt.TestFactories.Triggers;
 

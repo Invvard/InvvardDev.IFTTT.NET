@@ -1,7 +1,7 @@
-﻿using InvvardDev.Ifttt.TestFactories.Extensions;
+﻿using InvvardDev.Ifttt.Contracts;
+using InvvardDev.Ifttt.Models.Attributes;
+using InvvardDev.Ifttt.TestFactories.Extensions;
 using InvvardDev.Ifttt.TestFactories.Shared;
-using InvvardDev.Ifttt.Trigger.Models.Attributes;
-using InvvardDev.Ifttt.Trigger.Models.Contracts;
 
 namespace InvvardDev.Ifttt.TestFactories.Triggers;
 

@@ -10,14 +10,13 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\src\InvvardDev.Ifttt.Core\InvvardDev.Ifttt.Core.csproj" />
-      <ProjectReference Include="..\..\src\InvvardDev.Ifttt.Trigger\InvvardDev.Ifttt.Trigger.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
       <None Update="appsettings.Development.json">
         <DependentUpon>appsettings.json</DependentUpon>
       </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\src\InvvardDev.Ifttt.csproj" />
     </ItemGroup>
 
 </Project>
