@@ -3,7 +3,6 @@ using InvvardDev.Ifttt.Core.Authentication;
 using InvvardDev.Ifttt.Core.Controllers;
 using InvvardDev.Ifttt.Shared.Configuration;
 using InvvardDev.Ifttt.Shared.Contracts;
-using InvvardDev.Ifttt.Shared.Services;
 
 namespace InvvardDev.Ifttt.Core.Hosting;
 

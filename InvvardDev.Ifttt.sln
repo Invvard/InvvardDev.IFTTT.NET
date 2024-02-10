@@ -17,8 +17,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InvvardDev.Ifttt.TestFactor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InvvardDev.Ifttt.Trigger.Models", "src\InvvardDev.Ifttt.Trigger.Models\InvvardDev.Ifttt.Trigger.Models.csproj", "{4FA9C5EF-A2FD-4993-A130-D59F07E92806}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InvvardDev.Ifttt.Shared", "src\InvvardDev.Ifttt.Shared\InvvardDev.Ifttt.Shared.csproj", "{1A584078-BE8F-45C2-B364-4A9F193ED334}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Invvard.Ifttt.ConsoleTest", "tests\Invvard.Ifttt.ConsoleTest\Invvard.Ifttt.ConsoleTest.csproj", "{183BBDCC-9BBC-4BEE-A16C-E2A2116A3059}"
 EndProject
 Global
@@ -51,10 +49,6 @@ Global
 		{4FA9C5EF-A2FD-4993-A130-D59F07E92806}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4FA9C5EF-A2FD-4993-A130-D59F07E92806}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4FA9C5EF-A2FD-4993-A130-D59F07E92806}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1A584078-BE8F-45C2-B364-4A9F193ED334}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1A584078-BE8F-45C2-B364-4A9F193ED334}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1A584078-BE8F-45C2-B364-4A9F193ED334}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1A584078-BE8F-45C2-B364-4A9F193ED334}.Release|Any CPU.Build.0 = Release|Any CPU
 		{183BBDCC-9BBC-4BEE-A16C-E2A2116A3059}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{183BBDCC-9BBC-4BEE-A16C-E2A2116A3059}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{183BBDCC-9BBC-4BEE-A16C-E2A2116A3059}.Release|Any CPU.ActiveCfg = Release|Any CPU

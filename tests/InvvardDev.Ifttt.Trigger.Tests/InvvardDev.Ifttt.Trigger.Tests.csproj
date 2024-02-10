@@ -27,7 +27,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\src\InvvardDev.Ifttt.Shared\InvvardDev.Ifttt.Shared.csproj" />
       <ProjectReference Include="..\..\src\InvvardDev.Ifttt.Trigger\InvvardDev.Ifttt.Trigger.csproj" />
       <ProjectReference Include="..\InvvardDev.Ifttt.TestFactories\InvvardDev.Ifttt.TestFactories.csproj" />
     </ItemGroup>

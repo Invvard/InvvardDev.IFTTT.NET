@@ -1,7 +1,1 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
-    <ItemGroup>
-      <ProjectReference Include="..\InvvardDev.Ifttt.Shared\InvvardDev.Ifttt.Shared.csproj" />
-    </ItemGroup>
-
-</Project>
+﻿<Project Sdk="Microsoft.NET.Sdk" />

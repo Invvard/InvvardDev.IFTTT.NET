@@ -8,8 +8,4 @@
         <AssemblyName>InvvardDev.Ifttt.Core</AssemblyName>
     </PropertyGroup>
 
-    <ItemGroup>
-      <ProjectReference Include="..\InvvardDev.Ifttt.Shared\InvvardDev.Ifttt.Shared.csproj" />
-    </ItemGroup>
-
 </Project>
