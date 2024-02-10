@@ -59,7 +59,7 @@ public class TriggerRepositoryTests
         // Arrange
         const string unknownTriggerSlug = "unknown_trigger_slug";
         const string newTriggerFieldSlug = "new_trigger_field_slug";
-        var newTriggerFieldType = TriggerFieldsClassFactory.MatchingTriggerFieldsClass();
+        var newTriggerFieldType = TriggerFieldsClassFactory.MatchingTriggerFieldsModel();
         var sut = new TriggerRepository();
 
         // Act
@@ -76,7 +76,7 @@ public class TriggerRepositoryTests
         const string expectedTriggerSlug = "trigger1";
         const string expectedTriggerFieldSlug = "trigger_field_slug";
         var triggerType = TriggerClassFactory.MatchingClass(triggerSlug: expectedTriggerSlug);
-        var expectedTriggerFieldsType = TriggerFieldsClassFactory.MatchingTriggerFieldsClass(triggerSlug: expectedTriggerSlug,
+        var expectedTriggerFieldsType = TriggerFieldsClassFactory.MatchingTriggerFieldsModel(triggerSlug: expectedTriggerSlug,
          triggerFieldSlug: expectedTriggerFieldSlug);
 
         var sut = new TriggerRepository();

@@ -36,7 +36,7 @@ public class AttributeLookupTests
         // Arrange
         TriggerFieldsClassFactory.MissingTriggerFieldsAttribute();
         TriggerFieldsClassFactory.MissingTriggerFieldProperty();
-        var matchingTriggerFieldsClass = TriggerFieldsClassFactory.MatchingTriggerFieldsClass();
+        var matchingTriggerFieldsClass = TriggerFieldsClassFactory.MatchingTriggerFieldsModel();
 
         var assemblyAccessor = Mock.Of<IAssemblyAccessor>(m => m.GetApplicationAssemblies() == new[]
                                                               {

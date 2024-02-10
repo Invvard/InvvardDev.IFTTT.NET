@@ -24,14 +24,15 @@ public static class TriggerFieldsClassFactory
                          .Build();
     }
 
-    public static Type MatchingTriggerFieldsClass(string? typeName = null, string? propertyName = null, string? triggerSlug = null, string? triggerFieldSlug = null)
+    public static Type MatchingTriggerFieldsModel(string? typeName = null, string? propertyName = null, string? triggerSlug = null, string? triggerFieldSlug = null)
     {
         typeName = typeName.NewName();
         propertyName = propertyName.NewName();
+        triggerFieldSlug ??= $"{propertyName}_slug";
         return DefineType.Called(typeName)
                          .WithCustomAttribute<TriggerFieldsAttribute>(typeName, triggerSlug.NewName())
                          .WithProperty<string>(propertyName)
-                         .WithCustomAttribute<TriggerFieldAttribute>(propertyName, $"{propertyName}_slug")
+                         .WithCustomAttribute<TriggerFieldAttribute>(propertyName, triggerFieldSlug)
                          .Build();
     }
 }

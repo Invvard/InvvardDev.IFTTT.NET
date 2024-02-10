@@ -1,4 +1,4 @@
 namespace InvvardDev.Ifttt.Trigger.Models.Attributes;
 
 [AttributeUsage(AttributeTargets.Class)]
-public class TriggerFieldsAttribute(string slug) : TriggerAttributeBase (slug);
+public class TriggerFieldsAttribute(string slug) : TriggerAttributeBase(slug);

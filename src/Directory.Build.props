@@ -7,11 +7,10 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
 
-        <IsPackable>false</IsPackable>
         <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
     </PropertyGroup>
 
-    <PropertyGroup Label="Nuget Specs" Condition=" '$(IsPackable)' == 'true' ">
+    <PropertyGroup Label="Nuget Specs">
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
