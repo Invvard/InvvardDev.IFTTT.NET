@@ -1,4 +1,4 @@
-﻿namespace InvvardDev.Ifttt.Models.Attributes;
+﻿namespace InvvardDev.Ifttt.Toolkit.Attributes;
 
 public class TriggerAttributeBase : Attribute
 {

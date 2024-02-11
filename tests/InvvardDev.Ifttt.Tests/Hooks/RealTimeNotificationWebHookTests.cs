@@ -1,9 +1,8 @@
 using System.Net;
 using FluentAssertions;
-using InvvardDev.Ifttt.Hooks;
-using InvvardDev.Ifttt.Models.Core;
-using InvvardDev.Ifttt.Models.Trigger;
 using InvvardDev.Ifttt.TestFactories.Triggers;
+using InvvardDev.Ifttt.Toolkit.Hooks;
+using InvvardDev.Ifttt.Toolkit.Models;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Moq.Protected;

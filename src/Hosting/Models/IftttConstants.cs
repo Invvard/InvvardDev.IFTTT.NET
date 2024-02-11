@@ -1,6 +1,6 @@
-namespace InvvardDev.Ifttt.Configuration;
+namespace InvvardDev.Ifttt.Hosting.Models;
 
-public static class IftttConstants
+internal static class IftttConstants
 {
     public static string ServiceKeyHeader => "IFTTT-Service-Key";
 

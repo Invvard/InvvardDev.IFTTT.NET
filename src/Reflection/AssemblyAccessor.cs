@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyModel;
 
 namespace InvvardDev.Ifttt.Reflection;
 
-public class AssemblyAccessor : IAssemblyAccessor
+internal class AssemblyAccessor : IAssemblyAccessor
 {
     private List<Assembly>? applicationAssemblies;
 

@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel;
 using System.Reflection;
-using InvvardDev.Ifttt.Models.Attributes;
-using InvvardDev.Ifttt.Models.Trigger;
+using InvvardDev.Ifttt.Toolkit.Attributes;
+using InvvardDev.Ifttt.Toolkit.Models;
 
-namespace InvvardDev.Ifttt;
+namespace InvvardDev.Ifttt.Toolkit;
 
 public static class TriggerFieldsMapper
 {

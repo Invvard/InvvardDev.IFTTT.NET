@@ -1,8 +1,8 @@
 ﻿using System.Reflection;
-using InvvardDev.Ifttt.Authentication;
-using InvvardDev.Ifttt.Configuration;
 using InvvardDev.Ifttt.Contracts;
 using InvvardDev.Ifttt.Controllers;
+using InvvardDev.Ifttt.Hosting.Middleware;
+using InvvardDev.Ifttt.Hosting.Models;
 using InvvardDev.Ifttt.Reflection;
 
 namespace InvvardDev.Ifttt.Hosting;
@@ -63,14 +63,6 @@ public static class IftttGenericHostingExtensions
         var builder = new DefaultIftttServiceBuilder(services, options.ServiceKey, options.RealTimeBaseAddress);
 
         var apiBuilder = builder.Services.AddControllers();
-
-#if NET6_0 || NET7_0
-        apiBuilder.AddJsonOptions(opt =>
-                  {
-                      opt.JsonSerializerOptions.PropertyNamingPolicy = SnakeCaseNamingPolicy.SnakeCaseLower;
-                      opt.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
-                  });
-#endif
 
         apiBuilder.AddApplicationPart(Assembly.GetAssembly(typeof(StatusController)) ?? throw new InvalidOperationException())
                   .AddControllersAsServices();

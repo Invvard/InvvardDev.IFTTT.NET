@@ -1,5 +1,5 @@
 using InvvardDev.Ifttt.Contracts;
-using InvvardDev.Ifttt.Models.Attributes;
+using InvvardDev.Ifttt.Toolkit.Attributes;
 
 namespace InvvardDev.Ifttt.Reflection;
 

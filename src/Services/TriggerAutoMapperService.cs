@@ -2,7 +2,7 @@ using InvvardDev.Ifttt.Contracts;
 
 namespace InvvardDev.Ifttt.Services;
 
-public class TriggerAutoMapperService(ILogger<TriggerAutoMapperService> logger, ITriggerMapper triggerMapper) : BackgroundService
+internal class TriggerAutoMapperService(ILogger<TriggerAutoMapperService> logger, ITriggerMapper triggerMapper) : BackgroundService
 {
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {

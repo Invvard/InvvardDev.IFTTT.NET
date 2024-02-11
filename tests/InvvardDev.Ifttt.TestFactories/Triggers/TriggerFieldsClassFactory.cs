@@ -1,6 +1,6 @@
-using InvvardDev.Ifttt.Models.Attributes;
 using InvvardDev.Ifttt.TestFactories.Extensions;
 using InvvardDev.Ifttt.TestFactories.Shared;
+using InvvardDev.Ifttt.Toolkit.Attributes;
 
 namespace InvvardDev.Ifttt.TestFactories.Triggers;
 

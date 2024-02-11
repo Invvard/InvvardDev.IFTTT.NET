@@ -1,7 +1,7 @@
 using System.Reflection;
 using InvvardDev.Ifttt.Contracts;
-using InvvardDev.Ifttt.Models.Attributes;
 using InvvardDev.Ifttt.Models.Trigger;
+using InvvardDev.Ifttt.Toolkit.Attributes;
 
 namespace InvvardDev.Ifttt.Reflection;
 

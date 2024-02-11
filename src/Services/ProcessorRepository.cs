@@ -2,7 +2,7 @@
 
 namespace InvvardDev.Ifttt.Services;
 
-public abstract class ProcessorRepository<T> : IProcessorRepository<T>
+internal abstract class ProcessorRepository<T> : IProcessorRepository<T>
 {
     protected readonly Dictionary<string, T> Processors = new();
     

@@ -1,11 +1,12 @@
 ﻿using System.Reflection;
-using InvvardDev.Ifttt.Configuration;
 using InvvardDev.Ifttt.Contracts;
 using InvvardDev.Ifttt.Controllers;
-using InvvardDev.Ifttt.Hooks;
+using InvvardDev.Ifttt.Hosting.Models;
 using InvvardDev.Ifttt.Models.Trigger;
 using InvvardDev.Ifttt.Reflection;
 using InvvardDev.Ifttt.Services;
+using InvvardDev.Ifttt.Toolkit.Contracts;
+using InvvardDev.Ifttt.Toolkit.Hooks;
 
 namespace InvvardDev.Ifttt.Hosting;
 

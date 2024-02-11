@@ -1,8 +1,8 @@
-using InvvardDev.Ifttt.Configuration;
+using InvvardDev.Ifttt.Hosting.Models;
 
-namespace InvvardDev.Ifttt.Authentication;
+namespace InvvardDev.Ifttt.Hosting.Middleware;
 
-public class ServiceKeyMiddleware(RequestDelegate next, string serviceKey)
+internal class ServiceKeyMiddleware(RequestDelegate next, string serviceKey)
 {
     public async Task InvokeAsync(HttpContext context)
     {

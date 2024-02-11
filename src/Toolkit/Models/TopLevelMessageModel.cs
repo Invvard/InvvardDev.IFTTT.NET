@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace InvvardDev.Ifttt.Models.Core;
+namespace InvvardDev.Ifttt.Toolkit.Models;
 
 public class TopLevelMessageModel<T>(T data) : TopLevelBaseModel
     where T : class, new()

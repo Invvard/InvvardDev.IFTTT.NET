@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
 using InvvardDev.Ifttt.Models.Core;
 
-namespace InvvardDev.Ifttt.Models.Trigger;
+namespace InvvardDev.Ifttt.Toolkit.Models;
 
 public class TriggerRequest
 {

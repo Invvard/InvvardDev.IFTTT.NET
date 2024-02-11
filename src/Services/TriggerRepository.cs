@@ -2,7 +2,7 @@ using InvvardDev.Ifttt.Models.Trigger;
 
 namespace InvvardDev.Ifttt.Services;
 
-public class TriggerRepository : ProcessorRepository<TriggerMap>
+internal class TriggerRepository : ProcessorRepository<TriggerMap>
 {
     public override TInterface? GetProcessorInstance<TInterface>(string processorSlug)
         where TInterface : default

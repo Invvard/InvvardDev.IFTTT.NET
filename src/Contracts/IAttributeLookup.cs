@@ -1,6 +1,6 @@
 namespace InvvardDev.Ifttt.Contracts;
 
-public interface IAttributeLookup
+internal interface IAttributeLookup
 {
     IEnumerable<Type> GetAnnotatedTypes();
 }

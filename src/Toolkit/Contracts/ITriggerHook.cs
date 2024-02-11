@@ -1,7 +1,7 @@
 ﻿using System.Net;
-using InvvardDev.Ifttt.Models.Trigger;
+using InvvardDev.Ifttt.Toolkit.Models;
 
-namespace InvvardDev.Ifttt.Contracts;
+namespace InvvardDev.Ifttt.Toolkit.Contracts;
 
 public interface ITriggerHook
 {

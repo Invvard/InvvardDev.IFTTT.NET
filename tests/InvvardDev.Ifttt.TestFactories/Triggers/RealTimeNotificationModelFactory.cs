@@ -1,5 +1,5 @@
 using Bogus;
-using InvvardDev.Ifttt.Models.Trigger;
+using InvvardDev.Ifttt.Toolkit.Models;
 
 namespace InvvardDev.Ifttt.TestFactories.Triggers;
 
@@ -16,9 +16,8 @@ public class RealTimeNotificationModelFactory : Faker<RealTimeNotificationModel>
     {
         base.RuleSet(TriggerIdentityRuleSet,
                      rule => rule.CustomInstantiator(f => RealTimeNotificationModel.CreateTriggerIdentity(f.Random.AlphaNumeric(10))))
-            .RuleSet(UserIdRuleSet, rule => rule
-                                            .RuleFor(x => x.TriggerIdentity, _ => null)
-                                            .RuleFor(x => x.UserId, f => f.Random.AlphaNumeric(10)));
+            .RuleSet(UserIdRuleSet, rule => rule.RuleFor(x => x.TriggerIdentity, _ => null)
+                                                .RuleFor(x => x.UserId, f => f.Random.AlphaNumeric(10)));
     }
 
     public RealTimeNotificationModel CreateTriggerIdentity() => base.Generate(TriggerIdentityRuleSet);

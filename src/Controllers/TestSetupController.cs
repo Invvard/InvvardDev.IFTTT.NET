@@ -1,4 +1,4 @@
-using InvvardDev.Ifttt.Configuration;
+using InvvardDev.Ifttt.Hosting.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InvvardDev.Ifttt.Controllers;
