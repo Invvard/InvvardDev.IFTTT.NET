@@ -1,53 +1,51 @@
 using System.Reflection;
 using InvvardDev.Ifttt.Contracts;
+using InvvardDev.Ifttt.Models.Core;
 using InvvardDev.Ifttt.Models.Trigger;
 using InvvardDev.Ifttt.Toolkit.Attributes;
 
 namespace InvvardDev.Ifttt.Reflection;
 
 internal class TriggerMapper(
-    IProcessorRepository<TriggerMap> triggerRepository,
+    [FromKeyedServices(ProcessorKind.Trigger)] IProcessorService triggerService,
     [FromKeyedServices(nameof(TriggerAttributeLookup))] IAttributeLookup triggerAttributeLookup,
     [FromKeyedServices(nameof(TriggerFieldsAttributeLookup))] IAttributeLookup triggerFieldsAttributeLookup) : ITriggerMapper
 {
-    public ITriggerMapper MapTriggerProcessors()
-        => MapAttribute<TriggerAttribute>(triggerAttributeLookup.GetAnnotatedTypes(),
-                                          (attribute, type) => triggerRepository.GetProcessor(attribute.Slug) switch
-                                                               {
-                                                                   { } triggerMap when triggerMap.TriggerType == type => triggerMap,
-                                                                   not null => throw new InvalidOperationException("Trigger has already been registered"),
-                                                                   _ => new TriggerMap(attribute.Slug, type)
-                                                               });
+    public async Task<ITriggerMapper> MapTriggerProcessors()
+        => await MapAttribute<TriggerAttribute>(triggerAttributeLookup.GetAnnotatedTypes(),
+                                                async (attribute, type) => await triggerService.GetProcessor(attribute.Slug) switch
+                                                                           {
+                                                                               { } triggerMap when triggerMap.Type == type => triggerMap,
+                                                                               not null => throw new InvalidOperationException("Trigger has already been registered"),
+                                                                               _ => new ProcessorTree(attribute.Slug, type, ProcessorKind.Trigger)
+                                                                           });
 
-    public ITriggerMapper MapTriggerFields()
-        => MapAttribute<TriggerFieldsAttribute>(triggerFieldsAttributeLookup.GetAnnotatedTypes(),
-                                                (attribute, _) => triggerRepository.GetProcessor(attribute.Slug));
+    public async Task<ITriggerMapper> MapTriggerFields()
+        => await MapAttribute<TriggerFieldsAttribute>(triggerFieldsAttributeLookup.GetAnnotatedTypes(),
+                                                      (attribute, _) => triggerService.GetProcessor(attribute.Slug));
 
-    private static List<TriggerField> MapTriggerFieldProperties(Type parentType)
+    private async Task MapTriggerFieldProperties(string parentSlug, Type parentType)
     {
         var properties = parentType.GetProperties();
-        var triggerFields = new List<TriggerField>();
         foreach (var property in properties)
         {
-            if (property.GetCustomAttribute<TriggerFieldAttribute>() is { } triggerFieldAttribute)
+            if (property.GetCustomAttribute<DataFieldAttribute>() is { } triggerFieldAttribute)
             {
-                triggerFields.Add(new TriggerField(triggerFieldAttribute.Slug, property.PropertyType));
+                await triggerService.AddDataField(parentSlug, triggerFieldAttribute.Slug, property.PropertyType);
             }
         }
-
-        return triggerFields;
     }
 
-    private TriggerMapper MapAttribute<TAttribute>(IEnumerable<Type> types, Func<TAttribute, Type, TriggerMap?> getProcessor)
-        where TAttribute : Attribute
+    private async Task<TriggerMapper> MapAttribute<TAttribute>(IEnumerable<Type> types, Func<TAttribute, Type, Task<ProcessorTree?>> getProcessor)
+        where TAttribute : ProcessorAttributeBase
     {
         foreach (var type in types)
         {
             if (type.GetCustomAttribute<TAttribute>() is not { } attribute
-                || getProcessor(attribute, type) is not { } triggerMap) continue;
+                || await getProcessor(attribute, type) is not { } triggerTree) continue;
 
-            triggerMap.TriggerFields.AddRange(MapTriggerFieldProperties(type));
-            triggerRepository.UpsertProcessor(triggerMap.TriggerSlug, triggerMap);
+            await triggerService.AddOrUpdateProcessor(triggerTree);
+            await MapTriggerFieldProperties(attribute.Slug, type);
         }
 
         return this;

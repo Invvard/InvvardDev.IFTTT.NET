@@ -1,25 +1,29 @@
-﻿using InvvardDev.Ifttt.Contracts;
+using InvvardDev.Ifttt.Contracts;
+using InvvardDev.Ifttt.Models.Trigger;
 
 namespace InvvardDev.Ifttt.Services;
 
-internal abstract class ProcessorRepository<T> : IProcessorRepository<T>
+public class ProcessorRepository : IProcessorRepository
 {
-    protected readonly Dictionary<string, T> Processors = new();
-    
-    public void UpsertProcessor(string processorSlug, T processorType)
+    private readonly Dictionary<string, ProcessorTree> processors = new();
+
+    public Task AddProcessor(ProcessorTree processorTree)
     {
-        Processors[processorSlug] = processorType;
+        processors.Add(processorTree.Key, processorTree);
+        
+        return Task.CompletedTask;
     }
 
-    public T? GetProcessor(string processorSlug) 
-        => Processors.GetValueOrDefault(processorSlug);
+    public Task UpdateProcessor(ProcessorTree processorTree)
+    {
+        processors[processorTree.Key] = processorTree;
 
-    public abstract void UpsertDataField(string processorSlug, string dataFieldSlug, Type dataFieldType);
+        return Task.CompletedTask;
+    }
 
-    public abstract Type? GetDataFieldType(string processorSlug, string dataFieldSlug);
+    public Task<bool> Exists(string key)
+        => Task.FromResult(processors.ContainsKey(key));
 
-    public abstract TInterface? GetProcessorInstance<TInterface>(string processorSlug);
-
-    public IEnumerable<string> GetProcessorSlugs()
-        => Processors.Keys.ToArray();
+    public Task<ProcessorTree?> GetProcessor(string key)
+        => Task.FromResult(processors.GetValueOrDefault(key));
 }

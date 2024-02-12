@@ -2,7 +2,7 @@
 using InvvardDev.Ifttt.Contracts;
 using InvvardDev.Ifttt.Controllers;
 using InvvardDev.Ifttt.Hosting.Models;
-using InvvardDev.Ifttt.Models.Trigger;
+using InvvardDev.Ifttt.Models.Core;
 using InvvardDev.Ifttt.Reflection;
 using InvvardDev.Ifttt.Services;
 using InvvardDev.Ifttt.Toolkit.Contracts;
@@ -33,8 +33,8 @@ public static class TriggerHostingExtensions
     public static IIftttServiceBuilder AddTriggerAutoMapper(this IIftttServiceBuilder builder)
     {
         builder.Services
-               .AddSingleton<IProcessorRepository<TriggerMap>, TriggerRepository>()
                .AddTransient<ITriggerMapper, TriggerMapper>()
+               .AddKeyedTransient<IProcessorService, TriggerService>(ProcessorKind.Trigger)
                .AddKeyedTransient<IAttributeLookup, TriggerAttributeLookup>(nameof(TriggerAttributeLookup))
                .AddKeyedTransient<IAttributeLookup, TriggerFieldsAttributeLookup>(nameof(TriggerFieldsAttributeLookup))
                .AddHostedService<TriggerAutoMapperService>();

@@ -10,5 +10,5 @@ internal class TriggerFieldsAttributeLookup(IAssemblyAccessor assemblyAccessor)
         => type is { IsClass: true, IsAbstract: false }
            && typeof(object) != type
            && type.GetCustomAttributes(typeof(TriggerFieldsAttribute), true).Length > 0
-           && type.GetProperties().Any(p => p.GetCustomAttributes(typeof(TriggerFieldAttribute), true).Length > 0);
+           && type.GetProperties().Any(p => p.GetCustomAttributes(typeof(DataFieldAttribute), true).Length > 0);
 }

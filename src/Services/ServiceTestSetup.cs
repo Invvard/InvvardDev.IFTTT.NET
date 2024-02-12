@@ -1,23 +1,14 @@
+using InvvardDev.Ifttt.Contracts;
+
 namespace InvvardDev.Ifttt.Services;
-/*
-public class ServiceTestSetup(IRepository[] repositories) : IIftttSetup
+
+public class ServiceTestSetup(IProcessorService processorRepository) : IIftttSetup
 {
     public Task<object> GetSetupListing()
     {
-        if (GetRepository<ProcessorRepository<T>>() is { } processorRepository)
+        return Task.FromResult<object>(new
         {
-            var processorSlugs = processorRepository.G();
-            foreach (var processorSlug in processorSlugs)
-            {
-            
-            }
-        }
-        
-        return Task.FromResult<object>(repositories);
+            ProcessorRepository = processorRepository
+        });
     }
-
-    private IProcessorRepository<T>? GetRepository<T>()
-        where T: IProcessorRepository<T>
-        => repositories.Ge(nameof(T));
 }
-*/

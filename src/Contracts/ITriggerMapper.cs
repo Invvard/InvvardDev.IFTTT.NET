@@ -2,7 +2,7 @@ namespace InvvardDev.Ifttt.Contracts;
 
 public interface ITriggerMapper
 {
-    ITriggerMapper MapTriggerProcessors();
+    Task<ITriggerMapper> MapTriggerProcessors();
 
-    ITriggerMapper MapTriggerFields();
+    Task<ITriggerMapper> MapTriggerFields();
 }

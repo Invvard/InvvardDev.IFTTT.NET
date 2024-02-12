@@ -4,10 +4,11 @@ using InvvardDev.Ifttt.Controllers;
 using InvvardDev.Ifttt.Hosting.Middleware;
 using InvvardDev.Ifttt.Hosting.Models;
 using InvvardDev.Ifttt.Reflection;
+using InvvardDev.Ifttt.Services;
 
 namespace InvvardDev.Ifttt.Hosting;
 
-public static class IftttGenericHostingExtensions
+public static class IftttServiceHostingExtensions
 {
     public static IWebHostBuilder AddIftttToolkit(this IWebHostBuilder hostBuilder,
                                                   Action<IIftttServiceBuilder, IftttOptions> configureServicesDelegate)
@@ -69,6 +70,7 @@ public static class IftttGenericHostingExtensions
 
         builder.Services.AllowResolvingKeyedServicesAsDictionary();
         builder.Services.AddScoped<IAssemblyAccessor, AssemblyAccessor>();
+        builder.Services.AddSingleton<IProcessorRepository, ProcessorRepository>();
 
         return builder;
     }

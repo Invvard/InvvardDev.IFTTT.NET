@@ -16,7 +16,7 @@ public static class TriggerFieldsMapper
         {
             if (triggerFields.GetType()
                              .GetProperties()
-                             .SingleOrDefault(p => p.GetCustomAttribute<TriggerFieldAttribute>()?.Slug == key)
+                             .SingleOrDefault(p => p.GetCustomAttribute<DataFieldAttribute>()?.Slug == key)
                     is { CanWrite: true } property 
                 && TypeDescriptor.GetConverter(property.PropertyType).ConvertFrom(dictionary[key]) is { } result)
             {

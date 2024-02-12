@@ -1,14 +1,14 @@
+using InvvardDev.Ifttt.Models.Trigger;
+
 namespace InvvardDev.Ifttt.Contracts;
 
-public interface IProcessorRepository<T>
+public interface IProcessorRepository
 {
-    void UpsertProcessor(string processorSlug, T processorType);
+    Task AddProcessor(ProcessorTree processorTree);
     
-    void UpsertDataField(string processorSlug, string dataFieldSlug, Type dataFieldType);
+    Task UpdateProcessor(ProcessorTree processorTree);
     
-    T? GetProcessor(string processorSlug);
-
-    Type? GetDataFieldType(string processorSlug, string dataFieldSlug);
-
-    TInterface? GetProcessorInstance<TInterface>(string processorSlug);
+    Task<bool> Exists(string key);
+    
+    Task<ProcessorTree?> GetProcessor(string key);
 }
