@@ -42,7 +42,7 @@ public static class TriggerClassFactory
         {
             var propertySlug = $"property_{i}";
             type.WithProperty<string>($"Property{i}")
-                .WithCustomAttribute<TriggerFieldAttribute>($"Property{i}", propertySlug);
+                .WithCustomAttribute<DataFieldAttribute>($"Property{i}", propertySlug);
             dataFieldSlugs.Add(propertySlug);
         }
 

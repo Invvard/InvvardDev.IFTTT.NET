@@ -8,6 +8,8 @@ public interface IProcessorService
     
     Task AddDataField(string processorSlug, string dataFieldSlug, Type dataFieldType);
     
+    Task<bool> Exists(string processorSlug);
+    
     Task<ProcessorTree?> GetProcessor(string processorSlug);
 
     Task<Type?> GetDataFieldType(string processorSlug, string dataFieldSlug);

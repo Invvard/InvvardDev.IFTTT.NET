@@ -6,22 +6,18 @@ namespace InvvardDev.Ifttt.Services;
 
 internal abstract class ProcessorService(IProcessorRepository processorRepository) : IProcessorService
 {
-    private string GetProcessorKey(string processorSlug) => $"{Kind}:{processorSlug}";
-
     protected abstract ProcessorKind Kind { get; }
 
     public async Task AddOrUpdateProcessor(ProcessorTree processorTree)
     {
-        await (await GetProcessor(processorTree.Key) switch
+        await (await GetProcessor(processorTree.Slug) switch
                {
+                   null => processorRepository.AddProcessor(processorTree),
                    { } existingProcessorTree when existingProcessorTree.Type == processorTree.Type
                        => processorRepository.UpdateProcessor(processorTree),
-                   null
-                       => processorRepository.AddProcessor(processorTree),
                    { } pt when pt.Type != processorTree.Type
                        => throw new InvalidOperationException($"Conflict: '{pt.Kind}' processor with slug '{pt.Slug}' already exists (Type is '{pt.Type}')."),
-                   _
-                       => throw new ArgumentOutOfRangeException(nameof(processorTree))
+                   _ => throw new ArgumentOutOfRangeException(nameof(processorTree))
                });
     }
 
@@ -30,7 +26,8 @@ internal abstract class ProcessorService(IProcessorRepository processorRepositor
         switch (await GetProcessor(processorSlug))
         {
             case { } processorTree when processorTree.DataFields.ContainsKey(dataFieldSlug) && processorTree.DataFields[dataFieldSlug] != dataFieldType:
-                throw new InvalidOperationException($"Conflict: '{processorTree.Kind}' processor with slug '{processorTree.Slug}' already has a data field with slug '{dataFieldSlug}' with a different type '{processorTree.DataFields[dataFieldSlug]}'.");
+                throw new
+                    InvalidOperationException($"Conflict: '{processorTree.Kind}' processor with slug '{processorTree.Slug}' already has a data field with slug '{dataFieldSlug}' with a different type '{processorTree.DataFields[dataFieldSlug]}'.");
             case { } processorTree when processorTree.DataFields.ContainsKey(dataFieldSlug) && processorTree.DataFields[dataFieldSlug] == dataFieldType:
                 // Nothing to do
                 break;
@@ -42,6 +39,9 @@ internal abstract class ProcessorService(IProcessorRepository processorRepositor
                 throw new InvalidOperationException($"Processor with slug '{processorSlug}' does not exist.");
         }
     }
+
+    public Task<bool> Exists(string processorSlug)
+        => processorRepository.Exists(Kind.GetProcessorKey(processorSlug));
 
     public async Task<Type?> GetDataFieldType(string processorSlug, string dataFieldSlug)
     {
@@ -55,7 +55,7 @@ internal abstract class ProcessorService(IProcessorRepository processorRepositor
     }
 
     public async Task<ProcessorTree?> GetProcessor(string processorSlug)
-        => await processorRepository.GetProcessor(GetProcessorKey(processorSlug));
+        => await processorRepository.GetProcessor(Kind.GetProcessorKey(processorSlug));
 
     public async Task<TInterface?> GetProcessorInstance<TInterface>(string processorSlug)
     {

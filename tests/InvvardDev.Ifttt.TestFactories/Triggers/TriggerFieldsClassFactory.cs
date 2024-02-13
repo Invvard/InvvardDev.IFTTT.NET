@@ -11,7 +11,7 @@ public static class TriggerFieldsClassFactory
         propertyName = propertyName.NewName();
         return DefineType.Called(typeName.NewName())
                          .WithProperty<string>(propertyName.NewName())
-                         .WithCustomAttribute<TriggerFieldAttribute>(propertyName, $"{propertyName}_slug")
+                         .WithCustomAttribute<DataFieldAttribute>(propertyName, $"{propertyName}_slug")
                          .Build();
     }
 
@@ -32,7 +32,7 @@ public static class TriggerFieldsClassFactory
         return DefineType.Called(typeName)
                          .WithCustomAttribute<TriggerFieldsAttribute>(typeName, triggerSlug.NewName())
                          .WithProperty<string>(propertyName)
-                         .WithCustomAttribute<TriggerFieldAttribute>(propertyName, triggerFieldSlug)
+                         .WithCustomAttribute<DataFieldAttribute>(propertyName, triggerFieldSlug)
                          .Build();
     }
 }

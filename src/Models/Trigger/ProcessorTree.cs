@@ -4,7 +4,7 @@ namespace InvvardDev.Ifttt.Models.Trigger;
 
 public class ProcessorTree(string processorSlug, Type processorType, ProcessorKind kind)
 {
-    internal string Key => $"{Kind}:{Slug}";
+    internal string Key => Kind.GetProcessorKey(Slug);
     
     public string Slug { get; } = processorSlug;
     

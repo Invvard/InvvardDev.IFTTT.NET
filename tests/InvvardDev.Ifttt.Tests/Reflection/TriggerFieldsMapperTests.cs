@@ -38,13 +38,13 @@ public class TriggerFieldsMapperTests
     
     private class WatchedNugetTriggerFields : TriggerFieldsBase
     {
-        [TriggerField("nuget_package_name")]
+        [DataField("nuget_package_name")]
         public string NugetPackageName { get; init; } = default!;
 
-        [TriggerField("updated_version")]
+        [DataField("updated_version")]
         public string UpdatedVersion { get; init; } = default!;
 
-        [TriggerField("updated_date")]
+        [DataField("updated_date")]
         public DateTime UpdatedDate { get; init; }
     }
 }

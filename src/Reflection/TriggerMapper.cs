@@ -13,16 +13,23 @@ internal class TriggerMapper(
 {
     public async Task<ITriggerMapper> MapTriggerProcessors()
         => await MapAttribute<TriggerAttribute>(triggerAttributeLookup.GetAnnotatedTypes(),
-                                                async (attribute, type) => await triggerService.GetProcessor(attribute.Slug) switch
-                                                                           {
-                                                                               { } triggerMap when triggerMap.Type == type => triggerMap,
-                                                                               not null => throw new InvalidOperationException("Trigger has already been registered"),
-                                                                               _ => new ProcessorTree(attribute.Slug, type, ProcessorKind.Trigger)
-                                                                           });
+                                                async (triggerSlug, type) => await triggerService.GetProcessor(triggerSlug) switch
+                                                                             {
+                                                                                 null => false,
+                                                                                 { } existingProcessorTree when existingProcessorTree.Type == type
+                                                                                     => true,
+                                                                                 { } pt when pt.Type != type
+                                                                                     => throw new InvalidOperationException($"Conflict: 'Trigger' processor with slug '{triggerSlug}' already exists (Type is '{pt.Type}')."),
+                                                                                 _ => throw new ArgumentOutOfRangeException()
+                                                                             });
 
     public async Task<ITriggerMapper> MapTriggerFields()
         => await MapAttribute<TriggerFieldsAttribute>(triggerFieldsAttributeLookup.GetAnnotatedTypes(),
-                                                      (attribute, _) => triggerService.GetProcessor(attribute.Slug));
+                                                      async (triggerSlug, _) => await triggerService.Exists(triggerSlug) switch
+                                                                                {
+                                                                                    true => true,
+                                                                                    false => throw new InvalidOperationException($"There is no trigger with slug '{triggerSlug}' registered.")
+                                                                                });
 
     private async Task MapTriggerFieldProperties(string parentSlug, Type parentType)
     {
@@ -36,15 +43,18 @@ internal class TriggerMapper(
         }
     }
 
-    private async Task<TriggerMapper> MapAttribute<TAttribute>(IEnumerable<Type> types, Func<TAttribute, Type, Task<ProcessorTree?>> getProcessor)
+    private async Task<TriggerMapper> MapAttribute<TAttribute>(IEnumerable<Type> types, Func<string, Type, Task<bool>> processorExists)
         where TAttribute : ProcessorAttributeBase
     {
         foreach (var type in types)
         {
-            if (type.GetCustomAttribute<TAttribute>() is not { } attribute
-                || await getProcessor(attribute, type) is not { } triggerTree) continue;
+            if (type.GetCustomAttribute<TAttribute>() is not { } attribute) continue;
 
-            await triggerService.AddOrUpdateProcessor(triggerTree);
+            if (await processorExists(attribute.Slug, type) is false)
+            {
+                await triggerService.AddOrUpdateProcessor(new ProcessorTree(attribute.Slug, type, ProcessorKind.Trigger));
+            }
+
             await MapTriggerFieldProperties(attribute.Slug, type);
         }
 
