@@ -9,17 +9,41 @@ namespace InvvardDev.Ifttt.Controllers;
 [Route(IftttConstants.TestingApiPath)]
 [Consumes("application/json")]
 [Produces("application/json")]
-public class TestSetupController(ITestSetup testSetup) : ControllerBase
+public class TestSetupController : ControllerBase
 {
+    private readonly ITestSetup testSetup;
+    private readonly ILogger<TestSetupController> logger;
+
+    public TestSetupController(ITestSetup testSetup, ILogger<TestSetupController> logger)
+    {
+        ArgumentNullException.ThrowIfNull(testSetup);
+        this.testSetup = testSetup;
+        this.logger = logger;
+    }
+
     [HttpPost]
     public async Task<IActionResult> SetupTest()
     {
-        var sample = await testSetup.PrepareSetupListing();
+        try
+        {
+            var sample = await testSetup.PrepareSetupListing();
 
-        sample.SkimEmptyProcessors();
+            sample.SkimEmptyProcessors();
 
-        var payload = TopLevelMessageModel<Samples>.Serialize(sample);
-        
-        return await Task.FromResult<IActionResult>(Ok(payload));
+            var payload = TopLevelMessageModel<Samples>.Serialize(sample);
+
+            return await Task.FromResult<IActionResult>(Ok(payload));
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Error while setting up test");
+
+            var errorMessages = TopLevelErrorModel.Serialize(new[]
+                                         {
+                                            new ErrorMessage($"Error while setting up test: {ex.Message}")
+                                         });
+
+            return await Task.FromResult<IActionResult>(Problem(errorMessages));
+        }
     }
 }

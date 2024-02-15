@@ -8,6 +8,7 @@ public class TestSetup : ITestSetup
     public Task<Samples> PrepareSetupListing()
     {
         var samples = new Samples();
+        
         samples.Triggers
                .AddProcessor("nuget_package_updated")
                .AddDataField("nuget_package_updated", "nuget_package_to_watch", "data")
