@@ -24,7 +24,8 @@ public class TestSetupController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> SetupTest()
     {
-        try
+        OkObjectResult? test = null;
+
         {
             var sample = await testSetup.PrepareSetupListing();
 
