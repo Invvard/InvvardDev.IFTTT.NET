@@ -55,7 +55,7 @@ internal abstract class ProcessorService(IProcessorRepository processorRepositor
     }
 
     public async Task<ProcessorTree?> GetProcessor(string processorSlug)
-        => await processorRepository.GetProcessor(Kind.GetProcessorKey(processorSlug));
+        => await processorRepository.GetProcessorByKey(Kind.GetProcessorKey(processorSlug));
 
     public async Task<TInterface?> GetProcessorInstance<TInterface>(string processorSlug)
     {

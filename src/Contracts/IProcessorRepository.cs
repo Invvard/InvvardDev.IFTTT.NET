@@ -1,3 +1,4 @@
+using InvvardDev.Ifttt.Models.Core;
 using InvvardDev.Ifttt.Models.Trigger;
 
 namespace InvvardDev.Ifttt.Contracts;
@@ -10,5 +11,9 @@ public interface IProcessorRepository
     
     Task<bool> Exists(string key);
     
-    Task<ProcessorTree?> GetProcessor(string key);
+    Task<ProcessorTree?> GetProcessorByKey(string key);
+    
+    Task<IEnumerable<ProcessorTree>> FilterProcessors(Func<ProcessorTree, bool> predicate);
+    
+    Task<IEnumerable<ProcessorTree>> GetAllProcessors();
 }

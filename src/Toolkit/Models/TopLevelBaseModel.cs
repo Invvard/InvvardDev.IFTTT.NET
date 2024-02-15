@@ -9,6 +9,7 @@ public class TopLevelBaseModel
         = new()
           {
               PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower,
+              DictionaryKeyPolicy = JsonNamingPolicy.SnakeCaseLower, 
               DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
               PropertyNameCaseInsensitive = true
           };

@@ -20,7 +20,7 @@ public class ProcessorServiceTests
         var expectedTriggerTree = new ProcessorTree(expectedTriggerSlug, expectedTriggerType, ProcessorKind.Trigger);
         var processorRepository = Mock.Of<IProcessorRepository>();
         Mock.Get(processorRepository)
-            .Setup(r => r.GetProcessor(It.IsAny<string>()))
+            .Setup(r => r.GetProcessorByKey(It.IsAny<string>()))
             .ReturnsAsync((ProcessorTree?)null);
 
         var sut = new TriggerService(processorRepository);
@@ -47,7 +47,7 @@ public class ProcessorServiceTests
         var triggerTree = new ProcessorTree(expectedTriggerSlug, expectedTriggerType, ProcessorKind.Trigger);
 
         var processorRepository = Mock.Of<IProcessorRepository>();
-        Mock.Get(processorRepository).Setup(r => r.GetProcessor(It.IsAny<string>())).ReturnsAsync(triggerTree);
+        Mock.Get(processorRepository).Setup(r => r.GetProcessorByKey(It.IsAny<string>())).ReturnsAsync(triggerTree);
 
         var sut = new TriggerService(processorRepository);
 
@@ -80,7 +80,7 @@ public class ProcessorServiceTests
         var triggerTree = new ProcessorTree(expectedTriggerSlug, anyType, ProcessorKind.Trigger);
 
         var processorRepository = Mock.Of<IProcessorRepository>();
-        Mock.Get(processorRepository).Setup(r => r.GetProcessor(triggerTree.Key)).ReturnsAsync(triggerTree);
+        Mock.Get(processorRepository).Setup(r => r.GetProcessorByKey(triggerTree.Key)).ReturnsAsync(triggerTree);
 
         var sut = new TriggerService(processorRepository);
 
@@ -107,7 +107,7 @@ public class ProcessorServiceTests
 
         var processorRepository = Mock.Of<IProcessorRepository>();
         Mock.Get(processorRepository)
-            .Setup(r => r.GetProcessor(It.IsAny<string>()))
+            .Setup(r => r.GetProcessorByKey(It.IsAny<string>()))
             .ReturnsAsync(new ProcessorTree(expectedTriggerSlug, triggerType, ProcessorKind.Trigger));
 
         var sut = new TriggerService(processorRepository);
@@ -138,7 +138,7 @@ public class ProcessorServiceTests
                           };
         var processorRepository = Mock.Of<IProcessorRepository>();
         Mock.Get(processorRepository)
-            .Setup(r => r.GetProcessor(It.IsAny<string>()))
+            .Setup(r => r.GetProcessorByKey(It.IsAny<string>()))
             .ReturnsAsync(triggerTree);
 
         var sut = new TriggerService(processorRepository);
@@ -168,7 +168,7 @@ public class ProcessorServiceTests
                           };
         var processorRepository = Mock.Of<IProcessorRepository>();
         Mock.Get(processorRepository)
-            .Setup(r => r.GetProcessor(It.IsAny<string>()))
+            .Setup(r => r.GetProcessorByKey(It.IsAny<string>()))
             .ReturnsAsync(triggerTree);
 
         var sut = new TriggerService(processorRepository);
@@ -192,7 +192,7 @@ public class ProcessorServiceTests
         var newTriggerFieldType = TriggerFieldsClassFactory.MatchingTriggerFieldsModel();
 
         var processorRepository = Mock.Of<IProcessorRepository>();
-        Mock.Get(processorRepository).Setup(r => r.GetProcessor(It.IsAny<string>())).ReturnsAsync((ProcessorTree?)null);
+        Mock.Get(processorRepository).Setup(r => r.GetProcessorByKey(It.IsAny<string>())).ReturnsAsync((ProcessorTree?)null);
 
         var sut = new TriggerService(processorRepository);
 
@@ -253,7 +253,7 @@ public class ProcessorServiceTests
 
         var processorRepository = Mock.Of<IProcessorRepository>();
         Mock.Get(processorRepository)
-            .Setup(r => r.GetProcessor(It.IsAny<string>()))
+            .Setup(r => r.GetProcessorByKey(It.IsAny<string>()))
             .ReturnsAsync(new ProcessorTree(expectedTriggerSlug, typeof(string), ProcessorKind.Trigger)
                           {
                               DataFields = { { expectedDataFieldSlug, expectedDataFieldType } }
@@ -277,7 +277,7 @@ public class ProcessorServiceTests
 
         var processorRepository = Mock.Of<IProcessorRepository>();
         Mock.Get(processorRepository)
-            .Setup(r => r.GetProcessor(It.IsAny<string>()))
+            .Setup(r => r.GetProcessorByKey(It.IsAny<string>()))
             .ReturnsAsync((ProcessorTree?)null);
 
         var sut = new TriggerService(processorRepository);
@@ -298,7 +298,7 @@ public class ProcessorServiceTests
 
         var processorRepository = Mock.Of<IProcessorRepository>();
         Mock.Get(processorRepository)
-            .Setup(r => r.GetProcessor(It.IsAny<string>()))
+            .Setup(r => r.GetProcessorByKey(It.IsAny<string>()))
             .ReturnsAsync(new ProcessorTree(expectedTriggerSlug, typeof(string), ProcessorKind.Trigger)
                           {
                               DataFields = { { "data_field_slug", typeof(string) } }
@@ -323,7 +323,7 @@ public class ProcessorServiceTests
 
         var processorRepository = Mock.Of<IProcessorRepository>();
         Mock.Get(processorRepository)
-            .Setup(r => r.GetProcessor(It.IsAny<string>()))
+            .Setup(r => r.GetProcessorByKey(It.IsAny<string>()))
             .ReturnsAsync(expectedTriggerTree);
 
         var sut = new TriggerService(processorRepository);
@@ -343,7 +343,7 @@ public class ProcessorServiceTests
 
         var processorRepository = Mock.Of<IProcessorRepository>();
         Mock.Get(processorRepository)
-            .Setup(r => r.GetProcessor(It.IsAny<string>()))
+            .Setup(r => r.GetProcessorByKey(It.IsAny<string>()))
             .ReturnsAsync((ProcessorTree?)null);
 
         var sut = new TriggerService(processorRepository);
@@ -365,7 +365,7 @@ public class ProcessorServiceTests
 
         var processorRepository = Mock.Of<IProcessorRepository>();
         Mock.Get(processorRepository)
-            .Setup(r => r.GetProcessor(It.IsAny<string>()))
+            .Setup(r => r.GetProcessorByKey(It.IsAny<string>()))
             .ReturnsAsync(expectedTriggerTree);
 
         var sut = new TriggerService(processorRepository);
@@ -385,7 +385,7 @@ public class ProcessorServiceTests
 
         var processorRepository = Mock.Of<IProcessorRepository>();
         Mock.Get(processorRepository)
-            .Setup(r => r.GetProcessor(It.IsAny<string>()))
+            .Setup(r => r.GetProcessorByKey(It.IsAny<string>()))
             .ReturnsAsync((ProcessorTree?)null);
 
         var sut = new TriggerService(processorRepository);
@@ -407,7 +407,7 @@ public class ProcessorServiceTests
 
         var processorRepository = Mock.Of<IProcessorRepository>();
         Mock.Get(processorRepository)
-            .Setup(r => r.GetProcessor(It.IsAny<string>()))
+            .Setup(r => r.GetProcessorByKey(It.IsAny<string>()))
             .ReturnsAsync(expectedTriggerTree);
 
         var sut = new TriggerService(processorRepository);

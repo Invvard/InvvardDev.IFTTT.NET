@@ -24,6 +24,15 @@ public class ProcessorRepository : IProcessorRepository
     public Task<bool> Exists(string key)
         => Task.FromResult(processors.ContainsKey(key));
 
-    public Task<ProcessorTree?> GetProcessor(string key)
+    public Task<ProcessorTree?> GetProcessorByKey(string key)
         => Task.FromResult(processors.GetValueOrDefault(key));
+
+    public Task<IEnumerable<ProcessorTree>> FilterProcessors(Func<ProcessorTree, bool> predicate)
+        => Task.FromResult(GetProcessorsTrees().Where(predicate));
+
+    public Task<IEnumerable<ProcessorTree>> GetAllProcessors() 
+        => Task.FromResult(GetProcessorsTrees());
+    
+    private IEnumerable<ProcessorTree> GetProcessorsTrees() 
+        => processors.Select(p => p.Value);
 }
