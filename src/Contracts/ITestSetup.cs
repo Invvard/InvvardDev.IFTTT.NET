@@ -4,5 +4,5 @@ namespace InvvardDev.Ifttt.Contracts;
 
 public interface ITestSetup
 {
-    Task<Samples> PrepareSetupListing();
+    Task<ProcessorPayload> PrepareSetupListing();
 }

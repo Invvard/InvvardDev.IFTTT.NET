@@ -6,12 +6,13 @@ using InvvardDev.Ifttt.Toolkit.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
-// ReSharper disable NullableWarningSuppressionIsUsed
 
 namespace InvvardDev.Ifttt.Tests.Controllers;
 
 public class TestSetupControllerTests
 {
+    private static JsonSerializerOptions JsonSerializerOptions => new() { PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower, DictionaryKeyPolicy = JsonNamingPolicy.SnakeCaseLower, };
+
     [Fact(DisplayName = "TestSetupController when ITestSetup has no registered implementation service should throw")]
     public void TestSetupController_WhenITestSetupHasNoRegisteredImplementationService_ShouldThrow()
     {
@@ -32,23 +33,20 @@ public class TestSetupControllerTests
         var testSetup = Mock.Of<ITestSetup>();
         Mock.Get(testSetup)
             .Setup(x => x.PrepareSetupListing())
-            .ReturnsAsync(new Samples());
+            .ReturnsAsync(new ProcessorPayload());
 
         var logger = Mock.Of<ILogger<TestSetupController>>();
 
         var sut = new TestSetupController(testSetup, logger);
 
-        var expectedBody = new TopLevelMessageModel<Samples>(new Samples());
-        var expectedBodyJson = JsonSerializer.Serialize(expectedBody);
-        
+        var expectedBody = new TopLevelMessageModel<SamplesPayload>(new SamplesPayload());
+        expectedBody.Data.SkimEmptyProcessors();
+        var expectedBodyJson = JsonSerializer.Serialize(expectedBody, JsonSerializerOptions);
+
         // Act
         var result = await sut.SetupTest();
 
         // Assert
-        result.Should().BeOfType<OkObjectResult>().Which.Value.Should().Be(expectedBodyJson);
-        var actualBody = JsonSerializer.Deserialize<TopLevelMessageModel<Samples>>(((OkObjectResult)result).Value!.ToString());
-        var okResult = result as OkObjectResult;
-        okResult.Value.Should().BeOfType<string>();
-        okResult.Value.Should().Be("{\"data\":{},\"errors\":null}");
+        result.Should().NotBeNull().And.Subject.Should().BeOfType<OkObjectResult>().Subject.Value.Should().Be(expectedBodyJson);
     }
 }

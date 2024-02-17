@@ -68,7 +68,6 @@ public static class IftttServiceHostingExtensions
         apiBuilder.AddApplicationPart(Assembly.GetAssembly(typeof(StatusController)) ?? throw new InvalidOperationException())
                   .AddControllersAsServices();
 
-        builder.Services.AllowResolvingKeyedServicesAsDictionary();
         builder.Services.AddScoped<IAssemblyAccessor, AssemblyAccessor>();
         builder.Services.AddSingleton<IProcessorRepository, ProcessorRepository>();
 

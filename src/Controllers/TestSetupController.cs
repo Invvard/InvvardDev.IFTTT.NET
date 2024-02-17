@@ -24,27 +24,21 @@ public class TestSetupController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> SetupTest()
     {
-        OkObjectResult? test = null;
-
+        try
         {
-            var sample = await testSetup.PrepareSetupListing();
+            var processors = await testSetup.PrepareSetupListing();
 
-            sample.SkimEmptyProcessors();
+            var payload = TopLevelMessageModel<SamplesPayload>.Serialize(new SamplesPayload(processors));
 
-            var payload = TopLevelMessageModel<Samples>.Serialize(sample);
-
-            return await Task.FromResult<IActionResult>(Ok(payload));
+            return Ok(payload);
         }
         catch (Exception ex)
         {
             logger.LogError(ex, "Error while setting up test");
 
-            var errorMessages = TopLevelErrorModel.Serialize(new[]
-                                         {
-                                            new ErrorMessage($"Error while setting up test: {ex.Message}")
-                                         });
+            var errorMessages = TopLevelErrorModel.Serialize(new[] { new ErrorMessage($"Error while setting up test: {ex.Message}") });
 
-            return await Task.FromResult<IActionResult>(Problem(errorMessages));
+            return Problem(errorMessages);
         }
     }
 }
