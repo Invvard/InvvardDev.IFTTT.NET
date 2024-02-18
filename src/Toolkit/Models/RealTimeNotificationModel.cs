@@ -1,7 +1,10 @@
-﻿namespace InvvardDev.Ifttt.Toolkit.Models;
+﻿using System.Text.Json.Serialization;
+
+namespace InvvardDev.Ifttt.Toolkit.Models;
 
 public class RealTimeNotificationModel
 {
+    [JsonConstructor]
     public RealTimeNotificationModel()
     {
     }

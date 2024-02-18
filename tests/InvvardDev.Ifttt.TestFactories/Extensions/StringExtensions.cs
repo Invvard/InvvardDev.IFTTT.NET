@@ -1,6 +1,6 @@
 using Bogus;
 
-namespace InvvardDev.Ifttt.TestFactories.Extensions;
+namespace InvvardDev.Ifttt.TestFactories;
 
 internal static class StringExtensions
 {

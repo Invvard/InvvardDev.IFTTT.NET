@@ -1,4 +1,3 @@
-using InvvardDev.Ifttt.TestFactories.Extensions;
 using InvvardDev.Ifttt.TestFactories.Shared;
 using InvvardDev.Ifttt.Toolkit.Attributes;
 

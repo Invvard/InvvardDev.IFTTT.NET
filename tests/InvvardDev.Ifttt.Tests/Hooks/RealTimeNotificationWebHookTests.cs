@@ -17,7 +17,8 @@ public class RealTimeNotificationWebHookTests
         // Arrange
         var capturedRequest = new List<HttpRequestMessage>();
         var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
-        mockHttpMessageHandler.Protected().As<IMockHttpClient>()
+        mockHttpMessageHandler.Protected()
+                              .As<IMockHttpClient>()
                               .Setup(x => x.SendAsync(Capture.In(capturedRequest),
                                                       It.IsAny<CancellationToken>()))
                               .ReturnsAsync(new HttpResponseMessage
@@ -39,11 +40,8 @@ public class RealTimeNotificationWebHookTests
         // Assert
         response.Should().Be(HttpStatusCode.OK);
         capturedRequest.Should().ContainSingle().Which.Content.Should().NotBeNull();
-        var actualRequest = capturedRequest[0].Content!;
-        var json = await actualRequest.ReadAsStringAsync();
-        var actualContent = TopLevelMessageModel<List<RealTimeNotificationModel>>.Deserialize(json);
-        actualContent.Should().NotBeNull();
-        actualContent.Data.Should().BeEquivalentTo(payload);
+        var actualContent = TopLevelMessageModel<List<RealTimeNotificationModel>>.Deserialize(await capturedRequest[0].Content!.ReadAsStringAsync());
+        actualContent.Should().NotBeNull().And.BeOfType<TopLevelMessageModel<List<RealTimeNotificationModel>>>().Which.Data.Should().BeEquivalentTo(payload);
     }
 
     // Advised way in order to capture on a ProtectedSetup:

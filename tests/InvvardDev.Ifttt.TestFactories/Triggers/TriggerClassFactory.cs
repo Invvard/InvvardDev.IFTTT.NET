@@ -1,5 +1,4 @@
 ﻿using InvvardDev.Ifttt.Contracts;
-using InvvardDev.Ifttt.TestFactories.Extensions;
 using InvvardDev.Ifttt.TestFactories.Shared;
 using InvvardDev.Ifttt.Toolkit.Attributes;
 using InvvardDev.Ifttt.Toolkit.Contracts;
