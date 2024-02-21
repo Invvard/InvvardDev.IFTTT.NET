@@ -1,9 +1,12 @@
 using InvvardDev.Ifttt.Hosting.Models;
+using Microsoft.Extensions.Options;
 
 namespace InvvardDev.Ifttt.Hosting.Middleware;
 
-internal class ServiceKeyMiddleware(RequestDelegate next, string serviceKey)
+internal class ServiceKeyMiddleware(RequestDelegate next, IOptions<IftttOptions> options)
 {
+    private readonly string serviceKey = options.Value.ServiceKey ?? throw new ArgumentNullException(nameof(options));
+
     public async Task InvokeAsync(HttpContext context)
     {
         if (context.Request.Headers.TryGetValue(IftttConstants.ServiceKeyHeader, out var receivedServiceKey)
