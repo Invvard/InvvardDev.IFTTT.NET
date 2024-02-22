@@ -1,36 +1,31 @@
-using InvvardDev.Ifttt.Trigger;
+using InvvardDev.Ifttt.Hosting;
+using InvvardDev.Ifttt.Trigger.UpdatedNuget.Core;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
 
-ConfigureServices(builder.Services);
+builder.Services.AddSwaggerGen();
 
-var webApp = builder.Build();
+builder.Services
+       .AddIftttToolkit(options => options.ServiceKey = "your-service")
+       .AddTestSetupService<TestSetup>()
+       .AddTriggerAutoMapper()
+       .AddTriggers();
 
-Configure(webApp);
+var app = builder.Build();
 
-webApp.Run();
+app.UseRouting();
 
-void ConfigureServices(IServiceCollection services)
+app.ConfigureIftttToolkit()
+   //.UseServiceKeyAuthentication()
+   .ConfigureTriggers();
+
+if (app.Environment.IsDevelopment())
 {
-    services.AddEndpointsApiExplorer();
-    services.AddSwaggerGen();
-    services.AddControllers();
-
-    services.AddTriggers();
+    app.UseSwagger()
+       .UseSwaggerUI();
 }
 
-void Configure(WebApplication app)
-{
-    if (app.Environment.IsDevelopment())
-    {
-        app.UseSwagger();
-        app.UseSwaggerUI();
-    }
-    app.UseHttpsRedirection();
-    app.MapControllers();
-    
-    app.ConfigureTriggers();
-}
+app.Run();

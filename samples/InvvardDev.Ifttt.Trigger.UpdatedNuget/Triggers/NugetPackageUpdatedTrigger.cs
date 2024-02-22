@@ -1,8 +1,9 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using InvvardDev.Ifttt.Trigger.Attributes;
-using InvvardDev.Ifttt.Trigger.Contracts;
-using InvvardDev.Ifttt.Trigger.Models;
+using InvvardDev.Ifttt.Toolkit;
+using InvvardDev.Ifttt.Toolkit.Attributes;
+using InvvardDev.Ifttt.Toolkit.Contracts;
+using InvvardDev.Ifttt.Toolkit.Models;
 using InvvardDev.Ifttt.Trigger.UpdatedNuget.Models;
 
 namespace InvvardDev.Ifttt.Trigger.UpdatedNuget.Triggers;
