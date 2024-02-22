@@ -9,9 +9,10 @@ namespace InvvardDev.Ifttt.Reflection;
 internal class TriggerMapper(
     [FromKeyedServices(ProcessorKind.Trigger)] IProcessorService triggerService,
     [FromKeyedServices(nameof(TriggerAttributeLookup))] IAttributeLookup triggerAttributeLookup,
-    [FromKeyedServices(nameof(TriggerFieldsAttributeLookup))] IAttributeLookup triggerFieldsAttributeLookup) : ITriggerMapper
+    [FromKeyedServices(nameof(TriggerFieldsAttributeLookup))] IAttributeLookup triggerFieldsAttributeLookup,
+    ILogger<TriggerMapper> logger) : ITriggerMapper
 {
-    public async Task<ITriggerMapper> MapTriggerProcessors()
+    public async Task MapTriggerProcessors(CancellationToken stoppingToken)
         => await MapAttribute<TriggerAttribute>(triggerAttributeLookup.GetAnnotatedTypes(),
                                                 async (triggerSlug, type) => await triggerService.GetProcessor(triggerSlug) switch
                                                                              {
@@ -19,17 +20,20 @@ internal class TriggerMapper(
                                                                                  { } existingProcessorTree when existingProcessorTree.Type == type
                                                                                      => true,
                                                                                  { } pt when pt.Type != type
-                                                                                     => throw new InvalidOperationException($"Conflict: 'Trigger' processor with slug '{triggerSlug}' already exists (Type is '{pt.Type}')."),
+                                                                                     => throw new
+                                                                                         InvalidOperationException($"Conflict: 'Trigger' processor with slug '{triggerSlug}' already exists (Type is '{pt.Type}')."),
                                                                                  _ => throw new ArgumentOutOfRangeException()
-                                                                             });
+                                                                             },
+                                                stoppingToken);
 
-    public async Task<ITriggerMapper> MapTriggerFields()
+    public async Task MapTriggerFields(CancellationToken stoppingToken)
         => await MapAttribute<TriggerFieldsAttribute>(triggerFieldsAttributeLookup.GetAnnotatedTypes(),
                                                       async (triggerSlug, _) => await triggerService.Exists(triggerSlug) switch
                                                                                 {
                                                                                     true => true,
                                                                                     false => throw new InvalidOperationException($"There is no trigger with slug '{triggerSlug}' registered.")
-                                                                                });
+                                                                                },
+                                                      stoppingToken);
 
     private async Task MapTriggerFieldProperties(string parentSlug, Type parentType)
     {
@@ -43,19 +47,32 @@ internal class TriggerMapper(
         }
     }
 
-    private async Task<TriggerMapper> MapAttribute<TAttribute>(IEnumerable<Type> types, Func<string, Type, Task<bool>> processorExists)
+    private async Task<TriggerMapper> MapAttribute<TAttribute>(IEnumerable<Type> types, Func<string, Type, Task<bool>> processorExists, CancellationToken stoppingToken = default)
         where TAttribute : ProcessorAttributeBase
     {
-        foreach (var type in types)
+        stoppingToken.ThrowIfCancellationRequested();
+
+        try
         {
-            if (type.GetCustomAttribute<TAttribute>() is not { } attribute) continue;
-
-            if (await processorExists(attribute.Slug, type) is false)
+            foreach (var type in types)
             {
-                await triggerService.AddOrUpdateProcessor(new ProcessorTree(attribute.Slug, type, ProcessorKind.Trigger));
-            }
+                if (type.GetCustomAttribute<TAttribute>() is not { } attribute) continue;
 
-            await MapTriggerFieldProperties(attribute.Slug, type);
+                if (await processorExists(attribute.Slug, type) is false)
+                {
+                    await triggerService.AddOrUpdateProcessor(new ProcessorTree(attribute.Slug, type, ProcessorKind.Trigger));
+                }
+
+                await MapTriggerFieldProperties(attribute.Slug, type);
+            }
+        }
+        catch (OperationCanceledException ocex)
+        {
+            logger.LogInformation(ocex, "Mapping for attribute '{AttributeType}' is cancelled.", typeof(TAttribute));
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Mapping for attribute '{AttributeType}' is failed.", typeof(TAttribute));
         }
 
         return this;

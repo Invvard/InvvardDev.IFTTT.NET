@@ -30,25 +30,26 @@ public static class IftttServiceHostingExtensions
         return AddIftttToolkitCore(builder);
     }
 
-    private static IIftttServiceBuilder AddIftttToolkitCore(IIftttServiceBuilder builder)
-    {
-        var apiBuilder = builder.Services.AddControllers();
-
-        apiBuilder.AddApplicationPart(Assembly.GetAssembly(typeof(StatusController)) ?? throw new InvalidOperationException())
-                  .AddControllersAsServices();
-
-        builder.Services.AddScoped<IAssemblyAccessor, AssemblyAccessor>();
-        builder.Services.AddSingleton<IProcessorRepository, ProcessorRepository>();
-
-        return builder;
-    }
-
     public static IIftttServiceBuilder AddTestSetupService<T>(this IIftttServiceBuilder builder)
         where T : class, ITestSetup
     {
         ArgumentNullException.ThrowIfNull(builder);
 
         builder.Services.AddScoped<ITestSetup, T>();
+
+        return builder;
+    }
+
+    private static IIftttServiceBuilder AddIftttToolkitCore(IIftttServiceBuilder builder)
+    {
+        builder.Services
+               .AddControllers()
+               .AddApplicationPart(Assembly.GetAssembly(typeof(StatusController)) ?? throw new InvalidOperationException())
+               .AddControllersAsServices();
+
+        builder.Services
+               .AddScoped<IAssemblyAccessor, AssemblyAccessor>()
+               .AddSingleton<IProcessorRepository, ProcessorRepository>();
 
         return builder;
     }

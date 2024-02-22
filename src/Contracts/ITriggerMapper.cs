@@ -2,7 +2,7 @@ namespace InvvardDev.Ifttt.Contracts;
 
 public interface ITriggerMapper
 {
-    Task<ITriggerMapper> MapTriggerProcessors();
+    Task MapTriggerProcessors(CancellationToken stoppingToken);
 
-    Task<ITriggerMapper> MapTriggerFields();
+    Task MapTriggerFields(CancellationToken stoppingToken);
 }
