@@ -4,6 +4,7 @@ using InvvardDev.Ifttt.Models.Core;
 using InvvardDev.Ifttt.Models.Trigger;
 using InvvardDev.Ifttt.Reflection;
 using InvvardDev.Ifttt.TestFactories.Triggers;
+using Microsoft.Extensions.Logging;
 using Moq;
 
 namespace InvvardDev.Ifttt.Tests.Reflection;
@@ -21,11 +22,12 @@ public class TriggerMapperTests
 
         var triggerFieldsAttributeLookup = Mock.Of<IAttributeLookup>();
         var triggerRepository = Mock.Of<IProcessorService>();
+        var logger = Mock.Of<ILogger<TriggerMapper>>();
 
-        var sut = new TriggerMapper(triggerRepository, triggerAttributeLookup, triggerFieldsAttributeLookup);
+        var sut = new TriggerMapper(triggerRepository, triggerAttributeLookup, triggerFieldsAttributeLookup, logger);
 
         // Act
-        await sut.MapTriggerProcessors();
+        await sut.MapTriggerProcessors(default);
 
         // Assert
         Mock.Get(triggerRepository)
@@ -49,10 +51,12 @@ public class TriggerMapperTests
         Mock.Get(triggerService).Setup(x => x.AddDataField(It.IsAny<string>(), Capture.In(actualDataFieldSlugs), It.IsAny<Type>()));
         Mock.Get(triggerService).Setup(x => x.GetProcessor(It.IsAny<string>())).ReturnsAsync(new ProcessorTree(triggerSlug, triggerType, ProcessorKind.Trigger));
 
-        var sut = new TriggerMapper(triggerService, triggerAttributeLookup, triggerFieldsAttributeLookup);
+        var logger = Mock.Of<ILogger<TriggerMapper>>();
+        
+        var sut = new TriggerMapper(triggerService, triggerAttributeLookup, triggerFieldsAttributeLookup, logger);
 
         // Act
-        await sut.MapTriggerProcessors();
+        await sut.MapTriggerProcessors(default);
 
         // Assert
         Mock.Get(triggerService)
@@ -76,10 +80,12 @@ public class TriggerMapperTests
             .Setup(x => x.GetProcessor(triggerSlug))
             .ReturnsAsync(new ProcessorTree(triggerSlug, triggerType, ProcessorKind.Trigger));
 
-        var sut = new TriggerMapper(triggerService, triggerAttributeLookup, triggerFieldsAttributeLookup);
+        var logger = Mock.Of<ILogger<TriggerMapper>>();
+        
+        var sut = new TriggerMapper(triggerService, triggerAttributeLookup, triggerFieldsAttributeLookup, logger);
 
         // Act
-        await sut.MapTriggerProcessors();
+        await sut.MapTriggerProcessors(default);
 
         // Assert
         Mock.Get(triggerService)
@@ -101,10 +107,12 @@ public class TriggerMapperTests
             .Setup(x => x.GetProcessor(It.IsAny<string>()))
             .ReturnsAsync(new ProcessorTree(triggerSlug, anyType, ProcessorKind.Trigger));
 
-        var sut = new TriggerMapper(triggerService, triggerAttributeLookup, triggerFieldsAttributeLookup);
+        var logger = Mock.Of<ILogger<TriggerMapper>>();
+
+        var sut = new TriggerMapper(triggerService, triggerAttributeLookup, triggerFieldsAttributeLookup, logger);
 
         // Act
-        var act = () => sut.MapTriggerProcessors();
+        var act = () => sut.MapTriggerProcessors(default);
 
         // Assert
         act.Should().ThrowExactlyAsync<InvalidOperationException>().WithMessage("Trigger has already been registered");
@@ -125,10 +133,12 @@ public class TriggerMapperTests
             .Setup(x => x.Exists(It.IsAny<string>()))
             .ReturnsAsync(true);
 
-        var sut = new TriggerMapper(triggerService, triggerAttributeLookup, triggerFieldsAttributeLookup);
+        var logger = Mock.Of<ILogger<TriggerMapper>>();
+
+        var sut = new TriggerMapper(triggerService, triggerAttributeLookup, triggerFieldsAttributeLookup, logger);
 
         // Act
-        await sut.MapTriggerFields();
+        await sut.MapTriggerFields(default);
 
         // Assert
         Mock.Get(triggerService)
@@ -152,10 +162,12 @@ public class TriggerMapperTests
             .Setup(x => x.Exists(It.IsAny<string>()))
             .ReturnsAsync(false);
 
-        var sut = new TriggerMapper(triggerService, triggerAttributeLookup, triggerFieldsAttributeLookup);
+        var logger = Mock.Of<ILogger<TriggerMapper>>();
+
+        var sut = new TriggerMapper(triggerService, triggerAttributeLookup, triggerFieldsAttributeLookup, logger);
 
         // Act
-        var act = () => sut.MapTriggerFields();
+        var act = () => sut.MapTriggerFields(default);
 
         // Assert
         act.Should().ThrowExactlyAsync<InvalidOperationException>().WithMessage($"There is no trigger with slug '{triggerSlug}' registered.");

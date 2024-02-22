@@ -1,12 +1,11 @@
-﻿using System.Reflection;
-using InvvardDev.Ifttt.Contracts;
-using InvvardDev.Ifttt.Controllers;
+﻿using InvvardDev.Ifttt.Contracts;
 using InvvardDev.Ifttt.Hosting.Models;
 using InvvardDev.Ifttt.Models.Core;
 using InvvardDev.Ifttt.Reflection;
 using InvvardDev.Ifttt.Services;
 using InvvardDev.Ifttt.Toolkit.Contracts;
 using InvvardDev.Ifttt.Toolkit.Hooks;
+using Microsoft.Extensions.Options;
 
 namespace InvvardDev.Ifttt.Hosting;
 
@@ -14,29 +13,32 @@ public static class TriggerHostingExtensions
 {
     public static IIftttServiceBuilder AddTriggers(this IIftttServiceBuilder builder)
     {
-        builder.Services.AddHttpClient(IftttConstants.TriggerHttpClientName, (_, client) =>
+        ArgumentNullException.ThrowIfNull(builder);
+        
+        builder.Services.AddHttpClient(IftttConstants.TriggerHttpClientName, (factory, client) =>
         {
-            client.BaseAddress = new Uri(builder.RealTimeBaseAddress);
-            client.DefaultRequestHeaders.Add(IftttConstants.ServiceKeyHeader, builder.ServiceKey);
+            var options = factory.GetRequiredService<IOptions<IftttOptions>>();
+
+            client.BaseAddress = new Uri(options.Value.RealTimeBaseAddress);
+            client.DefaultRequestHeaders.Add(IftttConstants.ServiceKeyHeader, options.Value.ServiceKey);
         });
 
-        builder.Services.AddTransient<ITriggerHook, RealTimeNotificationWebHook>();
-
         builder.Services
-               .AddControllers()
-               .AddApplicationPart(Assembly.GetAssembly(typeof(TriggerController)) ?? throw new InvalidOperationException())
-               .AddControllersAsServices();
+               .AddKeyedTransient<IProcessorService, TriggerService>(ProcessorKind.Trigger)
+               .AddKeyedTransient<IAttributeLookup, TriggerAttributeLookup>(nameof(TriggerAttributeLookup))
+               .AddKeyedTransient<IAttributeLookup, TriggerFieldsAttributeLookup>(nameof(TriggerFieldsAttributeLookup));
+
+        builder.Services.AddTransient<ITriggerHook, RealTimeNotificationWebHook>();
 
         return builder;
     }
 
     public static IIftttServiceBuilder AddTriggerAutoMapper(this IIftttServiceBuilder builder)
     {
+        ArgumentNullException.ThrowIfNull(builder);
+
         builder.Services
                .AddTransient<ITriggerMapper, TriggerMapper>()
-               .AddKeyedTransient<IProcessorService, TriggerService>(ProcessorKind.Trigger)
-               .AddKeyedTransient<IAttributeLookup, TriggerAttributeLookup>(nameof(TriggerAttributeLookup))
-               .AddKeyedTransient<IAttributeLookup, TriggerFieldsAttributeLookup>(nameof(TriggerFieldsAttributeLookup))
                .AddHostedService<TriggerAutoMapperService>();
 
         return builder;
@@ -44,10 +46,14 @@ public static class TriggerHostingExtensions
 
     public static IIftttAppBuilder ConfigureTriggers(this IIftttAppBuilder appBuilder)
     {
-        appBuilder.App.UseEndpoints(endpoints =>
-        {
-            endpoints.MapControllers();
-        });
+        ArgumentNullException.ThrowIfNull(appBuilder);
+
+        appBuilder.App
+                  .UseRouting()
+                  .UseEndpoints(endpoints =>
+                  {
+                      endpoints.MapControllers();
+                  });
 
         return appBuilder;
     }

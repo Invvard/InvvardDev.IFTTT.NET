@@ -12,11 +12,13 @@ public class RealTimeNotificationWebHook : ITriggerHook
     private readonly ILogger<RealTimeNotificationWebHook> logger;
     private readonly HttpClient httpClient;
 
-    public RealTimeNotificationWebHook(IHttpClientFactory httpClientFactory,
-                                       ILogger<RealTimeNotificationWebHook> logger)
+    public RealTimeNotificationWebHook(
+        IHttpClientFactory httpClientFactory,
+        ILogger<RealTimeNotificationWebHook> logger)
     {
-        this.logger = logger;
         ArgumentNullException.ThrowIfNull(httpClientFactory);
+
+        this.logger = logger;
 
         httpClient = httpClientFactory.CreateClient(IftttConstants.TriggerHttpClientName);
     }

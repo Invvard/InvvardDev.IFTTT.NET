@@ -9,7 +9,7 @@ public class SamplesPayload(ProcessorPayload processorPayload)
         
     }
     
-    private ProcessorPayload Samples { get; } = processorPayload;
+    public ProcessorPayload Samples { get; } = processorPayload;
 
     internal void SkimEmptyProcessors()
     {

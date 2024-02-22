@@ -2,7 +2,9 @@ using InvvardDev.Ifttt.Contracts;
 
 namespace InvvardDev.Ifttt.Services;
 
-internal class TriggerAutoMapperService(ILogger<TriggerAutoMapperService> logger, ITriggerMapper triggerMapper) : BackgroundService
+internal class TriggerAutoMapperService(
+    IServiceScopeFactory serviceScopeFactory,
+    ILogger<TriggerAutoMapperService> logger) : BackgroundService
 {
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
@@ -12,10 +14,12 @@ internal class TriggerAutoMapperService(ILogger<TriggerAutoMapperService> logger
 
         try
         {
-            var processorMapperTask = Task.Run(triggerMapper.MapTriggerProcessors, stoppingToken);
-            var fieldsMapperTask = Task.Run(triggerMapper.MapTriggerFields, stoppingToken);
+            using var scope = serviceScopeFactory.CreateScope();
+            
+            var triggerMapper = scope.ServiceProvider.GetRequiredService<ITriggerMapper>();
 
-            await Task.WhenAll(processorMapperTask, fieldsMapperTask);
+            await triggerMapper.MapTriggerProcessors(stoppingToken);
+            await triggerMapper.MapTriggerFields(stoppingToken);
         }
         catch (OperationCanceledException ex)
         {
@@ -28,6 +32,13 @@ internal class TriggerAutoMapperService(ILogger<TriggerAutoMapperService> logger
         finally
         {
             logger.LogInformation("Auto-mapping trigger is stopped.");
+            await StopAsync(stoppingToken);
         }
+    }
+
+    public override async Task StopAsync(CancellationToken stoppingToken)
+    {
+        logger.LogInformation("Auto-mapping trigger is stopping.");
+        await base.StopAsync(stoppingToken);
     }
 }

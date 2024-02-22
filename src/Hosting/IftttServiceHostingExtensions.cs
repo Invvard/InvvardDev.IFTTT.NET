@@ -10,67 +10,63 @@ namespace InvvardDev.Ifttt.Hosting;
 
 public static class IftttServiceHostingExtensions
 {
-    public static IWebHostBuilder AddIftttToolkit(this IWebHostBuilder hostBuilder,
-                                                  Action<IIftttServiceBuilder, IftttOptions> configureServicesDelegate)
+    public static IIftttServiceBuilder AddIftttToolkit(this IServiceCollection services, string serviceKey)
     {
-        ArgumentNullException.ThrowIfNull(hostBuilder);
-        ArgumentNullException.ThrowIfNull(configureServicesDelegate);
-
-        return hostBuilder.ConfigureServices((ctx, services) =>
-        {
-            var options = new IftttOptions();
-            configureServicesDelegate(AddIftttToolkit(services, options), options);
-        });
-    }
-
-    public static IWebHostBuilder ConfigureIftttToolkit(this IWebHostBuilder hostBuilder,
-                                                        Action<IIftttAppBuilder> configureAppDelegate)
-    {
-        ArgumentNullException.ThrowIfNull(hostBuilder);
-        ArgumentNullException.ThrowIfNull(configureAppDelegate);
-        
-        return hostBuilder.Configure((context, applicationBuilder) =>
-        {
-            configureAppDelegate(new DefaultIftttAppBuilder(applicationBuilder));
-        });
-    }
-
-    public static IIftttServiceBuilder UseServiceKeyAuthentication(this IIftttServiceBuilder builder, string serviceKey)
-    {
-        ArgumentNullException.ThrowIfNull(builder);
+        ArgumentNullException.ThrowIfNull(services);
         ArgumentNullException.ThrowIfNull(serviceKey);
 
-        builder.ServiceKey = serviceKey;
+        return services.AddIftttToolkit(options => options.ServiceKey = serviceKey);
+    }
+
+    public static IIftttServiceBuilder AddIftttToolkit(this IServiceCollection services, Action<IftttOptions> setupAction)
+    {
+        ArgumentNullException.ThrowIfNull(services);
+        ArgumentNullException.ThrowIfNull(setupAction);
+
+        var builder = new DefaultIftttServiceBuilder(services);
+
+        builder.Services.Configure(setupAction);
+
+        return AddIftttToolkitCore(builder);
+    }
+
+    public static IIftttServiceBuilder AddTestSetupService<T>(this IIftttServiceBuilder builder)
+        where T : class, ITestSetup
+    {
+        ArgumentNullException.ThrowIfNull(builder);
+
+        builder.Services.AddScoped<ITestSetup, T>();
 
         return builder;
     }
 
-    public static IIftttAppBuilder UseAuthentication(this IIftttAppBuilder appBuilder)
+    private static IIftttServiceBuilder AddIftttToolkitCore(IIftttServiceBuilder builder)
+    {
+        builder.Services
+               .AddControllers()
+               .AddApplicationPart(Assembly.GetAssembly(typeof(StatusController)) ?? throw new InvalidOperationException())
+               .AddControllersAsServices();
+
+        builder.Services
+               .AddScoped<IAssemblyAccessor, AssemblyAccessor>()
+               .AddSingleton<IProcessorRepository, ProcessorRepository>();
+
+        return builder;
+    }
+
+    public static IIftttAppBuilder ConfigureIftttToolkit(this IApplicationBuilder appBuilder)
+    {
+        ArgumentNullException.ThrowIfNull(appBuilder);
+
+        return new DefaultIftttAppBuilder(appBuilder);
+    }
+
+    public static IIftttAppBuilder UseServiceKeyAuthentication(this IIftttAppBuilder appBuilder)
     {
         ArgumentNullException.ThrowIfNull(appBuilder);
 
         appBuilder.App.UseMiddleware<ServiceKeyMiddleware>();
 
         return appBuilder;
-    }
-
-    private static IIftttServiceBuilder AddIftttToolkit(IServiceCollection services, IftttOptions options)
-    {
-        if (Uri.IsWellFormedUriString(options.RealTimeBaseAddress, UriKind.RelativeOrAbsolute))
-        {
-            throw new UriFormatException("The RealTimeBaseAddress is not a valid URI.");
-        }
-        
-        var builder = new DefaultIftttServiceBuilder(services, options.ServiceKey, options.RealTimeBaseAddress);
-
-        var apiBuilder = builder.Services.AddControllers();
-
-        apiBuilder.AddApplicationPart(Assembly.GetAssembly(typeof(StatusController)) ?? throw new InvalidOperationException())
-                  .AddControllersAsServices();
-
-        builder.Services.AddScoped<IAssemblyAccessor, AssemblyAccessor>();
-        builder.Services.AddSingleton<IProcessorRepository, ProcessorRepository>();
-
-        return builder;
     }
 }
