@@ -42,13 +42,12 @@ public class TestSetupControllerTests
 
         var expectedBody = new TopLevelMessageModel<SamplesPayload>(new SamplesPayload());
         expectedBody.Data.SkimEmptyProcessors();
-        var expectedBodyJson = JsonSerializer.Serialize(expectedBody, JsonSerializerOptions);
 
         // Act
         var result = await sut.SetupTest();
 
         // Assert
-        result.Should().NotBeNull().And.Subject.Should().BeOfType<OkObjectResult>().Subject.Value.Should().Be(expectedBodyJson);
+        result.Should().NotBeNull().And.Subject.Should().BeOfType<OkObjectResult>().Subject.Value.Should().BeEquivalentTo(expectedBody);
     }
 
     [Fact(DisplayName = "SetupTest when processor has no data field, should return 200OK with empty Samples")]
@@ -66,13 +65,12 @@ public class TestSetupControllerTests
 
         var expectedBody = new TopLevelMessageModel<SamplesPayload>(new SamplesPayload());
         expectedBody.Data.SkimEmptyProcessors();
-        var expectedBodyJson = JsonSerializer.Serialize(expectedBody, JsonSerializerOptions);
 
         // Act
         var result = await sut.SetupTest();
 
         // Assert
-        result.Should().NotBeNull().And.Subject.Should().BeOfType<OkObjectResult>().Subject.Value.Should().Be(expectedBodyJson);
+        result.Should().NotBeNull().And.Subject.Should().BeOfType<OkObjectResult>().Subject.Value.Should().BeEquivalentTo(expectedBody);
     }
 
     [Fact(DisplayName = "SetupTest when there is an exception, should log an error and return 500InternalServerError")]
@@ -127,12 +125,11 @@ public class TestSetupControllerTests
         var sut = new TestSetupController(testSetup, logger);
 
         var expectedBody = new TopLevelMessageModel<SamplesPayload>(new SamplesPayload(expectedProcessorPayload));
-        var expectedBodyJson = JsonSerializer.Serialize(expectedBody, JsonSerializerOptions);
 
         // Act
         var result = await sut.SetupTest();
 
         // Assert
-        result.Should().NotBeNull().And.Subject.Should().BeOfType<OkObjectResult>().Subject.Value.Should().Be(expectedBodyJson);
+        result.Should().NotBeNull().And.Subject.Should().BeOfType<OkObjectResult>().Subject.Value.Should().BeEquivalentTo(expectedBody);
     }
 }

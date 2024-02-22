@@ -28,8 +28,11 @@ public class TestSetupController : ControllerBase
         {
             var processors = await testSetup.PrepareSetupListing();
 
-            var payload = TopLevelMessageModel<SamplesPayload>.Serialize(new SamplesPayload(processors));
+            var samples = new SamplesPayload(processors);
+            samples.SkimEmptyProcessors();
 
+            var payload = new TopLevelMessageModel<SamplesPayload>(samples);
+            
             return Ok(payload);
         }
         catch (Exception ex)
