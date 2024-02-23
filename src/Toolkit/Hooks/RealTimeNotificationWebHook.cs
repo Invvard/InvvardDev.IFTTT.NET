@@ -23,7 +23,8 @@ public class RealTimeNotificationWebHook : ITriggerHook
         httpClient = httpClientFactory.CreateClient(IftttConstants.TriggerHttpClientName);
     }
 
-    public async Task<HttpStatusCode> SendNotification(ICollection<RealTimeNotificationModel> notificationData)
+    ///  <inheritdoc />
+    public async Task<HttpStatusCode> SendNotification(ICollection<RealTimeNotificationModel> notificationData, CancellationToken cancellationToken = default)
     {
         var content = new StringContent(TopLevelMessageModel<List<RealTimeNotificationModel>>.Serialize(notificationData.ToList()),
                                         Encoding.UTF8,

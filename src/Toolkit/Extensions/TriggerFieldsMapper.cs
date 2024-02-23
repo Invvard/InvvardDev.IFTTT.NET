@@ -7,6 +7,13 @@ namespace InvvardDev.Ifttt.Toolkit;
 
 public static class TriggerFieldsMapper
 {
+    /// <summary>
+    /// Extension method to map a dictionary to a trigger fields class.
+    /// </summary>
+    /// <remarks>Any unrecognized trigger field slug is stored in the <see cref="TriggerFieldsBase.Metadata"/> dictionary.</remarks>
+    /// <param name="dictionary">The dictionary of data field slugs and its related data.</param>
+    /// <typeparam name="T">The <see cref="TriggerFieldsBase"/> derived type to map to.</typeparam>
+    /// <returns>A new <typeparamref name="T"/> instance.</returns>
     public static T To<T>(this Dictionary<string, string> dictionary)
         where T : TriggerFieldsBase, new()
     {
