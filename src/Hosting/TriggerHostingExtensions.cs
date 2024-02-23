@@ -11,6 +11,11 @@ namespace InvvardDev.Ifttt.Hosting;
 
 public static class TriggerHostingExtensions
 {
+    /// <summary>
+    /// Extension method to add the triggers essential services to the IFTTT service.
+    /// </summary>
+    /// <param name="builder">The <see cref="IIftttServiceBuilder"/> instance.</param>
+    /// <returns>The <see cref="IIftttServiceBuilder"/> instance.</returns>
     public static IIftttServiceBuilder AddTriggers(this IIftttServiceBuilder builder)
     {
         ArgumentNullException.ThrowIfNull(builder);
@@ -33,6 +38,11 @@ public static class TriggerHostingExtensions
         return builder;
     }
 
+    /// <summary>
+    /// Extension method to add the trigger auto mapper service to the IFTTT service.
+    /// </summary>
+    /// <param name="builder">The <see cref="IIftttServiceBuilder"/> instance.</param>
+    /// <returns>The <see cref="IIftttServiceBuilder"/> instance.</returns>
     public static IIftttServiceBuilder AddTriggerAutoMapper(this IIftttServiceBuilder builder)
     {
         ArgumentNullException.ThrowIfNull(builder);
@@ -44,6 +54,11 @@ public static class TriggerHostingExtensions
         return builder;
     }
 
+    /// <summary>
+    /// Extension method to configure the triggers for the IFTTT service.
+    /// </summary>
+    /// <param name="appBuilder">The <see cref="IIftttAppBuilder"/> instance.</param>
+    /// <returns>The <see cref="IIftttAppBuilder"/> instance.</returns>
     public static IIftttAppBuilder ConfigureTriggers(this IIftttAppBuilder appBuilder)
     {
         ArgumentNullException.ThrowIfNull(appBuilder);

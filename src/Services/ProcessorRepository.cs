@@ -3,7 +3,7 @@ using InvvardDev.Ifttt.Models.Trigger;
 
 namespace InvvardDev.Ifttt.Services;
 
-public class ProcessorRepository : IProcessorRepository
+internal class ProcessorRepository : IProcessorRepository
 {
     private readonly Dictionary<string, ProcessorTree> processors = new();
 

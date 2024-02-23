@@ -3,6 +3,9 @@ using System.Text.Json.Serialization;
 
 namespace InvvardDev.Ifttt.Toolkit.Models;
 
+/// <summary>
+/// Base class for top level models.
+/// </summary>
 public class TopLevelBaseModel
 {
     protected static readonly JsonSerializerOptions JsonSerializerOptions
@@ -15,6 +18,10 @@ public class TopLevelBaseModel
           };
 }
 
+/// <summary>
+/// Model used to exchange messages with IFTTT.
+/// </summary>
+/// <typeparam name="T">The data type to send or receive.</typeparam>
 public class TopLevelMessageModel<T>() : TopLevelBaseModel
     where T : class, new()
 {
@@ -36,6 +43,10 @@ public class TopLevelMessageModel<T>() : TopLevelBaseModel
         => JsonSerializer.Deserialize<TopLevelMessageModel<T>>(json, options) ?? new TopLevelMessageModel<T>(new T());
 }
 
+/// <summary>
+/// Model used to respond to IFTTT in case of errors.
+/// </summary>
+/// <param name="errors">A list of error messages.</param>
 public class TopLevelErrorModel(IList<ErrorMessage> errors) : TopLevelBaseModel
 {
     public IList<ErrorMessage> Errors { get; } = errors;
