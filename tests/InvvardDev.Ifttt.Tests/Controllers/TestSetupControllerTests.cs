@@ -2,6 +2,7 @@
 using FluentAssertions;
 using InvvardDev.Ifttt.Contracts;
 using InvvardDev.Ifttt.Controllers;
+using InvvardDev.Ifttt.Toolkit.Contracts;
 using InvvardDev.Ifttt.Toolkit.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
