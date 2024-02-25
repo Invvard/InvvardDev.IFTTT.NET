@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using InvvardDev.Ifttt.Contracts;
+using InvvardDev.Ifttt.Toolkit.Contracts;
 using InvvardDev.Ifttt.Toolkit.Models;
 using InvvardDev.Ifttt.Trigger.UpdatedNuget.Triggers;
 

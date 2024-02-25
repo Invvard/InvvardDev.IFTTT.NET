@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSwaggerGen();
 
 builder.Services
-       .AddIftttToolkit(options => options.ServiceKey = "your-service")
+       .AddIftttToolkit("<your-service-key>")
        .AddTestSetupService<TestSetup>()
        .AddTriggerAutoMapper()
        .AddTriggers();
@@ -19,13 +19,10 @@ var app = builder.Build();
 app.UseRouting();
 
 app.ConfigureIftttToolkit()
-   //.UseServiceKeyAuthentication()
+   .UseServiceKeyAuthentication()
    .ConfigureTriggers();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger()
-       .UseSwaggerUI();
-}
+app.UseSwagger()
+   .UseSwaggerUI();
 
 app.Run();
