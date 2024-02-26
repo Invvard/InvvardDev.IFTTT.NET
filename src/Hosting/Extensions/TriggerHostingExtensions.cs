@@ -1,10 +1,8 @@
 ﻿using InvvardDev.Ifttt.Contracts;
-using InvvardDev.Ifttt.Hosting.Models;
 using InvvardDev.Ifttt.Models.Core;
 using InvvardDev.Ifttt.Reflection;
 using InvvardDev.Ifttt.Services;
-using InvvardDev.Ifttt.Toolkit.Contracts;
-using InvvardDev.Ifttt.Toolkit.Hooks;
+using InvvardDev.Ifttt.Toolkit;
 using Microsoft.Extensions.Options;
 
 namespace InvvardDev.Ifttt.Hosting;

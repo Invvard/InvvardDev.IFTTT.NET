@@ -2,14 +2,13 @@
 using InvvardDev.Ifttt.Contracts;
 using InvvardDev.Ifttt.Controllers;
 using InvvardDev.Ifttt.Hosting.Middleware;
-using InvvardDev.Ifttt.Hosting.Models;
 using InvvardDev.Ifttt.Reflection;
 using InvvardDev.Ifttt.Services;
-using InvvardDev.Ifttt.Toolkit.Contracts;
+using InvvardDev.Ifttt.Toolkit;
 
 namespace InvvardDev.Ifttt.Hosting;
 
-public static class IftttServiceHostingExtensions
+public static class CoreHostingExtensions
 {
     /// <summary>
     /// Extension method to add IftttToolkit to the service collection with the provided IFTTT service key.
@@ -94,7 +93,8 @@ public static class IftttServiceHostingExtensions
     {
         ArgumentNullException.ThrowIfNull(appBuilder);
 
-        appBuilder.App.UseMiddleware<ServiceKeyMiddleware>();
+        appBuilder.App.UseWhen(context => context.Request.Path.StartsWithSegments(IftttConstants.BaseApiPath),
+                               builder => builder.UseMiddleware<ServiceKeyMiddleware>());
 
         return appBuilder;
     }
