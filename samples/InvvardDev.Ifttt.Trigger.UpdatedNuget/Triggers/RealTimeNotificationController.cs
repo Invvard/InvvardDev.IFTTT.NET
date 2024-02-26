@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using InvvardDev.Ifttt.Toolkit.Contracts;
-using InvvardDev.Ifttt.Toolkit.Models;
+using InvvardDev.Ifttt.Toolkit;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InvvardDev.Ifttt.Trigger.UpdatedNuget.Triggers;

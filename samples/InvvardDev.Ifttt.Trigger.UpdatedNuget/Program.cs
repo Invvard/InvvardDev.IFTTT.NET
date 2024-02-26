@@ -1,15 +1,18 @@
 using InvvardDev.Ifttt.Hosting;
 using InvvardDev.Ifttt.Trigger.UpdatedNuget.Core;
+using InvvardDev.Ifttt.Trigger.UpdatedNuget.Models;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddSwaggerGen();
+var clientIftttOptions = builder.Configuration.GetSection(ClientIftttOptions.DefaultSectionName).Get<ClientIftttOptions>();
+
+builder.Services.AddSwaggerGen(options => options.AddIftttSecurityKeyScheme());
 
 builder.Services
-       .AddIftttToolkit("<your-service-key>")
+       .AddIftttToolkit(clientIftttOptions.ServiceKey)
        .AddTestSetupService<TestSetup>()
        .AddTriggerAutoMapper()
        .AddTriggers();
