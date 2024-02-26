@@ -1,7 +1,5 @@
-using InvvardDev.Ifttt.Contracts;
-using InvvardDev.Ifttt.Hosting.Models;
-using InvvardDev.Ifttt.Toolkit.Contracts;
-using InvvardDev.Ifttt.Toolkit.Models;
+using InvvardDev.Ifttt.Hosting;
+using InvvardDev.Ifttt.Toolkit;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InvvardDev.Ifttt.Controllers;

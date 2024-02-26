@@ -1,11 +1,9 @@
 ﻿using System.Net;
 using System.Net.Mime;
 using System.Text;
-using InvvardDev.Ifttt.Hosting.Models;
-using InvvardDev.Ifttt.Toolkit.Contracts;
-using InvvardDev.Ifttt.Toolkit.Models;
+using InvvardDev.Ifttt.Hosting;
 
-namespace InvvardDev.Ifttt.Toolkit.Hooks;
+namespace InvvardDev.Ifttt.Toolkit;
 
 public class RealTimeNotificationWebHook : ITriggerHook
 {

@@ -1,7 +1,6 @@
 ﻿using System.Net;
-using InvvardDev.Ifttt.Toolkit.Models;
 
-namespace InvvardDev.Ifttt.Toolkit.Contracts;
+namespace InvvardDev.Ifttt.Toolkit;
 
 /// <summary>
 /// This interface defines the method signature that has to be called when the trigger endpoint is hit.

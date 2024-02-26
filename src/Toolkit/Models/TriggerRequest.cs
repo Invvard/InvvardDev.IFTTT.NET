@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
 using InvvardDev.Ifttt.Models.Core;
 
-namespace InvvardDev.Ifttt.Toolkit.Models;
+namespace InvvardDev.Ifttt.Toolkit;
 
 /// <summary>
 /// Model to hold the trigger request data received from IFTTT.

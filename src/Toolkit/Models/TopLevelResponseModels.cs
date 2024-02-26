@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace InvvardDev.Ifttt.Toolkit.Models;
+namespace InvvardDev.Ifttt.Toolkit;
 
 /// <summary>
 /// Base class for top level models.

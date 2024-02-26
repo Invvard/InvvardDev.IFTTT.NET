@@ -1,4 +1,4 @@
-namespace InvvardDev.Ifttt.Toolkit.Models;
+namespace InvvardDev.Ifttt.Toolkit;
 
 /// <summary>
 /// Class to hold the processors and related data fields for the IFTTT test setup.

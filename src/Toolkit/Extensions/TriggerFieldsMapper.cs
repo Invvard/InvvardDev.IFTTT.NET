@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Reflection;
 using InvvardDev.Ifttt.Toolkit.Attributes;
-using InvvardDev.Ifttt.Toolkit.Models;
 
 namespace InvvardDev.Ifttt.Toolkit;
 

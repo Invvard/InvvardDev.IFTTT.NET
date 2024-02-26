@@ -1,4 +1,4 @@
-namespace InvvardDev.Ifttt.Hosting.Models;
+namespace InvvardDev.Ifttt.Hosting;
 
 public class IftttOptions
 {

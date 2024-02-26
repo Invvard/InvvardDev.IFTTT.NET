@@ -1,9 +1,7 @@
 ﻿using System.Text.Json;
 using FluentAssertions;
-using InvvardDev.Ifttt.Contracts;
 using InvvardDev.Ifttt.Controllers;
-using InvvardDev.Ifttt.Toolkit.Contracts;
-using InvvardDev.Ifttt.Toolkit.Models;
+using InvvardDev.Ifttt.Toolkit;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;

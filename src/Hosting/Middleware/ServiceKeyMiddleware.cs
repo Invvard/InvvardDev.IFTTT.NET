@@ -1,4 +1,3 @@
-using InvvardDev.Ifttt.Hosting.Models;
 using Microsoft.Extensions.Options;
 
 namespace InvvardDev.Ifttt.Hosting.Middleware;

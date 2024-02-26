@@ -1,6 +1,6 @@
 using InvvardDev.Ifttt.Contracts;
+using InvvardDev.Ifttt.Toolkit;
 using InvvardDev.Ifttt.Toolkit.Attributes;
-using InvvardDev.Ifttt.Toolkit.Contracts;
 
 namespace InvvardDev.Ifttt.Reflection;
 

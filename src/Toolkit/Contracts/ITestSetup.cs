@@ -1,6 +1,4 @@
-using InvvardDev.Ifttt.Toolkit.Models;
-
-namespace InvvardDev.Ifttt.Toolkit.Contracts;
+namespace InvvardDev.Ifttt.Toolkit;
 
 /// <summary>
 /// Interface for setting up the test listing.

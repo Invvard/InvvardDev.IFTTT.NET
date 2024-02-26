@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace InvvardDev.Ifttt.Toolkit.Models;
+namespace InvvardDev.Ifttt.Toolkit;
 
 /// <summary>
 /// Class to hold the real-time notification model for IFTTT.

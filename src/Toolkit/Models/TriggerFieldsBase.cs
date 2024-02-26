@@ -1,4 +1,4 @@
-﻿namespace InvvardDev.Ifttt.Toolkit.Models;
+﻿namespace InvvardDev.Ifttt.Toolkit;
 
 /// <summary>
 /// Base class for trigger fields.
