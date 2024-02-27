@@ -13,10 +13,11 @@
 > &nbsp;&nbsp; **TL;DR**\
 > &nbsp;&nbsp; Go to the [Samples](https://github.com/Invvard/InvvardDev.IFTTT.NET/tree/main/samples) folder and check out the sample projects.
 
-### Setup an IFTTT trigger
+### Setup an IFTTT Trigger
 
 1. **Install package**: Add our NuGet package [InvvardDev.Ifttt](https://www.nuget.org/packages/InvvardDev.Ifttt) to your project.
-2. **Create a trigger class**: add a class implementing the `ITrigger` interface with the TriggerAttribute on top. This will allow IFTTT.NET to find, recognize and handle your trigger:
+2. **Create a Trigger class**: add a class implementing the `ITrigger` interface with the TriggerAttribute on top. This will allow IFTTT.NET to find, recognize and handle your Trigger:
+
    ```csharp
    [Trigger("trigger_slug")]
    public class YourNewTrigger : ITrigger
@@ -32,10 +33,12 @@
        }
    }
    ```
-   The `TriggerAttribute` is used to define the trigger slug. The `DataFieldAttribute` is used to define the trigger field slug.\
-   The `ExecuteAsync` method is the entry point for your trigger logic. It will be called by IFTTT.NET when the trigger is activated.
+
+   The `TriggerAttribute` is used to define the Trigger slug. The `DataFieldAttribute` is used to define the Trigger field slug.\
+   The `ExecuteAsync` method is the entry point for your Trigger logic. It will be called by IFTTT.NET when the Trigger is activated.
 3. **Add the test setup**: one of the mandatory step for publishing an IFTTT service is to have a test setup endpoint.\
-   Just add a class implementing the `ITestSetup` interface.\
+   Just add a class implementing the `ITestSetup` interface.
+
    ```csharp
    public class TestSetup : ITestSetup
    {
@@ -51,9 +54,12 @@
        }
    }
    ```
-   The `PrepareSetupListing` method is used to define the test setup payload. It will be called by IFTTT.NET when the test setup endpoint is called.
+
+   The `PrepareSetupListing` method is used to define the test setup payload. It will be called by IFTTT.NET when the test setup endpoint is called.\
+   You can find the complete list of required Triggers, actions and queries in your service dashboard, under the `API` tab, `Endpoint tests` section, `Test setup` tab and click on either "**View** or **Download** a scaffold JSON response for your service".
 
 4. **Configure startup**: In your application startup logic, configure the IFTTT.NET client:
+
    ```csharp
    var builder = WebApplication.CreateBuilder(args);
    
@@ -71,25 +77,33 @@
    
    app.Run();
    ```
-5. **Run your application**: That's it! Your trigger is now ready to be used in IFTTT applets.
+
+5. **Run your application**: That's it! Your Trigger is now ready to be used in IFTTT Applets.
 
 ### Swagger support
-Swagger is a good way to test your triggers and actions. Just add the `AddSwaggerGen` and `UseSwagger` methods to your application startup logic (see step 4).
+
+Swagger is a good way to test your Triggers and Actions. Just add the `AddSwaggerGen` and `UseSwagger` methods to your application startup logic (see step 4).
+
 ```csharp
 builder.Services.AddSwaggerGen();
 [...]
 app.UseSwagger().UseSwaggerUI();
 ```
+
 In the event that you want to run Swagger with the Service Key Authentication activated, configure SwaggerGen like this:
+
 ```csharp
 builder.Services.AddSwaggerGen(options => options.AddIftttServiceKeyScheme());
 ```
-It will add a new security scheme to the Swagger UI, allowing you to test your triggers and actions with the Service Key Authentication.
+
+It will add a new security scheme to the Swagger UI, allowing you to test your Triggers and actions with the Service Key Authentication.
 
 ## Real time notifications
-Next, you can use the real time notification feature to make your trigger more responsive.\
+
+Next, you can use the real time notification feature to make your Trigger more responsive.\
 When you have a new data to send to IFTTT, prepare your Trigger identities or User IDs and call `ITriggerHook.SendNotification`.\
 Here is an example of a controller sending a notification to IFTTT with Trigger identities:
+
 ```csharp
 [ApiController]
 [Route("api/[controller]")]
@@ -108,7 +122,10 @@ public class RealTimeNotificationController(ITriggerHook realTimeHook) : Control
     }
 }
 ```
+
 If you use User IDs, just call `RealTimeNotificationModel.CreateUserId("<user_id>")` instead of `RealTimeNotificationModel.CreateTriggerIdentity("<trigger_identity>")`.
 
+## Roadmap
 
-
+As of today, the library is still in its early stages and only supports Triggers, basic Data field and Service Key Authentication. We are working on adding support for Data field validation, User Authenticated integration and other advanced features .\
+Fortunately, IFTTT is designed in such a way that once Triggers are implemented, Actions and Queries should be easy to implement.
