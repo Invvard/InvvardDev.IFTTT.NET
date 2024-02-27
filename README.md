@@ -129,3 +129,10 @@ If you use User IDs, just call `RealTimeNotificationModel.CreateUserId("<user_id
 
 As of today, the library is still in its early stages and only supports Triggers, basic Data field and Service Key Authentication. We are working on adding support for Data field validation, User Authenticated integration and other advanced features .\
 Fortunately, IFTTT is designed in such a way that once Triggers are implemented, Actions and Queries should be easy to implement.
+
+## Glossary
+
+As IFTTT is designed in a way that Trigger, Action and Query have a common structure.\
+So in order to be as generic as possible, here are some definitions of the terms used in the library: 
+- **Processor**: refers to a Trigger, an Action or a Query.
+- **Data field**: a field that is used to pass data to or from a Trigger, an Action or a Query.
