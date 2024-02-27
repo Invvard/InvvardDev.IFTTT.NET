@@ -1,8 +1,8 @@
+using InvvardDev.Ifttt.Samples.Trigger.Triggers;
 using InvvardDev.Ifttt.Toolkit;
 using InvvardDev.Ifttt.Toolkit.Attributes;
-using InvvardDev.Ifttt.Trigger.UpdatedNuget.Triggers;
 
-namespace InvvardDev.Ifttt.Trigger.UpdatedNuget.Models;
+namespace InvvardDev.Ifttt.Samples.Trigger.Models;
 
 [TriggerFields(NugetPackageUpdatedTrigger.TriggerSlug)]
 public class WatchedNugetTriggerFields : TriggerFieldsBase

@@ -1,8 +1,8 @@
 using System.Threading.Tasks;
+using InvvardDev.Ifttt.Samples.Trigger.Triggers;
 using InvvardDev.Ifttt.Toolkit;
-using InvvardDev.Ifttt.Trigger.UpdatedNuget.Triggers;
 
-namespace InvvardDev.Ifttt.Trigger.UpdatedNuget.Core;
+namespace InvvardDev.Ifttt.Samples.Trigger.Core;
 
 public class TestSetup : ITestSetup
 {

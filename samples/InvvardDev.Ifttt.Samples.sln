@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InvvardDev.Ifttt.Trigger.UpdatedNuget", "InvvardDev.Ifttt.Trigger.UpdatedNuget\InvvardDev.Ifttt.Trigger.UpdatedNuget.csproj", "{8A6E23C3-C46C-4566-AEC6-B7B8BE149F8F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InvvardDev.Ifttt.Samples.Trigger", "InvvardDev.Ifttt.Samples.Trigger\InvvardDev.Ifttt.Samples.Trigger.csproj", "{8A6E23C3-C46C-4566-AEC6-B7B8BE149F8F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

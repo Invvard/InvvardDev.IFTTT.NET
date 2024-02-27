@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using InvvardDev.Ifttt.Toolkit;
 using Microsoft.AspNetCore.Mvc;
 
-namespace InvvardDev.Ifttt.Trigger.UpdatedNuget.Triggers;
+namespace InvvardDev.Ifttt.Samples.Trigger.Triggers;
 
 [ApiController]
 [Route("api/[controller]")]

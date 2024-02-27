@@ -7,7 +7,7 @@ public static class SwaggerGenOptionsExtensions
 {
     private const string SecuritySchemeName = "IftttApiKey";
     
-    public static void AddIftttSecurityKeyScheme(this SwaggerGenOptions options)
+    public static void AddIftttServiceKeyScheme(this SwaggerGenOptions options)
     {
         options.AddSecurityDefinition(SecuritySchemeName, new OpenApiSecurityScheme
                                                           {

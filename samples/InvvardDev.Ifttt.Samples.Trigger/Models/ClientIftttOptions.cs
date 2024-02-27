@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace InvvardDev.Ifttt.Trigger.UpdatedNuget.Models;
+namespace InvvardDev.Ifttt.Samples.Trigger.Models;
 
 public class ClientIftttOptions
 {
