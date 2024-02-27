@@ -73,6 +73,42 @@
    ```
 5. **Run your application**: That's it! Your trigger is now ready to be used in IFTTT applets.
 
-If you add Swagger support, you will be able to test your triggers directly from the Swagger UI.\
-Next, you can use the real-time notification feature to make your trigger more responsive
-## 
+### Swagger support
+Swagger is a good way to test your triggers and actions. Just add the `AddSwaggerGen` and `UseSwagger` methods to your application startup logic (see step 4).
+```csharp
+builder.Services.AddSwaggerGen();
+[...]
+app.UseSwagger().UseSwaggerUI();
+```
+In the event that you want to run Swagger with the Service Key Authentication activated, configure SwaggerGen like this:
+```csharp
+builder.Services.AddSwaggerGen(options => options.AddIftttServiceKeyScheme());
+```
+It will add a new security scheme to the Swagger UI, allowing you to test your triggers and actions with the Service Key Authentication.
+
+## Real time notifications
+Next, you can use the real time notification feature to make your trigger more responsive.\
+When you have a new data to send to IFTTT, prepare your Trigger identities or User IDs and call `ITriggerHook.SendNotification`.\
+Here is an example of a controller sending a notification to IFTTT with Trigger identities:
+```csharp
+[ApiController]
+[Route("api/[controller]")]
+public class RealTimeNotificationController(ITriggerHook realTimeHook) : ControllerBase
+{
+    [HttpPost]
+    public async Task NotifyAsync(CancellationToken cancellationToken = default)
+    {
+        var notificationRequest = new List<RealTimeNotificationModel>
+                                  {
+                                      RealTimeNotificationModel.CreateTriggerIdentity("trigger_identity_12345"),
+                                      RealTimeNotificationModel.CreateTriggerIdentity("trigger_identity_67890"),
+                                  };
+        
+        await realTimeHook.SendNotification(notificationRequest, cancellationToken);
+    }
+}
+```
+If you use User IDs, just call `RealTimeNotificationModel.CreateUserId("<user_id>")` instead of `RealTimeNotificationModel.CreateTriggerIdentity("<trigger_identity>")`.
+
+
+
