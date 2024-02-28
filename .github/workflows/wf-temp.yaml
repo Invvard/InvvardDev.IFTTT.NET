@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           sparse-checkout: |
             .github
@@ -19,7 +19,7 @@ jobs:
             tests
 
       - name: Setup .NET Core
-        uses: actions/setup-dotnet@v2
+        uses: actions/setup-dotnet@v4
         with:
             dotnet-version: 8.0.x
 
@@ -33,7 +33,7 @@ jobs:
         run: dotnet build --configuration Release --no-restore -p:GeneratePackageOnBuild=false
 
       - name: Bump versions
-        uses: SiqiLu/dotnet-bump-version@master
+        uses: SiqiLu/dotnet-bump-version@v2
         with:
             version_files: "**/src/*.csproj"
             version_mask: 0.0.1.0
