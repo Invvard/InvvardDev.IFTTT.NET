@@ -23,11 +23,14 @@ jobs:
         with:
             dotnet-version: 8.0.x
 
+      - name: Create packages directory
+        run: mkdir -p packages
+            
       - name: Install dependencies
         run: dotnet restore
 
       - name: Build
-        run: dotnet build --configuration Release --no-restore
+        run: dotnet build --configuration Release --no-restore -p:GeneratePackageOnBuild=false
 
       - name: Bump versions
         uses: SiqiLu/dotnet-bump-version@master
