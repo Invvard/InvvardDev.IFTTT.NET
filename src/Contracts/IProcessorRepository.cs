@@ -1,4 +1,3 @@
-using InvvardDev.Ifttt.Models.Core;
 using InvvardDev.Ifttt.Models.Trigger;
 
 namespace InvvardDev.Ifttt.Contracts;

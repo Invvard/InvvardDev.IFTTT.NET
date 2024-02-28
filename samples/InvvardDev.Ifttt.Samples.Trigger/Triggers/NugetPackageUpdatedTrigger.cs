@@ -1,11 +1,10 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using InvvardDev.Ifttt.Trigger.Attributes;
-using InvvardDev.Ifttt.Trigger.Contracts;
-using InvvardDev.Ifttt.Trigger.Models;
-using InvvardDev.Ifttt.Trigger.UpdatedNuget.Models;
+using InvvardDev.Ifttt.Samples.Trigger.Models;
+using InvvardDev.Ifttt.Toolkit;
+using InvvardDev.Ifttt.Toolkit.Attributes;
 
-namespace InvvardDev.Ifttt.Trigger.UpdatedNuget.Triggers;
+namespace InvvardDev.Ifttt.Samples.Trigger.Triggers;
 
 [Trigger(TriggerSlug)]
 public class NugetPackageUpdatedTrigger : ITrigger

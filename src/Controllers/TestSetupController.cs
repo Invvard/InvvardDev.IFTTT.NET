@@ -1,6 +1,5 @@
-using InvvardDev.Ifttt.Contracts;
-using InvvardDev.Ifttt.Hosting.Models;
-using InvvardDev.Ifttt.Toolkit.Models;
+using InvvardDev.Ifttt.Hosting;
+using InvvardDev.Ifttt.Toolkit;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InvvardDev.Ifttt.Controllers;
@@ -17,10 +16,15 @@ public class TestSetupController : ControllerBase
     public TestSetupController(ITestSetup testSetup, ILogger<TestSetupController> logger)
     {
         ArgumentNullException.ThrowIfNull(testSetup);
+        
         this.testSetup = testSetup;
         this.logger = logger;
     }
 
+    /// <summary>
+    /// Prepares a test setup for the IFTTT service.
+    /// </summary>
+    /// <returns>A list of test data for IFTTT to use.</returns>
     [HttpPost]
     public async Task<IActionResult> SetupTest()
     {

@@ -1,11 +1,9 @@
 ﻿using System.Net;
 using System.Net.Mime;
 using System.Text;
-using InvvardDev.Ifttt.Hosting.Models;
-using InvvardDev.Ifttt.Toolkit.Contracts;
-using InvvardDev.Ifttt.Toolkit.Models;
+using InvvardDev.Ifttt.Hosting;
 
-namespace InvvardDev.Ifttt.Toolkit.Hooks;
+namespace InvvardDev.Ifttt.Toolkit;
 
 public class RealTimeNotificationWebHook : ITriggerHook
 {
@@ -23,7 +21,8 @@ public class RealTimeNotificationWebHook : ITriggerHook
         httpClient = httpClientFactory.CreateClient(IftttConstants.TriggerHttpClientName);
     }
 
-    public async Task<HttpStatusCode> SendNotification(ICollection<RealTimeNotificationModel> notificationData)
+    ///  <inheritdoc />
+    public async Task<HttpStatusCode> SendNotification(ICollection<RealTimeNotificationModel> notificationData, CancellationToken cancellationToken = default)
     {
         var content = new StringContent(TopLevelMessageModel<List<RealTimeNotificationModel>>.Serialize(notificationData.ToList()),
                                         Encoding.UTF8,
