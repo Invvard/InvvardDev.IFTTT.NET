@@ -27,7 +27,7 @@
 
         <AssemblyName>InvvardDev.Ifttt</AssemblyName>
         <VersionPrefix>0.1.1</VersionPrefix>
-        <PackageVersion>$(Version)</PackageVersion>
+        <PackageVersion>0.1.1</PackageVersion>
 
         <Title>IFTTT.NET package</Title>
         <Authors>Pierre Cavaroc</Authors>
