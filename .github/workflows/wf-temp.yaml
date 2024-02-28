@@ -32,13 +32,12 @@ jobs:
       - name: Build
         run: dotnet build --configuration Release --no-restore -p:GeneratePackageOnBuild=false
 
-      - name: Bump versions
-        uses: SiqiLu/dotnet-bump-version@2.0.0
+      - name: Set csproj version
+        id: update
+        uses: vers-one/dotnet-project-version-updater@v1.4
         with:
-            version_files: "**/src/*.csproj"
-            version_mask: 0.0.1.0
-            version_overwrite: "*.*.*.*"
-            github_token: ${{ secrets.GITHUB_TOKEN }}
+          file: "**/src/*.csproj"
+          version: bump-build
 
       - name: GitHub Tag Name example
         run: |
