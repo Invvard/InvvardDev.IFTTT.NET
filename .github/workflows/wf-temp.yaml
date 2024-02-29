@@ -34,7 +34,7 @@ jobs:
 
       - name: Set csproj version
         id: update
-        uses: vers-one/dotnet-project-version-updater@v1.4
+        uses: vers-one/dotnet-project-version-updater@v1.5
         with:
           file: "**/src/*.csproj"
           version: bump-build
