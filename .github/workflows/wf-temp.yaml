@@ -5,6 +5,9 @@ on:
   push:
     tags: 
       - v*
+      
+permissions:
+  contents: write
 
 jobs:
   github-example-tags:
@@ -33,14 +36,7 @@ jobs:
       # - name: Build
       #   run: dotnet build --configuration Release --no-restore -p:GeneratePackageOnBuild=false
 
-      - name: Bump VersionPrefix
-        id: bump_version_prefix
-        uses: vers-one/dotnet-project-version-updater@v1.5
-        with:
-          file: "**/src/*.csproj"
-          version: bump-build
-
-      - name: Get Branch
+      - name: Get tagged branch
         run: |
           tag=${{ github.ref_name }}
           sha=$(git rev-list -n 1 $tag)
@@ -48,15 +44,21 @@ jobs:
           echo Current branch: * $branch *
           echo "BRANCH=$branch" >> $GITHUB_ENV
 
-      - run: |
-          echo Tagged branch == ${{ env.BRANCH }}
-          git checkout -b ${{ github.ref_name }}-bumpversion ${{ github.ref_name }}
-          git status
+      - name: Bump VersionPrefix
+        id: bump_version_prefix
+        uses: vers-one/dotnet-project-version-updater@v1.5
+        with:
+          file: "**/src/*.csproj"
+          version: bump-build
+  
+      - name: Push new VersionPrefix
+        run: |
+          git checkout ${{ env.BRANCH }}
           git config user.name "${{github.event.pusher.name}}"
           git config user.email "${{github.event.pusher.email}}"
-          #git add .
-          #git commit -m "Update Version Prefix from ${{ steps.bump_version_prefix.outputs.oldVersion }} to ${{ steps.bump_version_prefix.outputs.newVersion }}"
-          #git push
+          git add .
+          git commit -m "Update Version Prefix from ${{ steps.bump_version_prefix.outputs.oldVersion }} to ${{ steps.bump_version_prefix.outputs.newVersion }}"
+          git push
 
       - name: GitHub Tag Name example
         run: |
