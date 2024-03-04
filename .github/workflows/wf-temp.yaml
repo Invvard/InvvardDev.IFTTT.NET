@@ -43,7 +43,8 @@ jobs:
       - name: Get Branch
         run: |
           tag=${{ github.ref_name }}
-          branch=$(git branch --contains $tag | head -n1 | cut -c3-)
+          sha=$(git rev-list -n 1 $tag)
+          branch=$(git branch -r --contains $sha | cut -c3- | sed 's/origin\///')
           echo Current branch: * $branch *
           echo "BRANCH=$branch" >> $GITHUB_ENV
 
