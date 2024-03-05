@@ -18,11 +18,13 @@ jobs:
   build_and_test:
     name: Build and Test
     uses: ./.github/workflows/wf-build-test.yaml
+    with:
+      buildConfiguration: "Debug"
 
   update_version:
+    name: Update Version
     if: ${{ github.event_name == 'push' }}
     permissions:
       contents: write
-    name: Update Version
     needs: build_and_test
     uses: ./.github/workflows/wf-update-version.yaml
