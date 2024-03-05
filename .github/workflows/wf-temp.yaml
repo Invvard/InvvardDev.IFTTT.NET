@@ -43,6 +43,7 @@ jobs:
           branch=$(git branch -r --contains $sha | cut -c3- | sed 's/origin\///')
           echo Current branch: * $branch *
           echo "BRANCH=$branch" >> $GITHUB_ENV
+          git checkout $branch
 
       - name: Bump VersionPrefix
         id: bump_version_prefix
@@ -53,7 +54,6 @@ jobs:
   
       - name: Push new VersionPrefix
         run: |
-          git checkout ${{ env.BRANCH }}
           git config user.name "${{github.event.pusher.name}}"
           git config user.email "${{github.event.pusher.email}}"
           git add .
