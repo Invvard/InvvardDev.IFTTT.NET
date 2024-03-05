@@ -20,6 +20,7 @@ jobs:
     uses: ./.github/workflows/wf-build-test.yaml
 
   update_version:
+    if: ${{ github.event_name == 'push' }}
     permissions:
       contents: write
     name: Update Version

@@ -5,7 +5,7 @@ on:
   workflow_call:
     inputs:
       bumpVersion:
-        description: 'The version to bump to' 
+        description: "The version to bump to"
         type: string
         default: bump-build
 
@@ -29,12 +29,12 @@ jobs:
           git checkout $branch
 
       - name: Bump Version
-        id: bump_version
+        id: bump_version_prefix
         uses: vers-one/dotnet-project-version-updater@v1.5
         with:
           file: "**/src/*.csproj"
           version: ${{ inputs.bumpVersion }}
-          
+
       - name: Push new VersionPrefix
         run: |
           git config user.name "${{github.event.pusher.name}}"
