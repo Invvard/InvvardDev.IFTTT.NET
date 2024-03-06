@@ -30,6 +30,8 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+        with:
+          sparse-checkout: src
         
       - name: Create packages directory
         run: mkdir -p packages
