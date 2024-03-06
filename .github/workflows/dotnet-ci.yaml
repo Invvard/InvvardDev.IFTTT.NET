@@ -6,8 +6,9 @@ on:
     branches: ["feature/*"]
     paths-ignore:
       - "samples/**"
+      - ".github/workflows/**"
   pull_request_target:
-    branches: ["main"]
+    branches: ["develop"]
     types: [closed]
 
 concurrency:
