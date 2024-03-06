@@ -10,6 +10,13 @@ concurrency:
   cancel-in-progress: true
     
 jobs:
+  update_version:
+    uses: ./.github/workflows/wf-update-version.yaml
+    with:
+      bumpVersion: 0.^.0
+    permissions:
+      contents: write
+
   publish_nuget:
     uses: ./.github/workflows/wf-publish-nuget.yaml
     with:
