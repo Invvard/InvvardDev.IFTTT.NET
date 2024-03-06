@@ -37,7 +37,7 @@ jobs:
         run: mkdir -p packages
       
       - name: Pack
-        run: dotnet pack $GITHUB_WORKSPACE/InvvardDev.Ifttt.sln --output ${{ env.package_path }} --configuration ${{ inputs.build_configuration }}  -p:GeneratePackageOnBuild=false
+        run: dotnet pack $GITHUB_WORKSPACE/src/InvvardDev.Ifttt.csproj --output ${{ env.package_path }} --configuration ${{ inputs.build_configuration }}  -p:GeneratePackageOnBuild=false
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
