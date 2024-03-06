@@ -1,0 +1,23 @@
+name: 'Pull request check enforcer'
+
+on:
+  pull_request:
+
+jobs:
+  check_branch:
+    name: Check branches
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check source branch
+        if: github.base_ref == 'main' && github.head_ref != 'release/**'
+        run: |
+          echo "ERROR: You can only merge to main from a release/** branch."
+          exit 1
+
+      - name: Check destination branch
+        if: github.head_ref == 'release/**' && github.base_ref != 'main'
+        run: |
+          echo "ERROR: You can only merge a release/** branch into main."
+          exit 1
+          
