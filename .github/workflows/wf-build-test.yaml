@@ -5,9 +5,9 @@ on:
   workflow_call:
     inputs:
       buildConfiguration:
-        description: 'Build Configuration'
+        description: "Build Configuration"
         type: string
-        default: 'Release'
+        default: "Release"
 
 jobs:
   build-project:
@@ -15,11 +15,11 @@ jobs:
     runs-on: ubuntu-latest
     env:
       NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages
-      
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
-        
+
       - name: Setup .NET Core SDK
         uses: actions/setup-dotnet@v4.0.0
         with:
@@ -33,7 +33,7 @@ jobs:
 
       - name: Create packages directory
         run: mkdir -p packages
-        
+
       - name: Restore dependencies
         run: dotnet restore
 
@@ -41,4 +41,4 @@ jobs:
         run: dotnet build --no-restore --configuration ${{ inputs.buildConfiguration }} -p:GeneratePackageOnBuild=false
 
       - name: Test
-        run: dotnet test --no-build --verbosity normal --configuration  ${{ inputs.buildConfiguration }}
+        run: dotnet test --no-build --verbosity normal --configuration ${{ inputs.buildConfiguration }}
