@@ -20,33 +20,49 @@ on:
         description: 'NuGet API Key'
         required: true
     
+env:
+  PACKAGE_PATH: nupkgs
+
 jobs:
-  publish-nuget:
-    name: Publish NuGet Package
+  prepare-package:
+    name: Prepare Package
     runs-on: ubuntu-latest
-    env:
-      package_path: nupkgs
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
           sparse-checkout: src
-        
+
       - name: Create packages directory
         run: mkdir -p packages
-      
+
       - name: Pack
-        run: dotnet pack $GITHUB_WORKSPACE/src/InvvardDev.Ifttt.csproj --output ${{ env.package_path }} --configuration ${{ inputs.build_configuration }}  -p:GeneratePackageOnBuild=false
+        run: dotnet pack $GITHUB_WORKSPACE/src/InvvardDev.Ifttt.csproj --output $PACKAGE_PATH --configuration ${{ inputs.build_configuration }} -p:GeneratePackageOnBuild=false
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: nuget-packages
-          path: ${{ env.package_path }}
+          path: $PACKAGE_PATH
 
+  publish-to-nuget:
+    name: Publish Package to NuGet
+    runs-on: ubuntu-latest
+
+    steps:
       - name: Publish to NuGet
         if: inputs.push_package
-        run: dotnet nuget push ${{ env.package_path }}/*.* --source https://api.nuget.org/v3/index.json --skip-duplicate --api-key $nuget_api_key
+        run: dotnet nuget push $PACKAGE_PATH/*.* --api-key $api_key --source https://api.nuget.org/v3/index.json --skip-duplicate
         env:
-          nuget_api_key: ${{ secrets.nuget_api_key }}
+          api_key: ${{ secrets.nuget_api_key }}
+
+  publish-to-github:
+    name: Publish Package to GitHub Packages
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Publish to GitHub Packages
+        run: dotnet nuget push ${{ env.package_path }}/*.* --api-key $api_key --source https://nuget.pkg.github.com/InvvardDev/index.json --skip-duplicate --no-symbols
+        env:
+          api_key: ${{ secrets.GITHUB_TOKEN }}
