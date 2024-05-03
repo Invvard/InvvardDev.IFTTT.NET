@@ -2,17 +2,19 @@ name: .NET Release
 run-name: Release ${{ github.ref_name }}
 
 on:
-  push:
-    branches: [ "release/*" ]
+  release:
+    types: [published]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
-    
-jobs:
+   
+jobs:         
   publish_nuget:
+    if: github.event.release.draft == false
     uses: ./.github/workflows/wf-publish-nuget.yaml
     with:
-      push_package: true
+      push_package: ${{ github.event.release.prerelease == false }}
     secrets:
       nuget_api_key: ${{ secrets.NUGET_API_KEY_TEST }}
+  
