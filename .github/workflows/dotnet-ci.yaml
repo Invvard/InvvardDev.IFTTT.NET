@@ -4,9 +4,9 @@ run-name: Continuous Integration
 on:
   push:
     branches: ["feature/*"]
-    paths-ignore:
-      - "samples/**"
-      - ".github/workflows/**"
+    paths:
+      - "src/**"
+      - "tests/**"
 
 concurrency:
   group: ci-${{ github.workflow }}-${{ github.actor_id }}
