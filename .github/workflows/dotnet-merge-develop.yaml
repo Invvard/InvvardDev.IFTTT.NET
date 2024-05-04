@@ -2,9 +2,9 @@ name: .NET CI
 run-name: Continuous Integration
 
 on:
-    pull_request_target:
-      branches: ["develop"]
-      types: [closed]
+  pull_request_target:
+    branches: ["develop"]
+    types: [closed]
 
 concurrency:
   group: ci-${{ github.workflow }}-${{ github.actor_id }}
