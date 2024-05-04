@@ -23,6 +23,7 @@ on:
 env:
   PACKAGE_DIR_NAME: nupkgs
   PACKAGE_OUTPUT_PATH: ${{ github.workspace }}/nupkgs
+  GITHUB_PACKAGE_SOURCE: "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"
 
 
 jobs:
@@ -70,6 +71,8 @@ jobs:
     name: Publish Package to GitHub Packages
     runs-on: ubuntu-latest
     needs: [prepare_package]
+    permissions:
+      packages: write
 
     steps:
       - name: Download Artifact
@@ -79,6 +82,6 @@ jobs:
           path: ${{ env.PACKAGE_OUTPUT_PATH }}
           
       - name: Publish to GitHub Packages
-        run: dotnet nuget push ${{ env.PACKAGE_OUTPUT_PATH }}/*.* --api-key $api_key --source https://nuget.pkg.github.com/InvvardDev/index.json --skip-duplicate --no-symbols
+        run: dotnet nuget push ${{ env.PACKAGE_OUTPUT_PATH }}/*.* --api-key ${{ env.api_key }} --source ${{ env.GITHUB_PACKAGE_SOURCE }} --skip-duplicate --no-symbols
         env:
           api_key: ${{ secrets.GITHUB_TOKEN }}
