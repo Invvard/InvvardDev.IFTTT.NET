@@ -14,7 +14,7 @@ jobs:
     if: github.event.release.draft == false
     uses: ./.github/workflows/wf-publish-nuget.yaml
     with:
-      push_package: ${{ github.event.release.prerelease == false }}
+      push_package_to_nuget: ${{ github.event.release.prerelease == false }}
     secrets:
       nuget_api_key: ${{ secrets.NUGET_API_KEY_TEST }}
   
