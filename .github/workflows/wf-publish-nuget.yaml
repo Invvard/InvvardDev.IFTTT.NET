@@ -25,7 +25,6 @@ env:
   PACKAGE_OUTPUT_PATH: ${{ github.workspace }}/nupkgs
   GITHUB_PACKAGE_SOURCE: "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"
 
-
 jobs:
   prepare_package:
     name: Prepare Package
