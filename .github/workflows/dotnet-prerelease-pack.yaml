@@ -1,5 +1,5 @@
-name: .Nuget Pre-release
-run-name: Create pre-release NuGet packages
+name: Package Pre-Release
+run-name: Pack & Publish pre-release NuGet packages
 
 on:
   workflow_dispatch:
