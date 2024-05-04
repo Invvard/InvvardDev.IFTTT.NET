@@ -4,7 +4,7 @@ run-name: Publish NuGet Package
 on:
   workflow_call:
     inputs:
-      push_package:
+      push_package_to_nuget:
         type: boolean
         default: false
       build_configuration:
@@ -21,7 +21,9 @@ on:
         required: true
     
 env:
-  PACKAGE_PATH: nupkgs
+  PACKAGE_DIR_NAME: nupkgs
+  PACKAGE_OUTPUT_PATH: $GITHUB_WORKSPACE/$PACKAGE_DIR_NAME/
+
 
 jobs:
   prepare-package:
@@ -38,22 +40,28 @@ jobs:
         run: mkdir -p packages
 
       - name: Pack
-        run: dotnet pack $GITHUB_WORKSPACE/src/InvvardDev.Ifttt.csproj --output $PACKAGE_PATH --configuration ${{ inputs.build_configuration }} -p:GeneratePackageOnBuild=false
+        run: dotnet pack $GITHUB_WORKSPACE/src/InvvardDev.Ifttt.csproj --output $PACKAGE_DIR_NAME --configuration ${{ inputs.build_configuration }} -p:GeneratePackageOnBuild=false
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: nuget-packages
-          path: $PACKAGE_PATH
+          path: ${{ env.PACKAGE_OUTPUT_PATH }}
 
   publish-to-nuget:
     name: Publish Package to NuGet
     runs-on: ubuntu-latest
 
     steps:
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: nuget-packages
+          path: ${{ env.PACKAGE_OUTPUT_PATH }}
+          
       - name: Publish to NuGet
-        if: inputs.push_package
-        run: dotnet nuget push $PACKAGE_PATH/*.* --api-key $api_key --source https://api.nuget.org/v3/index.json --skip-duplicate
+        if: inputs.push_package_to_nuget
+        run: dotnet nuget push ${{ env.PACKAGE_OUTPUT_PATH }}/*.* --api-key $api_key --source https://api.nuget.org/v3/index.json --skip-duplicate
         env:
           api_key: ${{ secrets.nuget_api_key }}
 
@@ -62,7 +70,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: nuget-packages
+          path: ${{ env.PACKAGE_OUTPUT_PATH }}
+          
       - name: Publish to GitHub Packages
-        run: dotnet nuget push ${{ env.package_path }}/*.* --api-key $api_key --source https://nuget.pkg.github.com/InvvardDev/index.json --skip-duplicate --no-symbols
+        run: dotnet nuget push ${{ env.PACKAGE_OUTPUT_PATH }}/*.* --api-key $api_key --source https://nuget.pkg.github.com/InvvardDev/index.json --skip-duplicate --no-symbols
         env:
           api_key: ${{ secrets.GITHUB_TOKEN }}
