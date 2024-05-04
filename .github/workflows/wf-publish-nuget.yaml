@@ -22,7 +22,7 @@ on:
     
 env:
   PACKAGE_DIR_NAME: nupkgs
-  PACKAGE_OUTPUT_PATH: ${{ github.workspace }}/${{ github.env.PACKAGE_DIR_NAME }}
+  PACKAGE_OUTPUT_PATH: ${{ github.workspace }}/nupkgs
 
 
 jobs:
