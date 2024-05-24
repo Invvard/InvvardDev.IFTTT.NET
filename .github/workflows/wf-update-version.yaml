@@ -8,6 +8,14 @@ on:
         description: "The version to bump to"
         type: string
         default: bump-build
+      userName:
+        description: "The user name to use for the commit"
+        type: string
+        default: ${{ github.event.pusher.name }}
+      userEmail:
+        description: "The user email to use for the commit"
+        type: string
+        default: ${{ github.event.pusher.email }}
 
 jobs:
   update_version:
@@ -38,8 +46,8 @@ jobs:
 
       - name: Push new VersionPrefix
         run: |
-          git config user.name "${{github.event.pusher.name}}"
-          git config user.email "${{github.event.pusher.email}}"
+          git config user.name "${{inputs.userName}}"
+          git config user.email "${{inputs.userEmail}}"
           git add .
           git commit -m "Update Version Prefix from ${{ steps.bump_version_prefix.outputs.oldVersion }} to ${{ steps.bump_version_prefix.outputs.newVersion }}"
           git push
