@@ -1,67 +1,16 @@
-name: On Tag Push
-run-name: Tag Push
+name: On Pull Request Closed
+run-name: Close Pull Request
 
 on:
-  push:
-    tags: 
-      - v*
+  pull_request:
+    branches: ["test/*"]
+    types:
+      - closed
       
 permissions:
   contents: write
 
 jobs:
-  github-example-tags:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          sparse-checkout: |
-            .github
-            src
-            tests
-
-      # - name: Setup .NET Core
-      #   uses: actions/setup-dotnet@v4
-      #   with:
-      #       dotnet-version: 8.0.x
-
-      # - name: Create packages directory
-      #   run: mkdir -p packages
-            
-      # - name: Install dependencies
-      #   run: dotnet restore
-
-      # - name: Build
-      #   run: dotnet build --configuration Release --no-restore -p:GeneratePackageOnBuild=false
-
-      - name: Get tagged branch
-        run: |
-          tag=${{ github.ref_name }}
-          sha=$(git rev-list -n 1 $tag)
-          branch=$(git branch -r --contains $sha | cut -c3- | sed 's/origin\///')
-          echo Current branch: * $branch *
-          echo "BRANCH=$branch" >> $GITHUB_ENV
-          git checkout $branch
-
-      - name: Bump VersionPrefix
-        id: bump_version_prefix
-        uses: vers-one/dotnet-project-version-updater@v1.5
-        with:
-          file: "**/src/*.csproj"
-          version: bump-build
-  
-      - name: Push new VersionPrefix
-        run: |
-          git config user.name "${{github.event.pusher.name}}"
-          git config user.email "${{github.event.pusher.email}}"
-          git add .
-          git commit -m "Update Version Prefix from ${{ steps.bump_version_prefix.outputs.oldVersion }} to ${{ steps.bump_version_prefix.outputs.newVersion }}"
-          git push
-
-      - name: GitHub Tag Name example
-        run: |
-          echo "Tag name from GITHUB_REF_NAME: $GITHUB_REF_NAME"
-          echo "Tag name from github.ref_name: ${{ github.ref_name }}"
-        
+  build_and_test:
+    name: Build and Test
+    uses: ./.github/workflows/sub-workflows/wf-build-test.yaml
