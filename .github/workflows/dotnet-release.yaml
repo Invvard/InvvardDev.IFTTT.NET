@@ -17,4 +17,3 @@ jobs:
       push_package_to_nuget: ${{ github.event.release.prerelease == false }}
     secrets:
       nuget_api_key: ${{ secrets.NUGET_API_KEY_TEST }}
-  
