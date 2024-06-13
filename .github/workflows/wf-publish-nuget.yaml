@@ -70,9 +70,9 @@ jobs:
           path: ${{ env.PACKAGE_OUTPUT_PATH }}
           
       - name: Publish to NuGet
-        run: dotnet nuget push ${{ env.PACKAGE_OUTPUT_PATH }}/*.* --api-key $api_key --source https://api.nuget.org/v3/index.json --skip-duplicate
+        run: dotnet nuget push ${{ env.PACKAGE_OUTPUT_PATH }}/*.* --api-key ${{ env.API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
         env:
-          api_key: ${{ secrets.nuget_api_key }}
+          API_KEY: ${{ secrets.nuget_api_key }}
 
   publish_to_github:
     name: Publish Package to GitHub Packages
@@ -87,6 +87,6 @@ jobs:
           path: ${{ env.PACKAGE_OUTPUT_PATH }}
           
       - name: Publish to GitHub Packages
-        run: dotnet nuget push ${{ env.PACKAGE_OUTPUT_PATH }}/*.* --api-key ${{ env.api_key }} --source ${{ env.GITHUB_PACKAGE_SOURCE }} --skip-duplicate --no-symbols
+        run: dotnet nuget push ${{ env.PACKAGE_OUTPUT_PATH }}/*.* --api-key ${{ env.API_KEY }} --source ${{ env.GITHUB_PACKAGE_SOURCE }} --skip-duplicate --no-symbols
         env:
-          api_key: ${{ secrets.GITHUB_TOKEN }}
+          API_KEY: ${{ secrets.GITHUB_TOKEN }}
