@@ -15,6 +15,10 @@ on:
         description: 'Version Suffix'
         type: string
         default: ''
+      version:
+        description: 'Version'
+        type: string
+        default: ''
     secrets:
       nuget_api_key:
         description: 'NuGet API Key'
@@ -39,8 +43,12 @@ jobs:
       - name: Create packages directory
         run: mkdir -p packages
 
+      - name: Define optional Package Version
+        id: optional_parameter
+        run: echo "packVersion=${{ inputs.version != '' && format('-p:PackageVersion=''{0}''', github.ref_name) || '' }}" >> $GITHUB_OUTPUT
+
       - name: Pack
-        run: dotnet pack $GITHUB_WORKSPACE/src/InvvardDev.Ifttt.csproj --version-suffix '${{ inputs.version_suffix }}' --output $PACKAGE_DIR_NAME --configuration ${{ inputs.build_configuration }} -p:GeneratePackageOnBuild=false
+        run: dotnet pack $GITHUB_WORKSPACE/src/InvvardDev.Ifttt.csproj --version-suffix '${{ inputs.version_suffix }}' --output $PACKAGE_DIR_NAME --configuration ${{ inputs.build_configuration }} -p:GeneratePackageOnBuild=false  ${{ steps.optional_parameter.outputs.packVersion }}
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
