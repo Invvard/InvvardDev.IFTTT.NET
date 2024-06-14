@@ -31,18 +31,18 @@ jobs:
           dotnet-quality: ga
 
       - name: Build with dotnet
-        run: dotnet build --configuration Release -o ${{ env.APP_BUILD_PATH }}
+        run: dotnet build --configuration Release
         working-directory: samples
 
       - name: dotnet publish
-        run: dotnet publish --no-build -o ${{ env.DOTNET_ROOT }}/publish
+        run: dotnet publish --no-build
         working-directory: samples
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: ${{ env.APP_DIR_NAME }}
-          path: ${{ env.DOTNET_ROOT }}/publish
+          path: ${{ env.DOTNET_ROOT }}
 
   deploy:
     runs-on: ubuntu-latest
