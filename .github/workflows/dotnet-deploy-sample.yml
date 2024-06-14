@@ -28,17 +28,20 @@ jobs:
           dotnet-version: "8.x"
           include-prerelease: true
 
+      - name: Display repo
+        run: ls -R
+
       - name: Build with dotnet
         run: dotnet build --configuration Release
 
       - name: dotnet publish
-        run: dotnet publish -c Release -o ${{ env.APP_BUILD_PATH }}
+        run: dotnet publish -c Release -o ${{ env.DOTNET_ROOT }}
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: sample-app
-          path: ${{ env.APP_BUILD_PATH }}
+          path: ${{ env.DOTNET_ROOT }}
 
   deploy:
     runs-on: ubuntu-latest
