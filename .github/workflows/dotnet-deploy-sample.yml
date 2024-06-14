@@ -35,14 +35,17 @@ jobs:
         working-directory: samples
 
       - name: dotnet publish
-        run: dotnet publish --no-build
+        run: dotnet publish --output ${{ env.DOTNET_ROOT }}/publish --no-build
         working-directory: samples
+
+      - name: Display files
+        run: ls -R ${{ env.DOTNET_ROOT }}/publish
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: ${{ env.APP_DIR_NAME }}
-          path: ${{ env.DOTNET_ROOT }}
+          path: ${{ env.DOTNET_ROOT }}/publish
 
   deploy:
     runs-on: ubuntu-latest
