@@ -29,6 +29,9 @@ jobs:
           dotnet-version: "8.x"
           include-prerelease: true
 
+      - name: Create packages directory
+        run: mkdir -p packages
+
       - name: Build with dotnet
         run: dotnet build ./samples/*.sln --configuration Release -o ${{ env.APP_BUILD_PATH }}
 
