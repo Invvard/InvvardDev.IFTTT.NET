@@ -10,6 +10,7 @@ on:
   workflow_dispatch:
 
 env:
+  APP_DIR_NAME: sample-app
   APP_BUILD_PATH: ${{ github.workspace }}/sample-app
 
 jobs:
@@ -28,19 +29,16 @@ jobs:
           dotnet-version: "8.x"
           include-prerelease: true
 
-      - name: Display repo
-        run: ls -R
-
       - name: Build with dotnet
-        run: dotnet build --configuration Release
+        run: dotnet build ./samples/*.sln --configuration Release -o ${{ env.APP_BUILD_PATH }}
 
       - name: dotnet publish
-        run: dotnet publish -c Release -o ${{ env.DOTNET_ROOT }}
+        run: dotnet publish --no-build -o ${{ env.DOTNET_ROOT }}
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
-          name: sample-app
+          name: ${{ env.APP_DIR_NAME }}
           path: ${{ env.DOTNET_ROOT }}
 
   deploy:
@@ -56,7 +54,7 @@ jobs:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
-          name: sample-app
+          name: ${{ env.APP_DIR_NAME }}
 
       - name: Login to Azure
         uses: azure/login@v1
