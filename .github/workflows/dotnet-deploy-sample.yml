@@ -32,7 +32,6 @@ jobs:
         with:
           dotnet-version: 8.0.x
           dotnet-quality: ga
-          cache: true
 
       - name: Create packages directory
         run: mkdir -p packages
@@ -41,13 +40,13 @@ jobs:
         run: dotnet build --configuration Release -o ${{ env.APP_BUILD_PATH }}
 
       - name: dotnet publish
-        run: dotnet publish --no-build -o ${{ env.DOTNET_ROOT }}
+        run: dotnet publish --no-build -o ${{ env.DOTNET_ROOT }}/publish
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: ${{ env.APP_DIR_NAME }}
-          path: ${{ env.DOTNET_ROOT }}
+          path: ${{ env.DOTNET_ROOT }}/publish
 
   deploy:
     runs-on: ubuntu-latest
