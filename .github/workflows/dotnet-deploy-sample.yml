@@ -60,10 +60,13 @@ jobs:
         with:
           creds: ${{ secrets.SAMPLE_TRIGGER_APP_CREDENTIALS }}
 
+      - name: List files in artifact
+        run: ls -R
+
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
           app-name: "sample-trigger"
           slot-name: "production"
-          package: ${{ env.APP_DIR_NAME }}
+          package: .
