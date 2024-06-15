@@ -59,7 +59,6 @@ jobs:
         uses: azure/login@v2
         with:
           creds: ${{ secrets.SAMPLE_TRIGGER_APP_CREDENTIALS }}
-          environment: "AzureCloud"
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
