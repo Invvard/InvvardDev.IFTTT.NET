@@ -58,14 +58,12 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_410FEBA142964ADC8BDDD567E0E6CF22 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_F98AA0B0793242C187FA3A99A82D66A1 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_9495FAD158814482BE8A7C1AF843FF35 }}
+          creds: ${{ secrets.SAMPLE_TRIGGER_APP_CREDENTIALS }}
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
           app-name: "sample-trigger"
-          slot-name: "Production"
+          slot-name: "production"
           package: .
