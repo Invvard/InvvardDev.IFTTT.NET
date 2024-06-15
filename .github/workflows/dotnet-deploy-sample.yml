@@ -31,7 +31,7 @@ jobs:
         run: |
           dotnet restore
           dotnet build --configuration Release
-          dotnet publish --no-build --output ${{ env.DOTNET_ROOT }}/publish
+          dotnet publish --no-build --property:PublishDir=${{ env.DOTNET_ROOT }}/publish
         working-directory: samples
 
       - name: Upload artifact for deployment job
