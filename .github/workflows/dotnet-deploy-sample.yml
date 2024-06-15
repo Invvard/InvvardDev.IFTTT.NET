@@ -30,16 +30,12 @@ jobs:
           dotnet-version: 8.0.x
           dotnet-quality: ga
 
-      - name: Build with dotnet
-        run: dotnet build --configuration Release
+      - name: Build & publish App
+        run: |
+          dotnet restore
+          dotnet build --configuration Release
+          dotnet publish --no-build --property:PublishDir=${{ env.DOTNET_ROOT }}/publish
         working-directory: samples
-
-      - name: dotnet publish
-        run: dotnet publish --no-build --property:PublishDir=${{ env.DOTNET_ROOT }}/publish
-        working-directory: samples
-
-      - name: Display files
-        run: ls -R ${{ env.DOTNET_ROOT }}/publish
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
@@ -50,9 +46,6 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: build
-    environment:
-      name: "Development"
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
       id-token: write #This is required for requesting the JWT
 
@@ -63,7 +56,7 @@ jobs:
           name: ${{ env.APP_DIR_NAME }}
 
       - name: Login to Azure
-        uses: azure/login@v1
+        uses: azure/login@v2
         with:
           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_410FEBA142964ADC8BDDD567E0E6CF22 }}
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_F98AA0B0793242C187FA3A99A82D66A1 }}
@@ -71,7 +64,7 @@ jobs:
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
-        uses: azure/webapps-deploy@v2
+        uses: azure/webapps-deploy@v3
         with:
           app-name: "sample-trigger"
           slot-name: "Production"
