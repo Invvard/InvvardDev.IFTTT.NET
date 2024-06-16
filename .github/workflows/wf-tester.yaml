@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - samples/*
+  workflow_dispatch:
 
 jobs:
   deploy:
