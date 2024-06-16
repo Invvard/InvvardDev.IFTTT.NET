@@ -3,7 +3,7 @@ name: Build and deploy sample app
 on:
   push:
     branches:
-      - feature/deploy-sample-project
+      - disabled-samples/*
   workflow_dispatch:
 
 env:
