@@ -7,11 +7,17 @@ on:
       tfDirectory:
         description: "Terraform directory to run plan on"
         type: string
-        default: ".github/samples-infra"
+        default: .github/samples-infra
       tfPlanFileName:
         description: "Terraform plan file name"
         type: string
-        default: "tfplan"
+        default: tfplan
+
+    outputs:
+      tfplanExitCode:
+        description: "Terraform plan exit code"
+        value: ${{ jobs.tf-plan.outputs.tfplanExitCode }}
+
     secrets:
       AZURE_CLIENT_ID:
         description: "Azure Client ID"
@@ -22,7 +28,6 @@ on:
       AZURE_TENANT_ID:
         description: "Azure Tenant ID"
         required: true
-
 jobs:
   tf-plan:
     name: Terraform Plan
