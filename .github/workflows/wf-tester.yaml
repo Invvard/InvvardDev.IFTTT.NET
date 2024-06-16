@@ -34,29 +34,27 @@ jobs:
       ARM_TENANT_ID: "${{ secrets.AZURE_TENANT_ID }}"
       WORKING_DIRECTORY: .github/samples-infra
       TFPLAN_FILE_NAME: tfplan
+    defaults:
+      run:
+        working-directory: ${{ env.WORKING_DIRECTORY }}
 
     steps:
-      # Checkout the repository to the GitHub Actions runner
       - name: Checkout
         uses: actions/checkout@v4
         with:
           sparse-checkout: ${{ env.WORKING_DIRECTORY }}
           sparse-checkout-cone-mode: false
 
-      # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
 
-      # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
       - name: Terraform Init
         run: terraform init
 
-      # Download saved plan from artifacts
       - name: Download Terraform Plan
         uses: actions/download-artifact@v4
         with:
           name: ${{ env.TFPLAN_FILE_NAME }}
 
-      # Terraform Apply
       - name: Terraform Apply
         run: terraform apply -auto-approve ${{ env.TFPLAN_FILE_NAME }}
