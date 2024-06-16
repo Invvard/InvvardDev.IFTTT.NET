@@ -35,7 +35,7 @@ jobs:
       ARM_SUBSCRIPTION_ID: "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
       ARM_TENANT_ID: "${{ secrets.AZURE_TENANT_ID }}"
       ARM_SKIP_PROVIDER_REGISTRATION: true
-      WORKING_DIRECTORY: ./github/infra
+      WORKING_DIRECTORY: .github/infra
     defaults:
       run:
         working-directory: ${{ env.WORKING_DIRECTORY }}
@@ -47,7 +47,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          sparse-checkout: ./github/infra
+          sparse-checkout: ${{ env.WORKING_DIRECTORY }}
           sparse-checkout-cone-mode: false
 
       # Install the latest version of the Terraform CLI
