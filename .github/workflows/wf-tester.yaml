@@ -34,13 +34,13 @@ jobs:
       ARM_CLIENT_ID: "${{ secrets.AZURE_CLIENT_ID }}"
       ARM_SUBSCRIPTION_ID: "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
       ARM_TENANT_ID: "${{ secrets.AZURE_TENANT_ID }}"
-      ARM_SKIP_PROVIDER_REGISTRATION: true
+      ARM_OICD_AUTH: true
       WORKING_DIRECTORY: .github/infra
     defaults:
       run:
         working-directory: ${{ env.WORKING_DIRECTORY }}
-    # outputs:
-    # tfplanExitCode: ${{ steps.tf-plan.outputs.exitcode }}
+    outputs:
+      tfplanExitCode: ${{ steps.tf-plan.outputs.exitcode }}
 
     steps:
       # Checkout the repository to the GitHub Actions runner
@@ -64,3 +64,20 @@ jobs:
       # Will fail the build if not
       - name: Terraform Format
         run: terraform fmt -check
+
+      # Generates an execution plan for Terraform
+      # An exit code of 0 indicated no changes, 1 a terraform failure, 2 there are pending changes.
+      - name: Terraform Plan
+        id: tf-plan
+        run: |
+          export exitcode=0
+          terraform plan -detailed-exitcode -no-color -out tfplan || export exitcode=$?
+
+          echo "exitcode=$exitcode" >> $GITHUB_OUTPUT
+
+          if [ $exitcode -eq 1 ]; then
+            echo Terraform Plan Failed!
+            exit 1
+          else 
+            exit 0
+          fi
