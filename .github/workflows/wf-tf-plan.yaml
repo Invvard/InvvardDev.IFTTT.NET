@@ -84,8 +84,6 @@ jobs:
         run: |
           TERRAFORM_PLAN=$(terraform show -no-color ${{ env.TFPLAN_FILE_NAME }})
 
-          delimiter="$(openssl rand -hex 8)"
-          echo "summary<<${delimiter}" >> $GITHUB_STEP_SUMMARY
           echo "## Terraform Plan Output" >> $GITHUB_STEP_SUMMARY
           echo "<details><summary>Click to expand</summary>" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
@@ -93,4 +91,3 @@ jobs:
           echo "$TERRAFORM_PLAN" >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
           echo "</details>" >> $GITHUB_STEP_SUMMARY
-          echo "${delimiter}" >> $GITHUB_STEP_SUMMARY
