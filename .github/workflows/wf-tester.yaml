@@ -36,6 +36,7 @@ jobs:
       ARM_TENANT_ID: "${{ secrets.AZURE_TENANT_ID }}"
       ARM_OICD_AUTH: true
       WORKING_DIRECTORY: .github/infra
+      TFPLAN_FILE_NAME: tfplan
     defaults:
       run:
         working-directory: ${{ env.WORKING_DIRECTORY }}
@@ -71,7 +72,7 @@ jobs:
         id: tf-plan
         run: |
           export exitcode=0
-          terraform plan -detailed-exitcode -no-color -out tfplan || export exitcode=$?
+          terraform plan -detailed-exitcode -no-color -out ${{ env.TFPLAN_FILE_NAME }} || export exitcode=$?
 
           echo "exitcode=$exitcode" >> $GITHUB_OUTPUT
 
@@ -86,14 +87,14 @@ jobs:
       - name: Publish Terraform Plan
         uses: actions/upload-artifact@v4
         with:
-          name: tfplan
-          path: tfplan
+          name: ${{ env.TFPLAN_FILE_NAME }}
+          path: ${{ env.WORKING_DIRECTORY }}/${{ env.TFPLAN_FILE_NAME }}
 
       # Create string output of Terraform Plan
       - name: Create String Output
         id: tf-plan-string
         run: |
-          TERRAFORM_PLAN=$(terraform show -no-color tfplan)
+          TERRAFORM_PLAN=$(terraform show -no-color ${{ env.TFPLAN_FILE_NAME }})
 
           delimiter="$(openssl rand -hex 8)"
           echo "summary<<${delimiter}" >> $GITHUB_OUTPUT
