@@ -2,10 +2,10 @@ name: Workflow Tester
 run-name: Workflow Tester
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - samples/*
-  workflow_dispatch:
 
 env:
   TFPLAN_FILE_NAME: tfplan
@@ -18,7 +18,7 @@ jobs:
       id-token: write
       contents: read
     with:
-      tfPlanFileName: ${{ env.TFPLAN_FILE_NAME }}
+      tfPlanFileName: $TFPLAN_FILE_NAME
     secrets:
       AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
       AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
@@ -49,7 +49,7 @@ jobs:
       - name: Download Terraform Plan
         uses: actions/download-artifact@v4
         with:
-          name: ${{ env.TFPLAN_FILE_NAME }}
+          name: $TFPLAN_FILE_NAME
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
@@ -59,4 +59,4 @@ jobs:
         working-directory: ${{ env.WORKING_DIRECTORY }}
 
       - name: Terraform Apply
-        run: terraform apply -auto-approve ${{ env.TFPLAN_FILE_NAME }}
+        run: terraform apply -auto-approve $TFPLAN_FILE_NAME
