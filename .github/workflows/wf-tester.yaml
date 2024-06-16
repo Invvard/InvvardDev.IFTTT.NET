@@ -23,14 +23,44 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-  run-azure-cmd:
-    name: Run Azure CLI
+  terraform-plan:
+    name: Provision Azure resources
     runs-on: ubuntu-latest
-    needs: connect-to-azure
+    environment: development
     permissions:
       id-token: write
+      contents: read
+    env:
+      ARM_CLIENT_ID: "${{ secrets.AZURE_CLIENT_ID }}"
+      ARM_SUBSCRIPTION_ID: "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
+      ARM_TENANT_ID: "${{ secrets.AZURE_TENANT_ID }}"
+      ARM_SKIP_PROVIDER_REGISTRATION: true
+      WORKING_DIRECTORY: ./github/infra
+    defaults:
+      run:
+        working-directory: ${{ env.WORKING_DIRECTORY }}
+    # outputs:
+    # tfplanExitCode: ${{ steps.tf-plan.outputs.exitcode }}
 
     steps:
-      - name: Run Azure CLI
-        run: |
-          az account show
+      # Checkout the repository to the GitHub Actions runner
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: ./github/infra
+          sparse-checkout-cone-mode: false
+
+      # Install the latest version of the Terraform CLI
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_wrapper: false
+
+      # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+      - name: Terraform Init
+        run: terraform init
+
+      # Checks that all Terraform configuration files adhere to a canonical format
+      # Will fail the build if not
+      - name: Terraform Format
+        run: terraform fmt -check
