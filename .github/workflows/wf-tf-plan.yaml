@@ -46,7 +46,7 @@ jobs:
         uses: hashicorp/setup-terraform@v3
         with:
           terraform_wrapper: false
-
+1
       - name: Terraform Init
         run: terraform init
 
@@ -61,16 +61,17 @@ jobs:
 
           echo "exitcode=$exitcode" >> $GITHUB_OUTPUT
 
-          switch $exitcode
-          case 0
-            echo Plan with no changes detected
-            exit 0
-          case 1
-            echo Terraform Plan Failed
-            exit 1
-          case 2
-            echo Plan with changes detected
-            exit 0
+          case $exitcode in
+            0)
+              echo Plan with no changes detected
+              exit 0
+            1)
+              echo Terraform Plan Failed
+              exit 1
+            2)
+              echo Plan with changes detected
+              exit 0
+          esac
 
       - name: Publish Terraform Plan
         uses: actions/upload-artifact@v4
