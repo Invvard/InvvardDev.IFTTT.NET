@@ -44,7 +44,7 @@ jobs:
       - name: Download Terraform Plan
         uses: actions/download-artifact@v4
         with:
-          name: $TFPLAN_FILE_NAME
+          name: ${{ env.TFPLAN_FILE_NAME }}
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
@@ -54,4 +54,4 @@ jobs:
         working-directory: ${{ env.WORKING_DIRECTORY }}
 
       - name: Terraform Apply
-        run: terraform apply -auto-approve $TFPLAN_FILE_NAME
+        run: terraform apply -auto-approve ${{ env.TFPLAN_FILE_NAME }}

@@ -17,6 +17,7 @@ on:
       tfplanExitCode:
         description: "Terraform plan exit code"
         value: ${{ jobs.tf-plan.outputs.tfplanExitCode }}
+
 jobs:
   tf-plan:
     name: Terraform Plan
