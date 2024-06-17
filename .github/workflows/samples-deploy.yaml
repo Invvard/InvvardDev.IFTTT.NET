@@ -1,49 +1,45 @@
-name: Build and deploy sample app
+name: Build and deploy sample apps
 
 on:
   push:
     branches:
-      - disabled-samples/*
+      - develop
+      - samples/*
   workflow_dispatch:
 
-env:
-  APP_DIR_NAME: sample-app
+concurrency:
+  group: samples-${{ github.workflow }}-${{ github.actor_id }}
+  cancel-in-progress: true
 
 jobs:
-  build:
+  sample-build:
     name: Build & Publish Trigger App
-    runs-on: ubuntu-latest
+    uses: ./.github/workflows/wf-samples-build.yaml
+    with:
+      appDirName: ${{ vars.SAMPLE_APP_TRIGGER_NAME }}
 
-    steps:
-      - name: Checkout Samples directory
-        uses: actions/checkout@v4
-        with:
-          sparse-checkout: samples
-          sparse-checkout-cone-mode: false
+  terraform-plan:
+    name: Terraform Plan
+    uses: ./.github/workflows/wf-tf-plan.yaml
+    permissions:
+      id-token: write
+      contents: read
+    secrets: inherit
 
-      - name: Set up .NET Core
-        uses: actions/setup-dotnet@v4.0.0
-        with:
-          dotnet-version: 8.0.x
-          dotnet-quality: ga
-
-      - name: Build & publish App
-        run: |
-          dotnet restore
-          dotnet build --configuration Release
-          dotnet publish --no-build --property:PublishDir=${{ env.DOTNET_ROOT }}/publish
-        working-directory: samples
-
-      - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ env.APP_DIR_NAME }}
-          path: ${{ env.DOTNET_ROOT }}/publish
+  terraform-apply:
+    name: Terraform Apply
+    uses: ./.github/workflows/wf-tf-apply.yaml
+    needs: terraform-plan
+    if: success() && needs.terraform-plan.outputs.tfplanExitCode == 2
+    permissions:
+      id-token: write
+      contents: read
+    secrets: inherit
 
   deploy:
     name: Deploy Trigger App
     runs-on: ubuntu-latest
-    needs: build
+    needs: [sample-build, terraform-apply]
     environment: development
     permissions:
       id-token: write
@@ -52,7 +48,7 @@ jobs:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
-          name: ${{ env.APP_DIR_NAME }}
+          name: ${{ vars.SAMPLE_APP_TRIGGER_NAME }}
 
       - name: Login to Azure
         uses: azure/login@v2
@@ -61,10 +57,10 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      - name: Deploy to Azure Web App
+      - name: Deploy ${{ vars.SAMPLE_APP_TRIGGER_NAME }} to Azure
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: "sample-trigger"
+          app-name: ${{ vars.SAMPLE_APP_TRIGGER_NAME }}
           slot-name: "production"
           package: .

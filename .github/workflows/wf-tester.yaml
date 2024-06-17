@@ -14,7 +14,7 @@ on:
         default: plan
   push:
     branches:
-      - samples/*
+      - disabled-samples/*
 
 env:
   TFPLAN_FILE_NAME: "tfplan"
