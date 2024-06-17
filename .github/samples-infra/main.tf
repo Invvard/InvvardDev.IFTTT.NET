@@ -24,6 +24,7 @@ resource "azurerm_linux_web_app" "lwa_iftttnet_sample_trigger" {
   https_only = true
 
   site_config {
+    always_on = false
     application_stack {
       dotnet_version = "8.0"
     }
