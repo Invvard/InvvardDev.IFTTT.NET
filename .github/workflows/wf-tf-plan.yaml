@@ -61,12 +61,16 @@ jobs:
 
           echo "exitcode=$exitcode" >> $GITHUB_OUTPUT
 
-          if [ $exitcode -eq 1 ]; then
-            echo Terraform Plan Failed!
-            exit 1
-          else 
+          switch $exitcode
+          case 0
+            echo Plan with no changes detected
             exit 0
-          fi
+          case 1
+            echo Terraform Plan Failed
+            exit 1
+          case 2
+            echo Plan with changes detected
+            exit 0
 
       - name: Publish Terraform Plan
         uses: actions/upload-artifact@v4

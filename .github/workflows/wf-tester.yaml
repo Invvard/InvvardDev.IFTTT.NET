@@ -3,6 +3,15 @@ run-name: Workflow Tester
 
 on:
   workflow_dispatch:
+    inputs:
+      tfAction:
+        description: "Terraform action to run"
+        type: choice
+        options:
+          - plan
+          - apply
+          - destroy
+        default: plan
   push:
     branches:
       - samples/*
@@ -21,40 +30,10 @@ jobs:
 
   terraform-apply:
     name: Terraform Apply
-    if: needs.terraform-plan.outputs.tfplanExitCode == 2
-    runs-on: ubuntu-latest
+    uses: ./.github/workflows/wf-tf-apply.yaml
     needs: terraform-plan
-    environment: development
+    if: ( github.event_name == 'push' || github.event.inputs.tfAction == 'apply') && needs.terraform-plan.outputs.tfplanExitCode == 2
     permissions:
       id-token: write
       contents: read
-    env:
-      ARM_CLIENT_ID: "${{ secrets.AZURE_CLIENT_ID }}"
-      ARM_SUBSCRIPTION_ID: "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
-      ARM_TENANT_ID: "${{ secrets.AZURE_TENANT_ID }}"
-      WORKING_DIRECTORY: .github/samples-infra
-    defaults:
-      run:
-        working-directory: ${{ env.WORKING_DIRECTORY }}
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          sparse-checkout: ${{ env.WORKING_DIRECTORY }}
-          sparse-checkout-cone-mode: false
-
-      - name: Download Terraform Plan
-        uses: actions/download-artifact@v4
-        with:
-          name: ${{ env.TFPLAN_FILE_NAME }}
-          path: ${{ env.WORKING_DIRECTORY }}
-
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
-
-      - name: Terraform Init
-        run: terraform init
-
-      - name: Terraform Apply
-        run: terraform apply -auto-approve ${{ env.TFPLAN_FILE_NAME }}
+    secrets: inherit
