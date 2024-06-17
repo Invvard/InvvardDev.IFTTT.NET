@@ -15,16 +15,17 @@ resource "azurerm_service_plan" "asp_iftttnet_sample_apps" {
   sku_name            = "F1"
 }
 
-resource "azurerm_app_service" "as_iftttnet_sample_trigger" {
-  name                = "as-iftttnet-sample-trigger"
+resource "azurerm_linux_web_app" "lwa_iftttnet_sample_trigger" {
+  name                = "lwa-iftttnet-sample-trigger"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
-  app_service_plan_id = azurerm_service_plan.asp_iftttnet_sample_apps.id
+  service_plan_id     = azurerm_service_plan.asp_iftttnet_sample_apps.id
 
   https_only = true
 
   site_config {
-    linux_fx_version = "DOTNETCORE|8.0"
-    scm_type         = "GitHub"
+    application_stack {
+      dotnet_version = "8.0"
+    }
   }
 }
