@@ -1,25 +1,17 @@
-name: wf_tf_apply
-run-name: TF Apply
+name: wf_tf_destroy
+run-name: TF Destroy
 
 on:
   workflow_call:
     inputs:
-      tfApply:
-        description: "Should Terraform apply the plan?"
-        type: boolean
-        default: false
       tfDirectory:
-        description: "Terraform directory to run apply on"
+        description: "Terraform directory to run destroy on"
         type: string
         default: .github/samples-infra
-      tfPlanFileName:
-        description: "Terraform plan file name"
-        type: string
-        default: tfplan
 
 jobs:
-  tf-apply:
-    name: Terraform Apply
+  tf-destroy:
+    name: Terraform Destroy
     runs-on: ubuntu-latest
     environment: development
     env:
@@ -27,7 +19,6 @@ jobs:
       ARM_SUBSCRIPTION_ID: "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
       ARM_TENANT_ID: "${{ secrets.AZURE_TENANT_ID }}"
       WORKING_DIRECTORY: ${{ inputs.tfDirectory }}
-      TFPLAN_FILE_NAME: ${{ inputs.tfPlanFileName }}
     defaults:
       run:
         working-directory: ${{ env.WORKING_DIRECTORY }}
@@ -39,17 +30,11 @@ jobs:
           sparse-checkout: ${{ env.WORKING_DIRECTORY }}
           sparse-checkout-cone-mode: false
 
-      - name: Download Terraform Plan
-        uses: actions/download-artifact@v4
-        with:
-          name: ${{ env.TFPLAN_FILE_NAME }}
-          path: ${{ env.WORKING_DIRECTORY }}
-
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
-
+  
       - name: Terraform Init
         run: terraform init
-
-      - name: Terraform Apply
-        run: terraform apply -auto-approve ${{ env.TFPLAN_FILE_NAME }}
+  
+      - name: Terraform Destroy
+        run: terraform apply -destroy -auto-approve

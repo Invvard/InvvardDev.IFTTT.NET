@@ -23,6 +23,7 @@ jobs:
   terraform-plan:
     name: Terraform Plan
     uses: ./.github/workflows/wf-tf-plan.yaml
+    if: ( github.event_name == 'push' || github.event.inputs.tfAction == 'plan' )
     permissions:
       id-token: write
       contents: read
@@ -33,6 +34,15 @@ jobs:
     uses: ./.github/workflows/wf-tf-apply.yaml
     needs: terraform-plan
     if: ( github.event_name == 'push' || github.event.inputs.tfAction == 'apply') && needs.terraform-plan.outputs.tfplanExitCode == 2
+    permissions:
+      id-token: write
+      contents: read
+    secrets: inherit
+
+  terraform-destroy:
+    name: Terraform Destroy
+    uses: ./.github/workflows/wf-tf-destroy.yaml
+    if: ( github.event_name == 'workflow_dispatch' && github.event.inputs.tfAction == 'destroy' )
     permissions:
       id-token: write
       contents: read
