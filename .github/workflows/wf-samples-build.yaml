@@ -12,7 +12,7 @@ on:
 jobs:
   build:
     name: Build & Publish ${{ inputs.appName }} app
-    runs-on: ubuntu-lates,t
+    runs-on: ubuntu-latest
     env:
       APP_NAME: ${{ inputs.appName }}
       PUBLISH_DIR: ${{ github.workspace }}/publish
