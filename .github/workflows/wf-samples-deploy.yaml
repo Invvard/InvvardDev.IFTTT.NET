@@ -1,0 +1,38 @@
+name: wf-samples-deploy
+run-name: Deploy sample app
+
+on:
+  workflow_call:
+    inputs:
+      appName:
+        description: "App name"
+        type: string
+        default: "sample-app"
+
+jobs:
+  deploy:
+    name: Deploy ${{ inputs.appName }} app
+    runs-on: ubuntu-latest
+    environment: development
+    env:
+      APP_NAME: ${{ inputs.appName }}
+
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ env.APP_NAME }}
+
+      - name: Login to Azure
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Deploy ${{ env.APP_NAME }} to Azure
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ env.APP_NAME }}
+          slot-name: "production"
+          package: .

@@ -26,7 +26,6 @@ jobs:
     if: ( github.event_name == 'push' || github.event.inputs.tfAction == 'plan' )
     permissions:
       id-token: write
-      contents: read
     secrets: inherit
 
   terraform-apply:
@@ -36,7 +35,6 @@ jobs:
     if: ( github.event_name == 'push' || github.event.inputs.tfAction == 'apply') && needs.terraform-plan.outputs.tfplanExitCode == 2
     permissions:
       id-token: write
-      contents: read
     secrets: inherit
 
   terraform-destroy:
@@ -45,5 +43,4 @@ jobs:
     if: ( github.event_name == 'workflow_dispatch' && github.event.inputs.tfAction == 'destroy' )
     permissions:
       id-token: write
-      contents: read
     secrets: inherit

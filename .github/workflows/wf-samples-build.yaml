@@ -1,22 +1,21 @@
 name: wf-samples-build
-run-name: Build and deploy sample app
+run-name: Build sample app
 
 on:
   workflow_call:
     inputs:
-      appDirName:
-        description: "App directory name"
+      appName:
+        description: "App name"
         type: string
         default: "sample-app"
 
-env:
-  APP_DIR_NAME: ${{ inputs.appDirName }}
-  PUBLISH_DIR: ${{ github.workspace }}/publish
-
 jobs:
   build:
-    name: Build & Publish Trigger App
-    runs-on: ubuntu-latest
+    name: Build & Publish ${{ inputs.appName }} app
+    runs-on: ubuntu-lates,t
+    env:
+      APP_NAME: ${{ inputs.appName }}
+      PUBLISH_DIR: ${{ github.workspace }}/publish
 
     steps:
       - name: Checkout Samples directory
@@ -31,7 +30,7 @@ jobs:
           dotnet-version: 8.0.x
           dotnet-quality: ga
 
-      - name: Build & publish App
+      - name: Build & Publish ${{ env.APP_NAME }}
         run: |
           dotnet restore
           dotnet build --configuration Release
@@ -41,5 +40,5 @@ jobs:
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ env.APP_DIR_NAME }}
+          name: ${{ env.APP_NAME }}
           path: ${{ env.PUBLISH_DIR }}

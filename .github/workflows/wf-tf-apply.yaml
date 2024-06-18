@@ -4,10 +4,6 @@ run-name: TF Apply
 on:
   workflow_call:
     inputs:
-      tfApply:
-        description: "Should Terraform apply the plan?"
-        type: boolean
-        default: false
       tfDirectory:
         description: "Terraform directory to run apply on"
         type: string

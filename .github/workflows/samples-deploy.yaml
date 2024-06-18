@@ -12,55 +12,33 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  sample-build:
-    name: Build & Publish Trigger App
-    uses: ./.github/workflows/wf-samples-build.yaml
-    with:
-      appDirName: ${{ vars.SAMPLE_APP_TRIGGER_NAME }}
-
   terraform-plan:
     name: Terraform Plan
     uses: ./.github/workflows/wf-tf-plan.yaml
     permissions:
       id-token: write
-      contents: read
     secrets: inherit
 
   terraform-apply:
     name: Terraform Apply
     uses: ./.github/workflows/wf-tf-apply.yaml
     needs: terraform-plan
-    if: success() && needs.terraform-plan.outputs.tfplanExitCode == 2
     permissions:
       id-token: write
-      contents: read
     secrets: inherit
 
-  deploy:
+  build-trigger:
+    name: Build & Publish Trigger App
+    uses: ./.github/workflows/wf-samples-build.yaml
+    with:
+      appName: ${{ vars.SAMPLE_APP_TRIGGER_NAME }}
+
+  deploy-trigger:
     name: Deploy Trigger App
-    runs-on: ubuntu-latest
-    needs: [sample-build, terraform-apply]
-    environment: development
+    uses: ./.github/workflows/wf-samples-deploy.yaml
+    needs: [build-trigger, terraform-apply]
     permissions:
       id-token: write
-
-    steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v4
-        with:
-          name: ${{ vars.SAMPLE_APP_TRIGGER_NAME }}
-
-      - name: Login to Azure
-        uses: azure/login@v2
-        with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-
-      - name: Deploy ${{ vars.SAMPLE_APP_TRIGGER_NAME }} to Azure
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@v3
-        with:
-          app-name: ${{ vars.SAMPLE_APP_TRIGGER_NAME }}
-          slot-name: "production"
-          package: .
+    with:
+      appName: ${{ vars.SAMPLE_APP_TRIGGER_NAME }}
+    secrets: inherit
