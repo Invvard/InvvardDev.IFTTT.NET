@@ -59,6 +59,8 @@ jobs:
 
       - name: Terraform Plan
         id: tf-plan
+        env:
+          TF_VAR_web_app_name: ${{ inputs.tfvarWebAppName }}
         run: |
           export exitcode=0
           terraform plan -detailed-exitcode -no-color -out ${{ env.TFPLAN_FILE_NAME }} || export exitcode=$?
@@ -75,8 +77,6 @@ jobs:
             echo Infrastructure is up-to-date
             exit 0
           fi
-        env:
-          TF_VAR_web_app_name: ${{ inputs.tfvarWebAppName }}
 
       - name: Publish Terraform Plan
         uses: actions/upload-artifact@v4
@@ -85,7 +85,6 @@ jobs:
           path: ${{ env.WORKING_DIRECTORY }}/${{ env.TFPLAN_FILE_NAME }}
 
       - name: Publish Terraform Plan Summary
-        id: tf-plan-summary
         run: |
           TERRAFORM_PLAN=$(terraform show -no-color ${{ env.TFPLAN_FILE_NAME }})
 
