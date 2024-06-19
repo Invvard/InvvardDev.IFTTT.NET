@@ -8,22 +8,22 @@ on:
         type: boolean
         default: false
       build_configuration:
-        description: 'Build Configuration'
+        description: "Build Configuration"
         type: string
-        default: 'Release'
+        default: "Release"
       version_suffix:
-        description: 'Version Suffix'
+        description: "Version Suffix"
         type: string
-        default: ''
+        default: ""
       version:
-        description: 'Version'
+        description: "Version"
         type: string
-        default: ''
+        default: ""
     secrets:
       nuget_api_key:
-        description: 'NuGet API Key'
+        description: "NuGet API Key"
         required: true
-    
+
 env:
   PACKAGE_DIR_NAME: nupkgs
   PACKAGE_OUTPUT_PATH: ${{ github.workspace }}/nupkgs
@@ -68,7 +68,7 @@ jobs:
         with:
           name: nuget-packages
           path: ${{ env.PACKAGE_OUTPUT_PATH }}
-          
+
       - name: Publish to NuGet
         run: dotnet nuget push ${{ env.PACKAGE_OUTPUT_PATH }}/*.* --api-key ${{ env.API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
         env:
@@ -85,7 +85,7 @@ jobs:
         with:
           name: nuget-packages
           path: ${{ env.PACKAGE_OUTPUT_PATH }}
-          
+
       - name: Publish to GitHub Packages
         run: dotnet nuget push ${{ env.PACKAGE_OUTPUT_PATH }}/*.* --api-key ${{ env.API_KEY }} --source ${{ env.GITHUB_PACKAGE_SOURCE }} --skip-duplicate --no-symbols
         env:

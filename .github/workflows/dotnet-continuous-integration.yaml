@@ -16,6 +16,10 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-    build_and_test:
-      name: Build and Test
-      uses: ./.github/workflows/wf-build-test.yaml
+  build_and_test:
+    name: Build and Test
+    uses: ./.github/workflows/wf-build-test.yaml
+
+  lint:
+    name: Lint
+    uses: ./.github/workflows/wf-linter.yaml
