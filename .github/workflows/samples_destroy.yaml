@@ -1,0 +1,38 @@
+name: samples_destroy
+run-name: Destroy sample apps
+
+on:
+  workflow_dispatch:
+
+jobs:
+  tf-destroy:
+    name: Destroy sample apps
+    runs-on: ubuntu-latest
+    environment: development
+    env:
+      ARM_CLIENT_ID: "${{ secrets.AZURE_CLIENT_ID }}"
+      ARM_SUBSCRIPTION_ID: "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
+      ARM_TENANT_ID: "${{ secrets.AZURE_TENANT_ID }}"
+      WORKING_DIRECTORY: .github/samples-infra
+      TF_VAR_WEB_APP_NAME: ${{ vars.SAMPLE_APP_TRIGGER_NAME }}
+    defaults:
+      run:
+        working-directory: ${{ env.WORKING_DIRECTORY }}
+
+    steps:
+      - name: Checkout Terraform
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: ${{ env.WORKING_DIRECTORY }}
+          sparse-checkout-cone-mode: false
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Destroy ${{ env.TF_VAR_WEB_APP_NAME }}
+        env:
+          TF_VAR_web_app_name: ${{ env.TF_VAR_WEB_APP_NAME }}
+        run: terraform apply -destroy -auto-approve

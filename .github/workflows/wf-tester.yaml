@@ -2,34 +2,45 @@ name: Workflow Tester
 run-name: Workflow Tester
 
 on:
+  workflow_dispatch:
+    inputs:
+      tfAction:
+        description: "Terraform action to run"
+        type: choice
+        options:
+          - plan
+          - apply
+          - destroy
+        default: plan
   push:
-    tags:
-      - '[0-1].[0-9]+.[0-9]+' # '0.1.1', '0.14.23'
-      - '[0-1].[0-9]+.[0-9]+-alpha[0-9]?[0-9]?' # '0.14.23-alpha', '1.14.23-alpha1', '1.14.23-alpha23'
-      - '[0-1].[0-9]+.[0-9]+-beta[0-9]?[0-9]?' # '0.14.23-beta', '1.14.23-beta1', '1.14.23-beta23'
-      - '[0-1].[0-9]+.[0-9]+-rc[0-9]?[0-9]?' # '0.14.23-rc', '1.14.23-rc1', '1.14.23-rc23'
+    branches:
+      - disabled-samples/*
+
+env:
+  TFPLAN_FILE_NAME: "tfplan"
 
 jobs:
-  test_workflows:
-    name: Test Workflows
-    runs-on: ubuntu-latest
+  terraform-plan:
+    name: Terraform Plan
+    uses: ./.github/workflows/wf-tf-plan.yaml
+    if: ( github.event_name == 'push' || github.event.inputs.tfAction == 'plan' )
+    permissions:
+      id-token: write
+    secrets: inherit
 
-    steps:
-      - name: Output tag name
-        run: |
-          echo "Tag name: ${{ github.ref_name }}"
+  terraform-apply:
+    name: Terraform Apply
+    uses: ./.github/workflows/wf-tf-apply.yaml
+    needs: terraform-plan
+    if: ( github.event_name == 'push' || github.event.inputs.tfAction == 'apply') && needs.terraform-plan.outputs.tfplanExitCode == 2
+    permissions:
+      id-token: write
+    secrets: inherit
 
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-        with:
-          sparse-checkout: src
-
-      - name: Create packages directory
-        run: mkdir -p packages
-
-      - name: Define optional Package Version
-        id: optional_parameter
-        run: echo "packVersion=${{ contains(github.ref_name, 'alpha') && format('-p:PackageVersion=''{0}''', github.ref_name) || '' }}" >> $GITHUB_OUTPUT
-
-      - name: Pack
-        run: dotnet pack $GITHUB_WORKSPACE/src/InvvardDev.Ifttt.csproj ${{ steps.optional_parameter.outputs.packVersion }}
+  terraform-destroy:
+    name: Terraform Destroy
+    uses: ./.github/workflows/wf-tf-destroy.yaml
+    if: ( github.event_name == 'workflow_dispatch' && github.event.inputs.tfAction == 'destroy' )
+    permissions:
+      id-token: write
+    secrets: inherit
