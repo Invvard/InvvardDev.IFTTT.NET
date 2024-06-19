@@ -1,4 +1,4 @@
-name: samples_destroy
+name: Destroy sample apps
 run-name: Destroy sample apps
 
 on:
