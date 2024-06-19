@@ -1,4 +1,4 @@
-name: samples_destroy
+name: Destroy sample apps
 run-name: Destroy sample apps
 
 on:
@@ -9,6 +9,8 @@ jobs:
     name: Destroy sample apps
     runs-on: ubuntu-latest
     environment: development
+    permissions:
+      id-token: write
     env:
       ARM_CLIENT_ID: "${{ secrets.AZURE_CLIENT_ID }}"
       ARM_SUBSCRIPTION_ID: "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
