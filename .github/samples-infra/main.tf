@@ -16,7 +16,7 @@ resource "azurerm_service_plan" "asp_iftttnet_sample_apps" {
 }
 
 resource "azurerm_linux_web_app" "lwa_iftttnet_sample_trigger" {
-  name                = "lwa-iftttnet-sample-trigger"
+  name                = var.web_app_name
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
   service_plan_id     = azurerm_service_plan.asp_iftttnet_sample_apps.id

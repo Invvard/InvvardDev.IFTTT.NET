@@ -12,6 +12,10 @@ on:
         description: "Terraform plan file name"
         type: string
         default: tfplan
+      tfvarWebAppName:
+        description: "Web Application name"
+        type: string
+        required: true
 
     outputs:
       tfplanExitCode:
@@ -71,6 +75,8 @@ jobs:
             echo Infrastructure is up-to-date
             exit 0
           fi
+        env:
+          TF_VAR_web_app_name: ${{ inputs.tfvarWebAppName }}
 
       - name: Publish Terraform Plan
         uses: actions/upload-artifact@v4

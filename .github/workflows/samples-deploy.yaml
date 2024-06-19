@@ -17,6 +17,8 @@ jobs:
     uses: ./.github/workflows/wf-tf-plan.yaml
     permissions:
       id-token: write
+    with:
+      tfvarWebAppName: ${{ vars.SAMPLE_APP_TRIGGER_NAME }}
     secrets: inherit
 
   terraform-apply:
