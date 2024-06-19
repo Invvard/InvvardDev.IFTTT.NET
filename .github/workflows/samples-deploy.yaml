@@ -4,7 +4,9 @@ on:
   push:
     branches:
       - develop
-      - samples/*
+    paths:
+      - "samples/**"
+      - ".github/infra/**"
   workflow_dispatch:
 
 concurrency:
