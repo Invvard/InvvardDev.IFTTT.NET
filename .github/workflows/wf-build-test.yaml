@@ -13,8 +13,6 @@ jobs:
   build-project:
     name: Build Project & Test
     runs-on: ubuntu-latest
-    env:
-      NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages
 
     steps:
       - name: Checkout Repository
@@ -34,11 +32,10 @@ jobs:
       - name: Create packages directory
         run: mkdir -p packages
 
-      - name: Restore dependencies
-        run: dotnet restore
-
-      - name: Build
-        run: dotnet build --no-restore --configuration ${{ inputs.buildConfiguration }} -p:GeneratePackageOnBuild=false
+      - name: Build IFTTT.NET project
+        run: |
+          dotnet restore
+          dotnet build --no-restore --configuration ${{ inputs.buildConfiguration }} -p:GeneratePackageOnBuild=false
 
       - name: Test
         run: dotnet test --no-build --verbosity normal --configuration ${{ inputs.buildConfiguration }}

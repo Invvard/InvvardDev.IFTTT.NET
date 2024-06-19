@@ -1,0 +1,39 @@
+name: Linting
+run-name: Linting ${{ github.ref_name }}
+
+on:
+  workflow_call:
+    inputs:
+      workingDirectory:
+        description: "Directory to run linting on"
+        type: string
+        default: ${{ github.workspace }}
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    environment: development
+    env:
+      WORKING_DIRECTORY: ${{ inputs.workingDirectory }}
+
+    permissions:
+      contents: read
+      packages: read
+      statuses: write
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.ref }}
+          sparse-checkout: ${{ env.WORKING_DIRECTORY }}
+
+      - name: Run linting
+        uses: super-linter/super-linter@v6.6.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VALIDATE_ALL_CODEBASE: true
+          DEFAULT_BRANCH: ${{ github.base_ref }}
+          VALIDATE_CSHARP: true
