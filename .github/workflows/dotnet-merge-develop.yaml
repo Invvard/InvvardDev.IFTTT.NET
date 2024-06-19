@@ -1,5 +1,5 @@
-name: .NET CI
-run-name: Continuous Integration
+name: Continuous Integration
+run-name: CI ${{ github.ref_name }}
 
 on:
   pull_request_target:
