@@ -23,6 +23,10 @@ resource "azurerm_linux_web_app" "lwa_iftttnet_sample_trigger" {
 
   https_only = true
 
+  app_settings = {
+    "ClientIftttOptions__ServiceKey" = var.ifttt_service_key
+  }
+
   site_config {
     always_on = false
     application_stack {

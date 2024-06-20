@@ -61,6 +61,7 @@ jobs:
         id: tf-plan
         env:
           TF_VAR_web_app_name: ${{ inputs.tfvarWebAppName }}
+          TF_VAR_ifttt_service_key: ${{ secrets.IFTTT_SERVICE_KEY }}
         run: |
           export exitcode=0
           terraform plan -detailed-exitcode -no-color -out ${{ env.TFPLAN_FILE_NAME }} || export exitcode=$?
