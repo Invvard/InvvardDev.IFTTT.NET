@@ -17,11 +17,11 @@ internal class TriggerMapper(
                                                 async (triggerSlug, type) => await triggerService.GetProcessor(triggerSlug) switch
                                                                              {
                                                                                  null => false,
-                                                                                 { } existingProcessorTree when existingProcessorTree.Type == type
+                                                                                 { } existingProcessorTree when existingProcessorTree.ProcessorType == type
                                                                                      => true,
-                                                                                 { } pt when pt.Type != type
+                                                                                 { } pt when pt.ProcessorType != type
                                                                                      => throw new
-                                                                                         InvalidOperationException($"Conflict: 'Trigger' processor with slug '{triggerSlug}' already exists (Type is '{pt.Type}')."),
+                                                                                         InvalidOperationException($"Conflict: 'Trigger' processor with slug '{triggerSlug}' already exists (Type is '{pt.ProcessorType}')."),
                                                                                  _ => throw new ArgumentOutOfRangeException()
                                                                              },
                                                 stoppingToken);

@@ -33,7 +33,7 @@ public class TriggerMapperTests
         Mock.Get(triggerRepository)
             .Verify(x => x.AddOrUpdateProcessor(It.IsAny<ProcessorTree>()), Times.Once);
         Mock.Get(triggerRepository)
-            .Verify(x => x.AddOrUpdateProcessor(It.Is<ProcessorTree>(t => t.Slug == triggerSlug && t.Type == triggerType && t.Kind == ProcessorKind.Trigger)), Times.Once);
+            .Verify(x => x.AddOrUpdateProcessor(It.Is<ProcessorTree>(t => t.ProcessorSlug == triggerSlug && t.ProcessorType == triggerType && t.Kind == ProcessorKind.Trigger)), Times.Once);
     }
 
     [Fact(DisplayName = "MapTriggerProcessors when a new trigger processor with data fields is found should register trigger fields")]

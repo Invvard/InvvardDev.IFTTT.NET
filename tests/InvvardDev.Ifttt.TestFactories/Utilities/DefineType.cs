@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace InvvardDev.Ifttt.TestFactories.Shared;
+namespace InvvardDev.Ifttt.TestFactories.Utilities;
 
 internal class DefineType
 {

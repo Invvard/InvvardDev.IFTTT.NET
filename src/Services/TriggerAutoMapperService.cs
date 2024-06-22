@@ -15,7 +15,7 @@ internal class TriggerAutoMapperService(
         try
         {
             using var scope = serviceScopeFactory.CreateScope();
-            
+
             var triggerMapper = scope.ServiceProvider.GetRequiredService<ITriggerMapper>();
 
             await triggerMapper.MapTriggerProcessors(stoppingToken);
