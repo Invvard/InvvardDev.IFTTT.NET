@@ -6,7 +6,7 @@ namespace InvvardDev.Ifttt.Tests.Reflection;
 
 public class TriggerFieldsMapperTests
 {
-    [Fact]
+    [Fact(DisplayName = "CreateTriggerFieldsAutoMapper should map trigger fields")]
     public void CreateTriggerFieldsAutoMapper_ShouldMapTriggerFields()
     {
         // Arrange
