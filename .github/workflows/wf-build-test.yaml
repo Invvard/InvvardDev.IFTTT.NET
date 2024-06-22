@@ -53,7 +53,4 @@ jobs:
       - name: Publish Code Coverage Report
         run: |
           echo "## Code coverage" >> $GITHUB_STEP_SUMMARY
-          echo "<details><summary>Click to expand</summary>" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
           cat **code-coverage-results.md** >> $GITHUB_STEP_SUMMARY
-          echo "</details>" >> $GITHUB_STEP_SUMMARY
