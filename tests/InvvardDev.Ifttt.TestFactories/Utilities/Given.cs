@@ -3,6 +3,7 @@ using System.Reflection;
 
 namespace InvvardDev.Ifttt.TestFactories.Utilities;
 
+[ExcludeFromCodeCoverage]
 public class Given
 {
     private static readonly ConcurrentDictionary<string, Assembly> SourceAssemblies = new();

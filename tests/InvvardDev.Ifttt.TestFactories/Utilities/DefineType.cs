@@ -2,6 +2,7 @@ using System.Reflection;
 
 namespace InvvardDev.Ifttt.TestFactories.Utilities;
 
+[ExcludeFromCodeCoverage]
 internal class DefineType
 {
     private readonly string typeName;
@@ -76,8 +77,11 @@ internal class DefineType
         => attributes.TryGetValue(targetName, out var attribute) ? attribute : null;
 }
 
+[ExcludeFromCodeCoverage]
 internal record Property(string Name, Type Type, bool Readable, bool Writeable);
 
+[ExcludeFromCodeCoverage]
 internal record Method(string Name, Type ReturnType, bool IsPublic, Type[] ParameterTypes);
 
+[ExcludeFromCodeCoverage]
 internal record CustomAttribute(Type Type, object[] Parameters);

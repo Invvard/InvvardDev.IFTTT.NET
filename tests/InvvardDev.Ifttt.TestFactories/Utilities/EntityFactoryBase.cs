@@ -2,6 +2,7 @@
 
 namespace InvvardDev.Ifttt.TestFactories.Utilities;
 
+[ExcludeFromCodeCoverage]
 public abstract class EntityFactoryBase<T>
     where T : class
 {

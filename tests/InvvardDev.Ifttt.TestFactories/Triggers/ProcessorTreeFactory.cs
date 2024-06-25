@@ -4,6 +4,7 @@ using InvvardDev.Ifttt.Models.Trigger;
 
 namespace InvvardDev.Ifttt.TestFactories.Triggers;
 
+[ExcludeFromCodeCoverage]
 public class ProcessorTreeFactory : EntityFactoryBase<ProcessorTree>
 {
     protected override Faker<ProcessorTree> Configure()

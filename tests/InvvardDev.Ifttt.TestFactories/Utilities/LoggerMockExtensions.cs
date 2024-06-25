@@ -3,6 +3,7 @@ using Moq;
 
 namespace InvvardDev.Ifttt.TestFactories.Utilities;
 
+[ExcludeFromCodeCoverage]
 public static class LoggerMockExtensions
 {
     public static void VerifyInformationContains<T>(this Mock<ILogger<T>> logger, string contained, Func<Times> times)
