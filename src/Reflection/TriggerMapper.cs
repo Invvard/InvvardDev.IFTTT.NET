@@ -16,13 +16,12 @@ internal class TriggerMapper(
         => await MapAttribute<TriggerAttribute>(triggerAttributeLookup.GetAnnotatedTypes(),
                                                 async (triggerSlug, type) => await triggerService.GetProcessor(triggerSlug) switch
                                                                              {
-                                                                                 null => false,
                                                                                  { } existingProcessorTree when existingProcessorTree.ProcessorType == type
                                                                                      => true,
-                                                                                 { } pt when pt.ProcessorType != type
+                                                                                 { } existingProcessorTree when existingProcessorTree.ProcessorType != type
                                                                                      => throw new
-                                                                                         InvalidOperationException($"Conflict: 'Trigger' processor with slug '{triggerSlug}' already exists (Type is '{pt.ProcessorType}')."),
-                                                                                 _ => throw new ArgumentOutOfRangeException()
+                                                                                         InvalidOperationException($"Conflict: 'Trigger' processor with slug '{triggerSlug}' already exists (Type is '{existingProcessorTree.ProcessorType}')."),
+                                                                                 _ => false,
                                                                              },
                                                 stoppingToken);
 
@@ -58,7 +57,7 @@ internal class TriggerMapper(
             {
                 if (type.GetCustomAttribute<TAttribute>() is not { } attribute) continue;
 
-                if (await processorExists(attribute.Slug, type) is false)
+                if (!await processorExists(attribute.Slug, type))
                 {
                     await triggerService.AddOrUpdateProcessor(new ProcessorTree(attribute.Slug, type, ProcessorKind.Trigger));
                 }
@@ -68,11 +67,11 @@ internal class TriggerMapper(
         }
         catch (OperationCanceledException ocex)
         {
-            logger.LogInformation(ocex, "Mapping for attribute '{AttributeType}' is cancelled.", typeof(TAttribute));
+            logger.LogInformation(ocex, "Mapping for attribute '{AttributeType}' was cancelled.", typeof(TAttribute));
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Mapping for attribute '{AttributeType}' is failed.", typeof(TAttribute));
+            logger.LogError(ex, "Mapping for attribute '{AttributeType}' has failed.", typeof(TAttribute));
         }
 
         return this;

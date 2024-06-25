@@ -4,6 +4,7 @@ using InvvardDev.Ifttt.Models.Core;
 using InvvardDev.Ifttt.Models.Trigger;
 using InvvardDev.Ifttt.Reflection;
 using InvvardDev.Ifttt.TestFactories.Triggers;
+using InvvardDev.Ifttt.Toolkit.Attributes;
 using Microsoft.Extensions.Logging;
 using Moq;
 
@@ -21,19 +22,46 @@ public class TriggerMapperTests
         var triggerAttributeLookup = Mock.Of<IAttributeLookup>(x => x.GetAnnotatedTypes() == new[] { triggerType, notTriggerType });
 
         var triggerFieldsAttributeLookup = Mock.Of<IAttributeLookup>();
-        var triggerRepository = Mock.Of<IProcessorService>();
+        var triggerService = Mock.Of<IProcessorService>();
         var logger = Mock.Of<ILogger<TriggerMapper>>();
 
-        var sut = new TriggerMapper(triggerRepository, triggerAttributeLookup, triggerFieldsAttributeLookup, logger);
+        var sut = new TriggerMapper(triggerService, triggerAttributeLookup, triggerFieldsAttributeLookup, logger);
 
         // Act
         await sut.MapTriggerProcessors(default);
 
         // Assert
-        Mock.Get(triggerRepository)
+        Mock.Get(triggerService)
             .Verify(x => x.AddOrUpdateProcessor(It.IsAny<ProcessorTree>()), Times.Once);
-        Mock.Get(triggerRepository)
+        Mock.Get(triggerService)
             .Verify(x => x.AddOrUpdateProcessor(It.Is<ProcessorTree>(t => t.ProcessorSlug == triggerSlug && t.ProcessorType == triggerType && t.Kind == ProcessorKind.Trigger)), Times.Once);
+    }
+
+    [Fact(DisplayName = "MapTriggerProcessors when Cancellation is requested should log and stop processing")]
+    public async Task MapTriggerProcessors_WhenCancellationIsRequested_ShouldLogAndStopProcessing()
+    {
+        // Arrange
+        const string triggerSlug = "trigger_slug";
+        var triggerType = TriggerClassFactory.MatchingClass(triggerSlug: triggerSlug);
+        var triggerAttributeLookup = Mock.Of<IAttributeLookup>(x => x.GetAnnotatedTypes() == new[] { triggerType });
+        using var cancellationTokenSource = new CancellationTokenSource();
+        var token = cancellationTokenSource.Token;
+
+        var triggerFieldsAttributeLookup = Mock.Of<IAttributeLookup>();
+        var triggerService = Mock.Of<IProcessorService>();
+        Mock.Get(triggerService)
+            .Setup(t => t.AddOrUpdateProcessor(It.IsAny<ProcessorTree>()))
+            .Returns(async () => await Task.Delay(10_000, token));
+        var logger = Mock.Of<ILogger<TriggerMapper>>();
+
+        var sut = new TriggerMapper(triggerService, triggerAttributeLookup, triggerFieldsAttributeLookup, logger);
+
+        // Act
+        Task[] tasks = [sut.MapTriggerProcessors(token), cancellationTokenSource.CancelAsync()];
+        await Task.WhenAny(tasks);
+
+        // Assert
+        logger.VerifyInformationContains($"Mapping for attribute '{typeof(TriggerAttribute)}' was cancelled.", Times.Once);
     }
 
     [Fact(DisplayName = "MapTriggerProcessors when a new trigger processor with data fields is found should register trigger fields")]
@@ -48,11 +76,14 @@ public class TriggerMapperTests
         var triggerFieldsAttributeLookup = Mock.Of<IAttributeLookup>();
         var triggerService = Mock.Of<IProcessorService>();
         List<string> actualDataFieldSlugs = [];
-        Mock.Get(triggerService).Setup(x => x.AddDataField(It.IsAny<string>(), Capture.In(actualDataFieldSlugs), It.IsAny<Type>()));
-        Mock.Get(triggerService).Setup(x => x.GetProcessor(It.IsAny<string>())).ReturnsAsync(new ProcessorTree(triggerSlug, triggerType, ProcessorKind.Trigger));
+        Mock.Get(triggerService)
+            .Setup(x => x.AddDataField(It.IsAny<string>(), Capture.In(actualDataFieldSlugs), It.IsAny<Type>()));
+        Mock.Get(triggerService)
+            .Setup(x => x.GetProcessor(It.IsAny<string>()))
+            .ReturnsAsync(new ProcessorTree(triggerSlug, triggerType, ProcessorKind.Trigger));
 
         var logger = Mock.Of<ILogger<TriggerMapper>>();
-        
+
         var sut = new TriggerMapper(triggerService, triggerAttributeLookup, triggerFieldsAttributeLookup, logger);
 
         // Act
@@ -81,7 +112,7 @@ public class TriggerMapperTests
             .ReturnsAsync(new ProcessorTree(triggerSlug, triggerType, ProcessorKind.Trigger));
 
         var logger = Mock.Of<ILogger<TriggerMapper>>();
-        
+
         var sut = new TriggerMapper(triggerService, triggerAttributeLookup, triggerFieldsAttributeLookup, logger);
 
         // Act
@@ -93,7 +124,7 @@ public class TriggerMapperTests
     }
 
     [Fact(DisplayName = "MapTriggerProcessors when a trigger processor is already registered with a different type should throw")]
-    public void MapTriggerProcessors_WhenTriggerProcessorIsAlreadyRegisteredWithADifferentType_ShouldThrow()
+    public async Task MapTriggerProcessors_WhenTriggerProcessorIsAlreadyRegisteredWithADifferentType_ShouldThrow()
     {
         // Arrange
         const string triggerSlug = "trigger_slug";
@@ -111,11 +142,16 @@ public class TriggerMapperTests
 
         var sut = new TriggerMapper(triggerService, triggerAttributeLookup, triggerFieldsAttributeLookup, logger);
 
+        var expectedLogMsg = $"Mapping for attribute '{typeof(TriggerAttribute)}' has failed.";
+        var expectedExceptionMsg = $"Conflict: 'Trigger' processor with slug '{triggerSlug}' already exists (Type is '{anyType}').";
+
         // Act
-        var act = () => sut.MapTriggerProcessors(default);
+        await sut.MapTriggerProcessors(default);
 
         // Assert
-        act.Should().ThrowExactlyAsync<InvalidOperationException>().WithMessage("Trigger has already been registered");
+        logger.VerifyErrorContains<InvalidOperationException>(expectedLogMsg,
+                                                              expectedExceptionMsg,
+                                                              Times.Once);
     }
 
     [Fact(DisplayName = "MapTriggerFields when a new data fields model matching a processor is found should update trigger processor")]
@@ -173,14 +209,5 @@ public class TriggerMapperTests
         act.Should().ThrowExactlyAsync<InvalidOperationException>().WithMessage($"There is no trigger with slug '{triggerSlug}' registered.");
         Mock.Get(triggerService)
             .Verify(x => x.AddDataField(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Type>()), Times.Never);
-    }
-}
-
-internal static class TestAssertionExtensions
-{
-    public static bool HasSameElements<T>(this IEnumerable<T> first, IEnumerable<T> second)
-    {
-        first.Should().BeEquivalentTo(second);
-        return true;
     }
 }
