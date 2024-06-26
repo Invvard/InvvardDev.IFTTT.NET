@@ -1,5 +1,4 @@
-﻿using FluentAssertions;
-using InvvardDev.Ifttt.Toolkit;
+﻿using InvvardDev.Ifttt.Toolkit;
 using InvvardDev.Ifttt.Toolkit.Attributes;
 
 namespace InvvardDev.Ifttt.Tests.Reflection;

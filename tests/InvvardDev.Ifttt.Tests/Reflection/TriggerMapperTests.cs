@@ -1,4 +1,3 @@
-using FluentAssertions;
 using InvvardDev.Ifttt.Contracts;
 using InvvardDev.Ifttt.Models.Core;
 using InvvardDev.Ifttt.Models.Trigger;
@@ -6,7 +5,6 @@ using InvvardDev.Ifttt.Reflection;
 using InvvardDev.Ifttt.TestFactories.Triggers;
 using InvvardDev.Ifttt.Toolkit.Attributes;
 using Microsoft.Extensions.Logging;
-using Moq;
 
 namespace InvvardDev.Ifttt.Tests.Reflection;
 

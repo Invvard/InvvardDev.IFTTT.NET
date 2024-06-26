@@ -1,5 +1,4 @@
-﻿using FluentAssertions;
-using InvvardDev.Ifttt.Models.Trigger;
+﻿using InvvardDev.Ifttt.Models.Trigger;
 using InvvardDev.Ifttt.Services;
 
 namespace InvvardDev.Ifttt.Tests.Services;
