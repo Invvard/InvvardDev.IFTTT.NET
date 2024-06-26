@@ -1,11 +1,9 @@
-﻿using FluentAssertions;
-using InvvardDev.Ifttt.Contracts;
+﻿using InvvardDev.Ifttt.Contracts;
 using InvvardDev.Ifttt.Models.Core;
 using InvvardDev.Ifttt.Models.Trigger;
 using InvvardDev.Ifttt.Services;
 using InvvardDev.Ifttt.TestFactories.Triggers;
 using InvvardDev.Ifttt.Toolkit;
-using Moq;
 
 namespace InvvardDev.Ifttt.Tests.Services;
 
@@ -30,8 +28,8 @@ public class ProcessorServiceTests
 
         // Assert
         Mock.Get(processorRepository)
-            .Verify(x => x.AddProcessor(It.Is<ProcessorTree>(t => t.Slug == expectedTriggerSlug
-                                                                  && t.Type == expectedTriggerType
+            .Verify(x => x.AddProcessor(It.Is<ProcessorTree>(t => t.ProcessorSlug == expectedTriggerSlug
+                                                                  && t.ProcessorType == expectedTriggerType
                                                                   && t.Kind == ProcessorKind.Trigger)), Times.Once);
     }
 
@@ -62,8 +60,8 @@ public class ProcessorServiceTests
         // Assert
         Mock.Get(processorRepository).Verify(x => x.UpdateProcessor(It.IsAny<ProcessorTree>()), Times.Once);
         Mock.Get(processorRepository)
-            .Verify(x => x.UpdateProcessor(It.Is<ProcessorTree>(t => t.Slug == expectedTriggerSlug
-                                                                     && t.Type == expectedTriggerType
+            .Verify(x => x.UpdateProcessor(It.Is<ProcessorTree>(t => t.ProcessorSlug == expectedTriggerSlug
+                                                                     && t.ProcessorType == expectedTriggerType
                                                                      && t.Kind == ProcessorKind.Trigger
                                                                      && t.DataFields.Count == 1
                                                                      && t.DataFields.ContainsKey(expectedDataFieldSlug))), Times.Once);
@@ -117,8 +115,8 @@ public class ProcessorServiceTests
 
         // Assert
         Mock.Get(processorRepository)
-            .Verify(x => x.UpdateProcessor(It.Is<ProcessorTree>(t => t.Slug == expectedTriggerSlug
-                                                                     && t.Type == triggerType
+            .Verify(x => x.UpdateProcessor(It.Is<ProcessorTree>(t => t.ProcessorSlug == expectedTriggerSlug
+                                                                     && t.ProcessorType == triggerType
                                                                      && t.Kind == ProcessorKind.Trigger
                                                                      && t.DataFields.Count == 1
                                                                      && t.DataFields.ContainsKey(expectedTriggerFieldSlug))), Times.Once);

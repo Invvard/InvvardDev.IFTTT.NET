@@ -1,8 +1,9 @@
-using InvvardDev.Ifttt.TestFactories.Shared;
+using InvvardDev.Ifttt.TestFactories.Utilities;
 using InvvardDev.Ifttt.Toolkit.Attributes;
 
 namespace InvvardDev.Ifttt.TestFactories.Triggers;
 
+[ExcludeFromCodeCoverage]
 public static class TriggerFieldsClassFactory
 {
     public static Type MissingTriggerFieldsAttribute(string? typeName = null, string? propertyName = null)

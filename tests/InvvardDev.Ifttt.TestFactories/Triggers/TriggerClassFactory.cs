@@ -1,9 +1,10 @@
-﻿using InvvardDev.Ifttt.TestFactories.Shared;
+﻿using InvvardDev.Ifttt.TestFactories.Utilities;
 using InvvardDev.Ifttt.Toolkit;
 using InvvardDev.Ifttt.Toolkit.Attributes;
 
 namespace InvvardDev.Ifttt.TestFactories.Triggers;
 
+[ExcludeFromCodeCoverage]
 public static class TriggerClassFactory
 {
     public static Type MissingITriggerInterface(string? typeName = null, string? triggerSlug = null)

@@ -8,14 +8,12 @@ internal class TriggerAutoMapperService(
 {
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        stoppingToken.ThrowIfCancellationRequested();
-
         logger.LogInformation("Auto-mapping trigger is starting.");
 
         try
         {
             using var scope = serviceScopeFactory.CreateScope();
-            
+
             var triggerMapper = scope.ServiceProvider.GetRequiredService<ITriggerMapper>();
 
             await triggerMapper.MapTriggerProcessors(stoppingToken);
@@ -23,11 +21,11 @@ internal class TriggerAutoMapperService(
         }
         catch (OperationCanceledException ex)
         {
-            logger.LogInformation(ex, "Auto-mapping trigger is cancelled.");
+            logger.LogInformation(ex, "Auto-mapping trigger was canceled.");
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Auto-mapping trigger is failed.");
+            logger.LogError(ex, "Auto-mapping trigger has failed.");
         }
         finally
         {
@@ -36,9 +34,9 @@ internal class TriggerAutoMapperService(
         }
     }
 
-    public override async Task StopAsync(CancellationToken stoppingToken)
+    public override async Task StopAsync(CancellationToken cancellationToken)
     {
         logger.LogInformation("Auto-mapping trigger is stopping.");
-        await base.StopAsync(stoppingToken);
+        await base.StopAsync(cancellationToken);
     }
 }
