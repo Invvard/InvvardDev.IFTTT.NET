@@ -12,5 +12,9 @@
     <ItemGroup>
       <ProjectReference Include="..\..\src\InvvardDev.Ifttt.csproj" />
     </ItemGroup>
+    
+    <ItemGroup>
+        <InternalsVisibleTo Include="InvvardDev.Ifttt.Tests"/>
+    </ItemGroup>
 
 </Project>
