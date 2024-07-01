@@ -2,45 +2,20 @@ name: Workflow Tester
 run-name: Workflow Tester
 
 on:
-  workflow_dispatch:
-    inputs:
-      tfAction:
-        description: "Terraform action to run"
-        type: choice
-        options:
-          - plan
-          - apply
-          - destroy
-        default: plan
-  push:
-    branches:
-      - disabled-samples/*
-
-env:
-  TFPLAN_FILE_NAME: "tfplan"
+  pull_request:
 
 jobs:
-  terraform-plan:
-    name: Terraform Plan
-    uses: ./.github/workflows/wf-tf-plan.yaml
-    if: ( github.event_name == 'push' || github.event.inputs.tfAction == 'plan' )
-    permissions:
-      id-token: write
-    secrets: inherit
+  check_branch:
+    name: Check branches
+    runs-on: ubuntu-latest
 
-  terraform-apply:
-    name: Terraform Apply
-    uses: ./.github/workflows/wf-tf-apply.yaml
-    needs: terraform-plan
-    if: ( github.event_name == 'push' || github.event.inputs.tfAction == 'apply') && needs.terraform-plan.outputs.tfplanExitCode == 2
-    permissions:
-      id-token: write
-    secrets: inherit
-
-  terraform-destroy:
-    name: Terraform Destroy
-    uses: ./.github/workflows/wf-tf-destroy.yaml
-    if: ( github.event_name == 'workflow_dispatch' && github.event.inputs.tfAction == 'destroy' )
-    permissions:
-      id-token: write
-    secrets: inherit
+    steps:
+      - name: Evaluate ref values
+        if: github.base_ref == 'main' && github.head_ref != 'release/**'
+        run: |
+          echo "Base ref: ${{ github.base_ref }}"
+          echo "Head ref: ${{ github.head_ref }}"
+          echo "Ref: ${{ github.ref }}"
+          echo "Ref name: ${{ github.ref_name }}"
+          echo "Ref type: ${{ github.ref_type }}"
+          echo "Ref name glob: ${{ github.ref_name == 'feature/**' }}"
