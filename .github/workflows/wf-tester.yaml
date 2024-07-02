@@ -2,7 +2,7 @@ name: Workflow Tester
 run-name: Workflow Tester
 
 on:
-  pull_request:
+  workflow_dispatch:
 
 jobs:
   check_branch:
@@ -11,7 +11,6 @@ jobs:
 
     steps:
       - name: Evaluate ref values
-        if: github.base_ref == 'main' && github.head_ref != 'release/**'
         run: |
           echo "Base ref: ${{ github.base_ref }}"
           echo "Head ref: ${{ github.head_ref }}"
