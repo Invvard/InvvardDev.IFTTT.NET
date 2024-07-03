@@ -22,5 +22,4 @@ jobs:
     with:
       push_package_to_nuget: true
       version: ${{ github.ref_name }}
-    secrets:
-      nuget_api_key: ${{ secrets.NUGET_API_KEY_TEST }}
+    secrets: inherit
