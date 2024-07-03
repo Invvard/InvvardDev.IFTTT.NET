@@ -53,6 +53,5 @@ jobs:
     with:
       push_package_to_nuget: ${{ github.event.inputs.push_package_to_nuget == 'true' }}
       version_suffix: ${{ needs.setup_env.outputs.version_suffix }}
-    secrets:
-      nuget_api_key: ${{ secrets.NUGET_API_KEY_TEST }}
+    secrets: inherit
         
