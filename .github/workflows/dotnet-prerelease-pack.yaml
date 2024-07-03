@@ -4,24 +4,20 @@ run-name: Pack & Publish pre-release NuGet packages
 on:
   workflow_dispatch:
     inputs:
-      push_package_to_nuget:
-        description: 'Push package to NuGet.org'
-        type: boolean
-        default: false
       version_suffix:
-        description: 'Version suffix'
+        description: "Version suffix"
         type: choice
-        default: 'alpha'
+        default: "alpha"
         options:
-          - 'alpha'
-          - 'beta'
-          - 'rc'
+          - "alpha"
+          - "beta"
+          - "rc"
       version_custom:
-        description: 'Custom version suffix or version suffix index'
+        description: "Custom version suffix or version suffix index"
         type: string
         required: true
-        default: '1'
-   
+        default: "1"
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -33,12 +29,16 @@ jobs:
 
     outputs:
       version_suffix: ${{ steps.set_version_suffix.outputs.version_suffix }}
-      
+      push_package_to_nuget: ${{ steps.set_version_suffix.outputs.set_push_package_to_nuget }}
+
     steps:
       - name: sets env var version_suffix
-        if: github.event_name == 'workflow_dispatch'
         id: set_version_suffix
         run: echo "version_suffix=${{ format('{0}{1}', github.event.inputs.version_suffix, github.event.inputs.version_custom) }}" >> "$GITHUB_OUTPUT"
+
+      - name: sets env var push_package_to_nuget
+        id: set_push_package_to_nuget
+        run: echo "push_package_to_nuget=${{ startsWith(github.ref_name, 'prerelease/') }}" >> "$GITHUB_OUTPUT"
 
   build_and_test:
     name: Build and test
@@ -51,7 +51,6 @@ jobs:
     permissions:
       packages: write
     with:
-      push_package_to_nuget: ${{ github.event.inputs.push_package_to_nuget == 'true' }}
+      push_package_to_nuget: ${{ needs.setup_env.outputs.push_package_to_nuget == 'true' }}
       version_suffix: ${{ needs.setup_env.outputs.version_suffix }}
     secrets: inherit
-        

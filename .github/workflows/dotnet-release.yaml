@@ -4,16 +4,16 @@ run-name: Release ${{ github.ref_name }}
 on:
   push:
     tags:
-      - '[0-1].[0-9]+.[0-9]+' # '0.1.1', '0.14.23'
-      - '[0-1].[0-9]+.[0-9]+-alpha[0-9]?[0-9]?' # '0.14.23-alpha', '1.14.23-alpha1', '1.14.23-alpha23'
-      - '[0-1].[0-9]+.[0-9]+-beta[0-9]?[0-9]?' # '0.14.23-beta', '1.14.23-beta1', '1.14.23-beta23'
-      - '[0-1].[0-9]+.[0-9]+-rc[0-9]?[0-9]?' # '0.14.23-rc', '1.14.23-rc1', '1.14.23-rc23'
+      - "[0-1].[0-9]+.[0-9]+" # '0.1.1', '0.14.23'
+      - "[0-1].[0-9]+.[0-9]+-alpha[0-9]?[0-9]?" # '0.14.23-alpha', '1.14.23-alpha1', '1.14.23-alpha23'
+      - "[0-1].[0-9]+.[0-9]+-beta[0-9]?[0-9]?" # '0.14.23-beta', '1.14.23-beta1', '1.14.23-beta23'
+      - "[0-1].[0-9]+.[0-9]+-rc[0-9]?[0-9]?" # '0.14.23-rc', '1.14.23-rc1', '1.14.23-rc23'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
-   
-jobs:         
+
+jobs:
   publish_nuget:
     name: Publish NuGet packages
     uses: ./.github/workflows/wf-publish-nuget.yaml
