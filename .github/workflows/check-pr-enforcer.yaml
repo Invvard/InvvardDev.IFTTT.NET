@@ -12,8 +12,8 @@ jobs:
       - name: PR summary
         run: |
           echo "PR number: #${{ github.event.number }}"
-          echo "Source branch: '${{ github.base_ref }}'"
-          echo "Destination branch: '${{ github.head_ref }}'"
+          echo "Source branch: '${{ github.head_ref }}'"
+          echo "Destination branch: '${{ github.base_ref }}'"
 
       - name: PR rules
         run: |
