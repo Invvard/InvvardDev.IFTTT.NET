@@ -2,6 +2,8 @@ name: "Pull request check enforcer"
 
 on:
   pull_request:
+    branches:
+      - main
 
 jobs:
   check_branch:
@@ -17,14 +19,9 @@ jobs:
 
       - name: PR rules
         run: |
-          if [[ "${{ github.base_ref }}" == 'main' ]]; then
-            if [[ "${{ github.head_ref }}" =~ ^release/ ]]; then
-              echo "Merge from 'release/**' to 'main' branch is allowed."
-              exit 0
-            else
-              echo "ERROR: You can only merge to 'main' from a 'release/**' branch."
-              exit 1
-            fi
+          if [[ "${{ github.head_ref }}" == 'develop' ]]; then
+            echo "Merge from 'develop' to 'main' branch is allowed."
           else
-            echo "Destination branch is not 'main', merge is allowed."
+            echo "ERROR: You can only merge to 'main' from a 'develop' branch."
+            exit 1
           fi
