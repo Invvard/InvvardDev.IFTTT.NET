@@ -4,7 +4,7 @@ run-name: Publish NuGet Package
 on:
   workflow_call:
     inputs:
-      push_package:
+      push_package_to_nuget:
         type: boolean
         default: false
       build_configuration:
@@ -15,16 +15,22 @@ on:
         description: 'Version Suffix'
         type: string
         default: ''
+      version:
+        description: 'Version'
+        type: string
+        default: ''
     secrets:
       nuget_api_key:
         description: 'NuGet API Key'
         required: true
     
 env:
-  PACKAGE_PATH: nupkgs
+  PACKAGE_DIR_NAME: nupkgs
+  PACKAGE_OUTPUT_PATH: ${{ github.workspace }}/nupkgs
+  GITHUB_PACKAGE_SOURCE: "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"
 
 jobs:
-  prepare-package:
+  prepare_package:
     name: Prepare Package
     runs-on: ubuntu-latest
 
@@ -37,32 +43,50 @@ jobs:
       - name: Create packages directory
         run: mkdir -p packages
 
+      - name: Define optional Package Version
+        id: optional_parameter
+        run: echo "packVersion=${{ inputs.version != '' && format('-p:PackageVersion=''{0}''', github.ref_name) || '' }}" >> $GITHUB_OUTPUT
+
       - name: Pack
-        run: dotnet pack $GITHUB_WORKSPACE/src/InvvardDev.Ifttt.csproj --output $PACKAGE_PATH --configuration ${{ inputs.build_configuration }} -p:GeneratePackageOnBuild=false
+        run: dotnet pack $GITHUB_WORKSPACE/src/InvvardDev.Ifttt.csproj --version-suffix '${{ inputs.version_suffix }}' --output $PACKAGE_DIR_NAME --configuration ${{ inputs.build_configuration }} -p:GeneratePackageOnBuild=false  ${{ steps.optional_parameter.outputs.packVersion }}
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: nuget-packages
-          path: $PACKAGE_PATH
+          path: ${{ env.PACKAGE_OUTPUT_PATH }}
 
-  publish-to-nuget:
+  publish_to_nuget:
     name: Publish Package to NuGet
+    if: inputs.push_package_to_nuget
     runs-on: ubuntu-latest
+    needs: [prepare_package]
 
     steps:
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: nuget-packages
+          path: ${{ env.PACKAGE_OUTPUT_PATH }}
+          
       - name: Publish to NuGet
-        if: inputs.push_package
-        run: dotnet nuget push $PACKAGE_PATH/*.* --api-key $api_key --source https://api.nuget.org/v3/index.json --skip-duplicate
+        run: dotnet nuget push ${{ env.PACKAGE_OUTPUT_PATH }}/*.* --api-key $api_key --source https://api.nuget.org/v3/index.json --skip-duplicate
         env:
           api_key: ${{ secrets.nuget_api_key }}
 
-  publish-to-github:
+  publish_to_github:
     name: Publish Package to GitHub Packages
     runs-on: ubuntu-latest
+    needs: [prepare_package]
 
     steps:
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: nuget-packages
+          path: ${{ env.PACKAGE_OUTPUT_PATH }}
+          
       - name: Publish to GitHub Packages
-        run: dotnet nuget push ${{ env.package_path }}/*.* --api-key $api_key --source https://nuget.pkg.github.com/InvvardDev/index.json --skip-duplicate --no-symbols
+        run: dotnet nuget push ${{ env.PACKAGE_OUTPUT_PATH }}/*.* --api-key ${{ env.api_key }} --source ${{ env.GITHUB_PACKAGE_SOURCE }} --skip-duplicate --no-symbols
         env:
           api_key: ${{ secrets.GITHUB_TOKEN }}

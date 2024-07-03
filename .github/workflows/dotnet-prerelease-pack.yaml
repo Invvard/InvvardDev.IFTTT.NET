@@ -1,10 +1,10 @@
-name: .Nuget Pre-release
-run-name: Create pre-release NuGet packages
+name: Package Pre-Release
+run-name: Pack & Publish pre-release NuGet packages
 
 on:
   workflow_dispatch:
     inputs:
-      push_package:
+      push_package_to_nuget:
         description: 'Push package to NuGet.org'
         type: boolean
         default: false
@@ -48,8 +48,10 @@ jobs:
     needs: [build_and_test, setup_env]
     name: Publish NuGet packages
     uses: ./.github/workflows/wf-publish-nuget.yaml
+    permissions:
+      packages: write
     with:
-      push_package: ${{ github.event.inputs.push_package }}
+      push_package_to_nuget: ${{ github.event.inputs.push_package_to_nuget == 'true' }}
       version_suffix: ${{ needs.setup_env.outputs.version_suffix }}
     secrets:
       nuget_api_key: ${{ secrets.NUGET_API_KEY_TEST }}

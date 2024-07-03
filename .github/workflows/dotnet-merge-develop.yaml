@@ -2,9 +2,14 @@ name: .NET CI
 run-name: Continuous Integration
 
 on:
-    pull_request_target:
-      branches: ["develop"]
-      types: [closed]
+  pull_request_target:
+    branches: ["develop"]
+    types: [opened, closed]
+  push:
+    branches: ["feature/*"]
+    paths:
+      - "src/**"
+      - "tests/**"
 
 concurrency:
   group: ci-${{ github.workflow }}-${{ github.actor_id }}
@@ -14,12 +19,3 @@ jobs:
     build_and_test:
       name: Build and Test
       uses: ./.github/workflows/wf-build-test.yaml
-  
-    update_version:
-      name: Update Version
-      needs: build_and_test
-      permissions:
-        contents: write
-      uses: ./.github/workflows/wf-update-version.yaml
-      with:
-        bumpVersion: 0.^.0
