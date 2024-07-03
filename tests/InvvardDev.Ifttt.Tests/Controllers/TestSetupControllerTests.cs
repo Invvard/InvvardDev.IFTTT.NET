@@ -1,11 +1,9 @@
 ﻿using System.Text.Json;
-using FluentAssertions;
 using InvvardDev.Ifttt.Controllers;
 using InvvardDev.Ifttt.Toolkit;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Moq;
 
 namespace InvvardDev.Ifttt.Tests.Controllers;
 

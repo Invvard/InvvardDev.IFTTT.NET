@@ -2,34 +2,19 @@ name: Workflow Tester
 run-name: Workflow Tester
 
 on:
-  push:
-    tags:
-      - '[0-1].[0-9]+.[0-9]+' # '0.1.1', '0.14.23'
-      - '[0-1].[0-9]+.[0-9]+-alpha[0-9]?[0-9]?' # '0.14.23-alpha', '1.14.23-alpha1', '1.14.23-alpha23'
-      - '[0-1].[0-9]+.[0-9]+-beta[0-9]?[0-9]?' # '0.14.23-beta', '1.14.23-beta1', '1.14.23-beta23'
-      - '[0-1].[0-9]+.[0-9]+-rc[0-9]?[0-9]?' # '0.14.23-rc', '1.14.23-rc1', '1.14.23-rc23'
+  workflow_dispatch:
 
 jobs:
-  test_workflows:
-    name: Test Workflows
+  check_branch:
+    name: Check branches
     runs-on: ubuntu-latest
 
     steps:
-      - name: Output tag name
+      - name: Evaluate ref values
         run: |
-          echo "Tag name: ${{ github.ref_name }}"
-
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-        with:
-          sparse-checkout: src
-
-      - name: Create packages directory
-        run: mkdir -p packages
-
-      - name: Define optional Package Version
-        id: optional_parameter
-        run: echo "packVersion=${{ contains(github.ref_name, 'alpha') && format('-p:PackageVersion=''{0}''', github.ref_name) || '' }}" >> $GITHUB_OUTPUT
-
-      - name: Pack
-        run: dotnet pack $GITHUB_WORKSPACE/src/InvvardDev.Ifttt.csproj ${{ steps.optional_parameter.outputs.packVersion }}
+          echo "Base ref: ${{ github.base_ref }}"
+          echo "Head ref: ${{ github.head_ref }}"
+          echo "Ref: ${{ github.ref }}"
+          echo "Ref name: ${{ github.ref_name }}"
+          echo "Ref type: ${{ github.ref_type }}"
+          echo "Ref name glob: ${{ github.ref_name == 'feature/**' }}"

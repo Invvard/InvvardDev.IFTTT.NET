@@ -4,7 +4,7 @@ namespace InvvardDev.Ifttt.Contracts;
 
 public interface IProcessorService
 {
-    Task AddOrUpdateProcessor(ProcessorTree processorMap);
+    Task AddOrUpdateProcessor(ProcessorTree processorTree);
     
     Task AddDataField(string processorSlug, string dataFieldSlug, Type dataFieldType);
     

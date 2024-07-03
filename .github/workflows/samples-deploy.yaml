@@ -1,0 +1,48 @@
+name: Build and deploy sample apps
+
+on:
+  push:
+    branches:
+      - develop
+    paths:
+      - "samples/**"
+      - ".github/infra/**"
+  workflow_dispatch:
+
+concurrency:
+  group: samples-${{ github.workflow }}-${{ github.actor_id }}
+  cancel-in-progress: true
+
+jobs:
+  terraform-plan:
+    name: Terraform Plan
+    uses: ./.github/workflows/wf-tf-plan.yaml
+    permissions:
+      id-token: write
+    with:
+      tfvarWebAppName: ${{ vars.SAMPLE_APP_TRIGGER_NAME }}
+    secrets: inherit
+
+  terraform-apply:
+    name: Terraform Apply
+    uses: ./.github/workflows/wf-tf-apply.yaml
+    needs: terraform-plan
+    permissions:
+      id-token: write
+    secrets: inherit
+
+  build-trigger:
+    name: Build & Publish Trigger App
+    uses: ./.github/workflows/wf-samples-build.yaml
+    with:
+      appName: ${{ vars.SAMPLE_APP_TRIGGER_NAME }}
+
+  deploy-trigger:
+    name: Deploy Trigger App
+    uses: ./.github/workflows/wf-samples-deploy.yaml
+    needs: [build-trigger, terraform-apply]
+    permissions:
+      id-token: write
+    with:
+      appName: ${{ vars.SAMPLE_APP_TRIGGER_NAME }}
+    secrets: inherit

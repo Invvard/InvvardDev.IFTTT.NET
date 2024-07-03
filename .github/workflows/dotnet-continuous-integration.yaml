@@ -1,5 +1,5 @@
-name: .NET CI
-run-name: Continuous Integration
+name: Continuous Integration
+run-name: CI ${{ github.ref_name }}
 
 on:
   pull_request_target:
@@ -16,6 +16,6 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-    build_and_test:
-      name: Build and Test
-      uses: ./.github/workflows/wf-build-test.yaml
+  build_and_test:
+    name: Build and Test
+    uses: ./.github/workflows/wf-build-test.yaml

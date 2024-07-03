@@ -1,8 +1,9 @@
 using System.Reflection;
 using System.Reflection.Emit;
 
-namespace InvvardDev.Ifttt.TestFactories.Shared;
+namespace InvvardDev.Ifttt.TestFactories.Utilities;
 
+[ExcludeFromCodeCoverage]
 internal class TypeFactory
 {
     private const string DynamicAssemblyName = "DynamicAssembly";

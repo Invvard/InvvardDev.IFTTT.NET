@@ -13,8 +13,6 @@ jobs:
   build-project:
     name: Build Project & Test
     runs-on: ubuntu-latest
-    env:
-      NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages
 
     steps:
       - name: Checkout Repository
@@ -34,11 +32,25 @@ jobs:
       - name: Create packages directory
         run: mkdir -p packages
 
-      - name: Restore dependencies
-        run: dotnet restore
-
-      - name: Build
-        run: dotnet build --no-restore --configuration ${{ inputs.buildConfiguration }} -p:GeneratePackageOnBuild=false
+      - name: Build IFTTT.NET project
+        run: |
+          dotnet restore
+          dotnet build --no-restore --configuration ${{ inputs.buildConfiguration }} -p:GeneratePackageOnBuild=false
 
       - name: Test
-        run: dotnet test --no-build --verbosity normal --configuration ${{ inputs.buildConfiguration }}
+        run: dotnet test --no-build --verbosity normal --configuration ${{ inputs.buildConfiguration }} --collect:"XPlat Code Coverage" --results-directory ./coverage
+
+      - name: Code Coverage Report
+        uses: irongut/CodeCoverageSummary@v1.3.0
+        with:
+          filename: coverage/**/coverage.cobertura.xml
+          fail_below_min: true
+          format: markdown
+          hide_complexity: true
+          output: both
+          thresholds: "60 80"
+
+      - name: Publish Code Coverage Report
+        run: |
+          echo "## Code coverage" >> $GITHUB_STEP_SUMMARY
+          cat **code-coverage-results.md** >> $GITHUB_STEP_SUMMARY

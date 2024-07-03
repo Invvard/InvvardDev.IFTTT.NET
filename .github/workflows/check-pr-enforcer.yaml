@@ -1,7 +1,9 @@
-name: 'Pull request check enforcer'
+name: "Pull request check enforcer"
 
 on:
   pull_request:
+    branches:
+      - main
 
 jobs:
   check_branch:
@@ -9,15 +11,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check source branch
-        if: github.base_ref == 'main' && github.head_ref != 'release/**'
+      - name: PR summary
         run: |
-          echo "ERROR: You can only merge to main from a release/** branch."
-          exit 1
+          echo "PR number: #${{ github.event.number }}"
+          echo "Source branch: '${{ github.head_ref }}'"
+          echo "Destination branch: '${{ github.base_ref }}'"
 
-      - name: Check destination branch
-        if: github.head_ref == 'release/**' && github.base_ref != 'main'
+      - name: PR rules
         run: |
-          echo "ERROR: You can only merge a release/** branch into main."
-          exit 1
-          
+          if [[ "${{ github.head_ref }}" == 'develop' ]]; then
+            echo "Merge from 'develop' to 'main' branch is allowed."
+          else
+            echo "ERROR: You can only merge to 'main' from a 'develop' branch."
+            exit 1
+          fi

@@ -1,12 +1,11 @@
-﻿using FluentAssertions;
-using InvvardDev.Ifttt.Toolkit;
+﻿using InvvardDev.Ifttt.Toolkit;
 using InvvardDev.Ifttt.Toolkit.Attributes;
 
 namespace InvvardDev.Ifttt.Tests.Reflection;
 
 public class TriggerFieldsMapperTests
 {
-    [Fact]
+    [Fact(DisplayName = "CreateTriggerFieldsAutoMapper should map trigger fields")]
     public void CreateTriggerFieldsAutoMapper_ShouldMapTriggerFields()
     {
         // Arrange

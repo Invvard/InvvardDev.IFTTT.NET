@@ -3,6 +3,7 @@ using InvvardDev.Ifttt.Toolkit;
 
 namespace InvvardDev.Ifttt.TestFactories.Triggers;
 
+[ExcludeFromCodeCoverage]
 public class RealTimeNotificationModelFactory : Faker<RealTimeNotificationModel>
 {
     // Create a static instance of the factory

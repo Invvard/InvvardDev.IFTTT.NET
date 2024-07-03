@@ -2,15 +2,9 @@ using InvvardDev.Ifttt.Models.Core;
 
 namespace InvvardDev.Ifttt.Models.Trigger;
 
-public class ProcessorTree(string processorSlug, Type processorType, ProcessorKind kind)
+public record ProcessorTree(string ProcessorSlug, Type ProcessorType, ProcessorKind Kind)
 {
-    internal string Key => Kind.GetProcessorKey(Slug);
-    
-    public string Slug { get; } = processorSlug;
-    
-    public Type Type { get; } = processorType;
-
-    public ProcessorKind Kind { get; } = kind;
+    internal string Key => Kind.GetProcessorKey(ProcessorSlug);
     
     public Dictionary<string, Type> DataFields { get; } = [];
 }

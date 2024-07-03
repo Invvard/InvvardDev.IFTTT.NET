@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
 using InvvardDev.Ifttt.Models.Core;
 
@@ -6,6 +7,7 @@ namespace InvvardDev.Ifttt.Toolkit;
 /// <summary>
 /// Model to hold the trigger request data received from IFTTT.
 /// </summary>
+[ExcludeFromCodeCoverage]
 public class TriggerRequest
 {
     /// <summary>
