@@ -6,10 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace InvvardDev.Ifttt.Controllers;
 
-[ApiController]
-[Route(IftttConstants.BaseTriggersApiPath)]
-[Consumes("application/json")]
-[Produces("application/json")]
+[ApiController, Route(IftttConstants.BaseTriggersApiPath)]
 public class TriggerController([FromKeyedServices(ProcessorKind.Trigger)] IProcessorService triggerService) : ControllerBase
 {
     /// <summary>
@@ -20,6 +17,7 @@ public class TriggerController([FromKeyedServices(ProcessorKind.Trigger)] IProce
     [HttpPost("{triggerSlug}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [Consumes("application/json")]
     public async Task<IActionResult> ExecuteTrigger(string triggerSlug, TriggerRequest triggerRequest)
     {
         if (await triggerService.GetProcessorInstance<ITrigger>(triggerSlug) is not { } trigger)

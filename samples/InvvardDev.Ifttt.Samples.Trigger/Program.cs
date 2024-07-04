@@ -28,4 +28,4 @@ app.ConfigureIftttToolkit()
 app.UseSwagger()
    .UseSwaggerUI();
 
-app.Run();
+await app.RunAsync();
