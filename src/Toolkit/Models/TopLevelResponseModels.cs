@@ -8,6 +8,10 @@ namespace InvvardDev.Ifttt.Toolkit;
 /// </summary>
 public class TopLevelBaseModel
 {
+    protected TopLevelBaseModel()
+    {
+    }
+
     protected static readonly JsonSerializerOptions JsonSerializerOptions
         = new()
           {
@@ -41,6 +45,9 @@ public class TopLevelMessageModel<T>() : TopLevelBaseModel
 
     public static TopLevelMessageModel<T> Deserialize(string json, JsonSerializerOptions options)
         => JsonSerializer.Deserialize<TopLevelMessageModel<T>>(json, options) ?? new TopLevelMessageModel<T>(new T());
+
+    public override string ToString()
+        => Serialize(this.Data);
 }
 
 /// <summary>

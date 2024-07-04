@@ -44,7 +44,9 @@ public class TestSetupControllerTests
         var result = await sut.SetupTest();
 
         // Assert
-        result.Should().NotBeNull().And.Subject.Should().BeOfType<OkObjectResult>().Subject.Value.Should().BeEquivalentTo(expectedBody);
+        result.Should().NotBeNull()
+              .And.Subject.Should().BeOfType<OkObjectResult>()
+              .Subject.Value.Should().BeEquivalentTo(expectedBody.ToString());
     }
 
     [Fact(DisplayName = "SetupTest when processor has no data field, should return 200OK with empty Samples")]
@@ -67,7 +69,9 @@ public class TestSetupControllerTests
         var result = await sut.SetupTest();
 
         // Assert
-        result.Should().NotBeNull().And.Subject.Should().BeOfType<OkObjectResult>().Subject.Value.Should().BeEquivalentTo(expectedBody);
+        result.Should().NotBeNull()
+              .And.Subject.Should().BeOfType<OkObjectResult>()
+              .Subject.Value.Should().BeEquivalentTo(expectedBody.ToString());
     }
 
     [Fact(DisplayName = "SetupTest when there is an exception, should log an error and return 500InternalServerError")]
@@ -84,7 +88,7 @@ public class TestSetupControllerTests
         var logger = Mock.Of<ILogger<TestSetupController>>();
 
         var sut = new TestSetupController(testSetup, logger);
-        
+
         var expectedError = new TopLevelErrorModel(new[] { new ErrorMessage($"Error while setting up test: {exceptionMessage}") });
         var expectedErrorJson = JsonSerializer.Serialize(expectedError, JsonSerializerOptions);
 
@@ -93,7 +97,7 @@ public class TestSetupControllerTests
 
         // Assert
         Mock.Get(logger).VerifyLog(l => l.LogError(It.IsAny<Exception>(), expectedErrorMessage), Times.Once());
-        
+
         result.Should()
               .NotBeNull()
               .And.Subject.Should()
@@ -101,11 +105,10 @@ public class TestSetupControllerTests
               .Subject.StatusCode.Should()
               .Be(StatusCodes.Status500InternalServerError);
 
-        result.As<ObjectResult>()
-              .Value.Should().BeOfType<ProblemDetails>()
+        result.As<ObjectResult>().Value.Should().BeOfType<ProblemDetails>()
               .Which.Detail.Should().Be(expectedErrorJson);
     }
-    
+
     [Fact(DisplayName = "SetupTest when processor has data field, should return 200OK with samples processor payload")]
     public async Task SetupTest_WhenProcessorHasDataFields_ShouldReturn200OKWithSamplesProcessorPayload()
     {
@@ -121,12 +124,14 @@ public class TestSetupControllerTests
 
         var sut = new TestSetupController(testSetup, logger);
 
-        var expectedBody = new TopLevelMessageModel<SamplesPayload>(new SamplesPayload(expectedProcessorPayload));
+        var expectedBody = TopLevelMessageModel<SamplesPayload>.Serialize(new SamplesPayload(expectedProcessorPayload));
 
         // Act
         var result = await sut.SetupTest();
 
         // Assert
-        result.Should().NotBeNull().And.Subject.Should().BeOfType<OkObjectResult>().Subject.Value.Should().BeEquivalentTo(expectedBody);
+        result.Should().NotBeNull()
+              .And.Subject.Should().BeOfType<OkObjectResult>()
+              .Subject.Value.Should().BeEquivalentTo(expectedBody);
     }
 }
