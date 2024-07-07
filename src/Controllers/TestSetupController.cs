@@ -23,7 +23,7 @@ public class TestSetupController : ControllerBase
     /// </summary>
     /// <returns>A list of test data for IFTTT to use.</returns>
     [HttpPost]
-    [Consumes("x-www-form-urlencoded", "application/json")]
+    [Consumes("application/x-www-form-urlencoded", "application/json")]
     [Produces("application/json")]
     public async Task<IActionResult> SetupTest()
     {
