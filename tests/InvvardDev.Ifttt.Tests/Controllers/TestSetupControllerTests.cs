@@ -46,7 +46,7 @@ public class TestSetupControllerTests
         // Assert
         result.Should().NotBeNull()
               .And.Subject.Should().BeOfType<OkObjectResult>()
-              .Subject.Value.Should().BeEquivalentTo(expectedBody.ToString());
+              .Subject.Value.Should().BeEquivalentTo(expectedBody);
     }
 
     [Fact(DisplayName = "SetupTest when processor has no data field, should return 200OK with empty Samples")]
@@ -71,7 +71,7 @@ public class TestSetupControllerTests
         // Assert
         result.Should().NotBeNull()
               .And.Subject.Should().BeOfType<OkObjectResult>()
-              .Subject.Value.Should().BeEquivalentTo(expectedBody.ToString());
+              .Subject.Value.Should().BeEquivalentTo(expectedBody);
     }
 
     [Fact(DisplayName = "SetupTest when there is an exception, should log an error and return 500InternalServerError")]
@@ -124,7 +124,7 @@ public class TestSetupControllerTests
 
         var sut = new TestSetupController(testSetup, logger);
 
-        var expectedBody = TopLevelMessageModel<SamplesPayload>.Serialize(new SamplesPayload(expectedProcessorPayload));
+        var expectedBody = new TopLevelMessageModel<SamplesPayload>(new SamplesPayload(expectedProcessorPayload));
 
         // Act
         var result = await sut.SetupTest();
