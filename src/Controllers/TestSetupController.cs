@@ -34,7 +34,7 @@ public class TestSetupController : ControllerBase
             var samples = new SamplesPayload(processors);
             samples.SkimEmptyProcessors();
 
-            var payload = TopLevelMessageModel<SamplesPayload>.Serialize(samples);
+            var payload = new TopLevelMessageModel<SamplesPayload>(samples);
 
             return Ok(payload);
         }
