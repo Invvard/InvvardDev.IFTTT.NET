@@ -73,8 +73,8 @@ public class TriggerAutoMapperServiceTest
                                                 .Build();
 
         // Act
-        await Task.WhenAll(sut.StartAsync(cts.Token), cts.CancelAsync());
-        
+        await Task.WhenAll(sut.StartAsync(cts.Token), CancelTask(cts));
+
         // Assert
         Mock.Get(triggerMapper).Verify(m => m.MapTriggerProcessors(It.IsAny<CancellationToken>()), Times.Once);
         Mock.Get(triggerMapper).VerifyNoOtherCalls();
@@ -82,5 +82,12 @@ public class TriggerAutoMapperServiceTest
         logger.VerifyInformationContains("Auto-mapping trigger was canceled.", Times.Once);
         logger.VerifyInformationContains("Auto-mapping trigger is stopped.", Times.Once);
         logger.VerifyInformationContains("Auto-mapping trigger is stopping.", Times.Once);
+        return;
+
+        async Task CancelTask(CancellationTokenSource cancellationTokenSource)
+        {
+            await Task.Delay(2_000, CancellationToken.None);
+            await cancellationTokenSource.CancelAsync();
+        }
     }
 }
