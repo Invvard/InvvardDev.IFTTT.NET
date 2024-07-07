@@ -4,10 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace InvvardDev.Ifttt.Controllers;
 
-[ApiController]
-[Route(IftttConstants.TestingApiPath)]
-[Consumes("application/json")]
-[Produces("application/json")]
+[ApiController, Route(IftttConstants.TestingApiPath)]
 public class TestSetupController : ControllerBase
 {
     private readonly ITestSetup testSetup;
@@ -16,7 +13,7 @@ public class TestSetupController : ControllerBase
     public TestSetupController(ITestSetup testSetup, ILogger<TestSetupController> logger)
     {
         ArgumentNullException.ThrowIfNull(testSetup);
-        
+
         this.testSetup = testSetup;
         this.logger = logger;
     }
@@ -26,6 +23,8 @@ public class TestSetupController : ControllerBase
     /// </summary>
     /// <returns>A list of test data for IFTTT to use.</returns>
     [HttpPost]
+    [Consumes("x-www-form-urlencoded", "application/json")]
+    [Produces("application/json")]
     public async Task<IActionResult> SetupTest()
     {
         try
@@ -36,7 +35,7 @@ public class TestSetupController : ControllerBase
             samples.SkimEmptyProcessors();
 
             var payload = new TopLevelMessageModel<SamplesPayload>(samples);
-            
+
             return Ok(payload);
         }
         catch (Exception ex)

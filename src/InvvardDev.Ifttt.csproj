@@ -26,7 +26,7 @@
         <PackageId>$(AssemblyName)</PackageId>
 
         <AssemblyName>InvvardDev.Ifttt</AssemblyName>
-        <VersionPrefix>0.1.9</VersionPrefix>
+        <VersionPrefix>0.1.12</VersionPrefix>
         <PackageVersion>$(Version)</PackageVersion>
 
         <Title>IFTTT.NET package</Title>
