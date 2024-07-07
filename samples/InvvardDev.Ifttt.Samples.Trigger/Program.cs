@@ -22,7 +22,7 @@ var app = builder.Build();
 app.UseRouting();
 
 app.ConfigureIftttToolkit()
-   .UseServiceKeyAuthentication(clientIftttOptions.BypassServiceKey)
+   .UseServiceKeyAuthentication()
    .ConfigureTriggers();
 
 app.UseSwagger()
