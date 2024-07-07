@@ -88,9 +88,15 @@ public static class CoreHostingExtensions
     /// Extension method to use the IFTTT service key authentication middleware.
     /// </summary>
     /// <param name="appBuilder">The <see cref="IIftttAppBuilder"/> instance.</param>
+    /// <param name="bypassServiceKey">If <code>True</code>, it'll bypass authentication. SHOULD ONLY BE USED IN DEVELOPMENT (default: false)</param>
     /// <returns>The <see cref="IIftttAppBuilder"/> instance.</returns>
-    public static IIftttAppBuilder UseServiceKeyAuthentication(this IIftttAppBuilder appBuilder)
+    public static IIftttAppBuilder UseServiceKeyAuthentication(this IIftttAppBuilder appBuilder, bool bypassServiceKey = false)
     {
+        if (bypassServiceKey)
+        {
+            return appBuilder;
+        }
+
         ArgumentNullException.ThrowIfNull(appBuilder);
 
         appBuilder.App.UseWhen(context => context.Request.Path.StartsWithSegments(IftttConstants.BaseApiPath),
