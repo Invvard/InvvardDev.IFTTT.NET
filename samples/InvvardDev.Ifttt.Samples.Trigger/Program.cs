@@ -2,6 +2,7 @@ using InvvardDev.Ifttt.Hosting;
 using InvvardDev.Ifttt.Samples.Trigger.Core;
 using InvvardDev.Ifttt.Samples.Trigger.Models;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -12,6 +13,11 @@ var clientIftttOptions = builder.Configuration.GetSection(ClientIftttOptions.Def
 builder.Services
        .AddHttpLogging(logging =>
        {
+           logging.LoggingFields = HttpLoggingFields.All;
+           
+           logging.MediaTypeOptions.AddText("application/x-www-form-urlencoded");
+           logging.MediaTypeOptions.AddText("multipart/form-data");
+           
            logging.RequestHeaders.Add("IFTTT-Test-Mode");
            logging.RequestHeaders.Add("x-datadog-trace-id");
            logging.RequestHeaders.Add("x-datadog-tags");
@@ -28,15 +34,13 @@ builder.Services
 
 var app = builder.Build();
 
-app.UseRouting();
-
-app.UseHttpLogging();
+app.UseHttpLogging()
+   .UseRouting()
+   .UseSwagger()
+   .UseSwaggerUI();
 
 app.ConfigureIftttToolkit()
    .UseServiceKeyAuthentication()
    .ConfigureTriggers();
-
-app.UseSwagger()
-   .UseSwaggerUI();
 
 await app.RunAsync();
