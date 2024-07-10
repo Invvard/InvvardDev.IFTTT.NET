@@ -1,10 +1,8 @@
 resource "azurerm_resource_group" "rg" {
   name     = "rg-iftttnet-sample-apps"
   location = "canadacentral"
-  tags = {
-    environment = "dev",
-    owner       = "invvard"
-  }
+
+  tags = merge(var.tags, local.rg_default_tags)
 }
 
 resource "azurerm_log_analytics_workspace" "law_iftttnet_sample_apps" {
@@ -21,8 +19,8 @@ resource "azurerm_application_insights" "appi_iftttnet_sample_apps" {
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
 
-  workspace_id        = azurerm_log_analytics_workspace.law_iftttnet_sample_apps.id
-  application_type    = "web"
+  workspace_id     = azurerm_log_analytics_workspace.law_iftttnet_sample_apps.id
+  application_type = "web"
 }
 
 resource "azurerm_service_plan" "asp_iftttnet_sample_apps" {
@@ -30,8 +28,8 @@ resource "azurerm_service_plan" "asp_iftttnet_sample_apps" {
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
 
-  os_type             = "Linux"
-  sku_name            = "F1"
+  os_type  = "Linux"
+  sku_name = "F1"
 }
 
 resource "azurerm_linux_web_app" "lwa_iftttnet_sample_trigger" {
@@ -43,7 +41,7 @@ resource "azurerm_linux_web_app" "lwa_iftttnet_sample_trigger" {
   https_only      = true
 
   app_settings = {
-    "ClientIftttOptions__ServiceKey" = var.ifttt_service_key,
+    "ClientIftttOptions__ServiceKey"        = var.ifttt_service_key,
     "APPLICATIONINSIGHTS_CONNECTION_STRING" = azurerm_application_insights.appi_iftttnet_sample_apps.connection_string
   }
 
@@ -53,4 +51,6 @@ resource "azurerm_linux_web_app" "lwa_iftttnet_sample_trigger" {
       dotnet_version = "8.0"
     }
   }
+
+  tags = merge(var.tags, local.web_app_dynamic_tags)
 }
