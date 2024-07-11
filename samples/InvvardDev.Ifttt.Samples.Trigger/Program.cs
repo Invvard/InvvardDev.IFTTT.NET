@@ -40,7 +40,7 @@ app.UseHttpLogging()
    .UseSwaggerUI();
 
 app.ConfigureIftttToolkit()
-   .UseServiceKeyAuthentication()
+   .UseServiceKeyAuthentication(clientIftttOptions.BypassServiceKey)
    .ConfigureTriggers();
 
 await app.RunAsync();
