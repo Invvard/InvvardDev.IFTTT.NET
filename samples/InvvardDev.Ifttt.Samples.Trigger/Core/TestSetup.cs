@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using InvvardDev.Ifttt.Samples.Trigger.Triggers;
 using InvvardDev.Ifttt.Toolkit;
 
@@ -12,9 +11,7 @@ public class TestSetup : ITestSetup
 
         processors.Triggers
                   .AddProcessor(NugetPackageUpdatedTrigger.TriggerSlug)
-                  .AddDataField(NugetPackageUpdatedTrigger.TriggerSlug, "nuget_package_to_watch", "Microsoft.Extensions.DependencyInjection")
-                  .AddDataField(NugetPackageUpdatedTrigger.TriggerSlug, "updated_version", "1.2.3")
-                  .AddDataField(NugetPackageUpdatedTrigger.TriggerSlug, "updated_date", DateTime.Now.ToLongDateString());
+                  .AddDataField(NugetPackageUpdatedTrigger.TriggerSlug, "nuget_package_to_watch", "Microsoft.Extensions.DependencyInjection");
 
         return Task.FromResult(processors);
     }

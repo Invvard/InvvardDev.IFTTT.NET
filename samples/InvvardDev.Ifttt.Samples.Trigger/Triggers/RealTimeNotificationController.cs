@@ -1,6 +1,4 @@
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
+
 using InvvardDev.Ifttt.Toolkit;
 using Microsoft.AspNetCore.Mvc;
 

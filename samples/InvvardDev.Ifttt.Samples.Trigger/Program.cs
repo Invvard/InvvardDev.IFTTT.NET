@@ -1,14 +1,15 @@
 using InvvardDev.Ifttt.Hosting;
 using InvvardDev.Ifttt.Samples.Trigger.Core;
+using InvvardDev.Ifttt.Samples.Trigger.Data;
+using InvvardDev.Ifttt.Samples.Trigger.Data.Models;
 using InvvardDev.Ifttt.Samples.Trigger.Models;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.HttpLogging;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var clientIftttOptions = builder.Configuration.GetSection(ClientIftttOptions.DefaultSectionName).Get<ClientIftttOptions>();
+var clientIftttOptions = builder.Configuration
+                                .GetRequiredSection(ClientIftttOptions.DefaultSectionName)
+                                .Get<ClientIftttOptions>();
 
 builder.Services
        .AddHttpLogging(logging =>
@@ -26,8 +27,10 @@ builder.Services
        .AddApplicationInsightsTelemetry()
        .AddSwaggerGen(options => options.AddIftttServiceKeyScheme());
 
+builder.Services.AddSingleton<IDataRepository<NugetPackageVersion>, NugetPackageRepository>();
+
 builder.Services
-       .AddIftttToolkit(clientIftttOptions.ServiceKey)
+       .AddIftttToolkit(clientIftttOptions!.ServiceKey)
        .AddTestSetupService<TestSetup>()
        .AddTriggerAutoMapper()
        .AddTriggers();

@@ -3,6 +3,8 @@
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
         <InvariantGlobalization>true</InvariantGlobalization>
+        <AssemblyName>InvvardDev.Ifttt.Samples.Trigger</AssemblyName>
+        <RootNamespace>InvvardDev.Ifttt.Samples.Trigger</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>

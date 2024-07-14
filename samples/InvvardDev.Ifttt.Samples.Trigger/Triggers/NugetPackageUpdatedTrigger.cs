@@ -1,5 +1,5 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
+﻿using InvvardDev.Ifttt.Samples.Trigger.Data;
+using InvvardDev.Ifttt.Samples.Trigger.Data.Models;
 using InvvardDev.Ifttt.Samples.Trigger.Models;
 using InvvardDev.Ifttt.Toolkit;
 using InvvardDev.Ifttt.Toolkit.Attributes;
@@ -7,13 +7,23 @@ using InvvardDev.Ifttt.Toolkit.Attributes;
 namespace InvvardDev.Ifttt.Samples.Trigger.Triggers;
 
 [Trigger(TriggerSlug)]
-public class NugetPackageUpdatedTrigger : ITrigger
+public class NugetPackageUpdatedTrigger(IDataRepository<NugetPackageVersion> repository) : ITrigger
 {
     internal const string TriggerSlug = "nuget_package_updated";
 
-    public Task ExecuteAsync(TriggerRequest triggerRequest, CancellationToken cancellationToken = default)
+    public async Task<TriggerResponse> ExecuteAsync(TriggerRequest triggerRequest, CancellationToken cancellationToken = default)
     {
-        var triggerFields = triggerRequest.TriggerFields.To<WatchedNugetTriggerFields>();
-        return Task.CompletedTask;
+        var watchedNuget = triggerRequest.TriggerFields.To<WatchedNugetTriggerFields>();
+        
+        if (await repository.GetByName(watchedNuget.Name, cancellationToken) is not { } nugetPackageVersion)
+        {
+            return default!;
+        }
+        
+        var (name, version, id, releaseDateTime) = nugetPackageVersion;
+        
+        var response = new WatchedNugetTriggerResponse(name, version, releaseDateTime.ToUnixTimeSeconds().ToString(), id, DateTimeOffset.UtcNow);
+        
+        return response;
     }
 }
