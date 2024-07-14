@@ -16,6 +16,7 @@ jobs:
     env:
       APP_NAME: ${{ inputs.appName }}
       PUBLISH_DIR: ${{ github.workspace }}/publish
+      SOLUTION_FILE: InvvardDev.Ifttt.Samples.sln
 
     steps:
       - name: Checkout Samples directory
@@ -32,8 +33,8 @@ jobs:
 
       - name: Build & Publish ${{ env.APP_NAME }}
         run: |
-          dotnet restore
-          dotnet build --configuration Release
+          dotnet restore ${{ env.SOLUTION_FILE }}
+          dotnet build ${{ env.SOLUTION_FILE }} --configuration Release --no-restore
           dotnet publish --no-build --property:PublishDir=${{ env.PUBLISH_DIR }}/
         working-directory: samples
 

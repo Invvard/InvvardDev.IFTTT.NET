@@ -18,6 +18,7 @@ public class TriggerController([FromKeyedServices(ProcessorKind.Trigger)] IProce
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [Consumes("application/json")]
+    [Produces("application/json")]
     public async Task<IActionResult> ExecuteTrigger(string triggerSlug, TriggerRequest triggerRequest)
     {
         if (await triggerService.GetProcessorInstance<ITrigger>(triggerSlug) is not { } trigger)
@@ -25,8 +26,8 @@ public class TriggerController([FromKeyedServices(ProcessorKind.Trigger)] IProce
             return NotFound();
         }
 
-        await trigger.ExecuteAsync(triggerRequest);
+        var result = await trigger.ExecuteAsync(triggerRequest);
 
-        return Ok();
+        return Ok(result.Serialize());
     }
 }
