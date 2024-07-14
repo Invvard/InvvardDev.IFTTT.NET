@@ -1,4 +1,5 @@
-﻿using InvvardDev.Ifttt.Toolkit;
+﻿using System.Globalization;
+using InvvardDev.Ifttt.Toolkit;
 using InvvardDev.Ifttt.Toolkit.Attributes;
 
 namespace InvvardDev.Ifttt.Tests.Reflection;
@@ -14,7 +15,7 @@ public class TriggerFieldsMapperTests
                                 { "nuget_package_name", "InvvardDev.Ifttt" },
                                 { "updated_version", "1.0.0" },
                                 { "updated_date", "2021-01-01" },
-                                { "another_property", "Should go to metadata" }
+                                { "another_property", "Should be ignored" }
                             };
 
         // Act
@@ -23,18 +24,10 @@ public class TriggerFieldsMapperTests
         // Assert
         watchedNugetTriggerFields.NugetPackageName.Should().Be(triggerFields["nuget_package_name"]);
         watchedNugetTriggerFields.UpdatedVersion.Should().Be(triggerFields["updated_version"]);
-        watchedNugetTriggerFields.UpdatedDate.Should().Be(DateTime.Parse(triggerFields["updated_date"]));
-        watchedNugetTriggerFields.Metadata
-                                 .Should()
-                                 .ContainSingle()
-                                 .And
-                                 .ContainKey("another_property")
-                                 .WhoseValue
-                                 .Should()
-                                 .Be(triggerFields["another_property"]);
+        watchedNugetTriggerFields.UpdatedDate.Should().Be(DateTime.Parse(triggerFields["updated_date"], CultureInfo.InvariantCulture));
     }
     
-    private class WatchedNugetTriggerFields : TriggerFieldsBase
+    private class WatchedNugetTriggerFields
     {
         [DataField("nuget_package_name")]
         public string NugetPackageName { get; init; } = default!;

@@ -1,4 +1,3 @@
-using InvvardDev.Ifttt.TestFactories.Utilities;
 using InvvardDev.Ifttt.Toolkit.Attributes;
 
 namespace InvvardDev.Ifttt.TestFactories.Triggers;
