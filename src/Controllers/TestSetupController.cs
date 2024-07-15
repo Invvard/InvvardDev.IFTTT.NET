@@ -45,7 +45,7 @@ public class TestSetupController : ControllerBase
 
             var errorMessages = TopLevelErrorModel.Serialize(new[] { new ErrorMessage($"Error while setting up test: {ex.Message}") });
 
-            return Problem(errorMessages);
+            return BadRequest(errorMessages);
         }
     }
 }
