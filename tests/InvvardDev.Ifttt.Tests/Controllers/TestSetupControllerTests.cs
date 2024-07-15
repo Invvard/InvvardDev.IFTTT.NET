@@ -74,8 +74,8 @@ public class TestSetupControllerTests
               .Subject.Value.Should().BeEquivalentTo(expectedBody);
     }
 
-    [Fact(DisplayName = "SetupTest when there is an exception, should log an error and return 500InternalServerError")]
-    public async Task SetupTest_WhenThereIsAnException_ShouldReturn500InternalServerError()
+    [Fact(DisplayName = "SetupTest when there is an exception, should log an error and return 400 Bad Request")]
+    public async Task SetupTest_WhenThereIsAnException_ShouldReturn400BadRequestError()
     {
         // Arrange
         const string expectedErrorMessage = "Error while setting up test";
@@ -101,12 +101,12 @@ public class TestSetupControllerTests
         result.Should()
               .NotBeNull()
               .And.Subject.Should()
-              .BeOfType<ObjectResult>()
+              .BeOfType<BadRequestObjectResult>()
               .Subject.StatusCode.Should()
-              .Be(StatusCodes.Status500InternalServerError);
+              .Be(StatusCodes.Status400BadRequest);
 
-        result.As<ObjectResult>().Value.Should().BeOfType<ProblemDetails>()
-              .Which.Detail.Should().Be(expectedErrorJson);
+        result.As<BadRequestObjectResult>().Value.Should().BeOfType<string>()
+              .Which.Should().Be(expectedErrorJson);
     }
 
     [Fact(DisplayName = "SetupTest when processor has data field, should return 200OK with samples processor payload")]
