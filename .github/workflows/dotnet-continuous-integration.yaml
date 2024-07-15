@@ -2,17 +2,27 @@ name: Continuous Integration
 run-name: CI ${{ github.ref_name }}
 
 on:
+  pull_request:
+    branches:
+      - "feature/*"
+      - "fix/*"
+
   pull_request_target:
-    branches: ["develop"]
-    types: [opened, closed]
+    branches:
+      - "develop"
+    types:
+      - closed
+
   push:
-    branches: ["feature/*"]
+    branches:
+      - "feature/*"
+      - "fix/*"
     paths:
       - "src/**"
       - "tests/**"
 
 concurrency:
-  group: ci-${{ github.workflow }}-${{ github.actor_id }}
+  group: ci-${{ github.workflow }}-${{ github.ref_name }}
   cancel-in-progress: true
 
 jobs:
