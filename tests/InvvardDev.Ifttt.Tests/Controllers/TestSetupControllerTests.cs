@@ -30,7 +30,7 @@ public class TestSetupControllerTests
         // Arrange
         var testSetup = Mock.Of<ITestSetup>();
         Mock.Get(testSetup)
-            .Setup(x => x.PrepareSetupListing())
+            .Setup(x => x.PrepareSetupListing(It.IsAny<CancellationToken>()))
             .ReturnsAsync(new ProcessorPayload());
 
         var logger = Mock.Of<ILogger<TestSetupController>>();
@@ -41,7 +41,7 @@ public class TestSetupControllerTests
         expectedBody.Data.SkimEmptyProcessors();
 
         // Act
-        var result = await sut.SetupTest();
+        var result = await sut.SetupTest(CancellationToken.None);
 
         // Assert
         result.Should().NotBeNull()
@@ -55,7 +55,7 @@ public class TestSetupControllerTests
         // Arrange
         var testSetup = Mock.Of<ITestSetup>();
         Mock.Get(testSetup)
-            .Setup(x => x.PrepareSetupListing())
+            .Setup(x => x.PrepareSetupListing(It.IsAny<CancellationToken>()))
             .ReturnsAsync(new ProcessorPayload() { Triggers = new Processors().AddProcessor("test") });
 
         var logger = Mock.Of<ILogger<TestSetupController>>();
@@ -66,7 +66,7 @@ public class TestSetupControllerTests
         expectedBody.Data.SkimEmptyProcessors();
 
         // Act
-        var result = await sut.SetupTest();
+        var result = await sut.SetupTest(CancellationToken.None);
 
         // Assert
         result.Should().NotBeNull()
@@ -82,7 +82,7 @@ public class TestSetupControllerTests
         const string exceptionMessage = "exception message";
         var testSetup = Mock.Of<ITestSetup>();
         Mock.Get(testSetup)
-            .Setup(x => x.PrepareSetupListing())
+            .Setup(x => x.PrepareSetupListing(It.IsAny<CancellationToken>()))
             .ThrowsAsync(new Exception(exceptionMessage));
 
         var logger = Mock.Of<ILogger<TestSetupController>>();
@@ -93,7 +93,7 @@ public class TestSetupControllerTests
         var expectedErrorJson = JsonSerializer.Serialize(expectedError, JsonSerializerOptions);
 
         // Act
-        var result = await sut.SetupTest();
+        var result = await sut.SetupTest(CancellationToken.None);
 
         // Assert
         Mock.Get(logger).VerifyLog(l => l.LogError(It.IsAny<Exception>(), expectedErrorMessage), Times.Once());
@@ -117,7 +117,7 @@ public class TestSetupControllerTests
         var triggerProcessor = new Processors().AddProcessor("test").AddDataField("test", "data_field_slug", "testData");
         var expectedProcessorPayload = new ProcessorPayload() { Triggers = triggerProcessor };
         Mock.Get(testSetup)
-            .Setup(x => x.PrepareSetupListing())
+            .Setup(x => x.PrepareSetupListing(It.IsAny<CancellationToken>()))
             .ReturnsAsync(expectedProcessorPayload);
 
         var logger = Mock.Of<ILogger<TestSetupController>>();
@@ -127,7 +127,7 @@ public class TestSetupControllerTests
         var expectedBody = new TopLevelMessageModel<SamplesPayload>(new SamplesPayload(expectedProcessorPayload));
 
         // Act
-        var result = await sut.SetupTest();
+        var result = await sut.SetupTest(CancellationToken.None);
 
         // Assert
         result.Should().NotBeNull()
