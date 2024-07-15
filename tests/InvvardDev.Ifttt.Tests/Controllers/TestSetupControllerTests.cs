@@ -101,12 +101,12 @@ public class TestSetupControllerTests
         result.Should()
               .NotBeNull()
               .And.Subject.Should()
-              .BeOfType<ObjectResult>()
+              .BeOfType<BadRequestObjectResult>()
               .Subject.StatusCode.Should()
-              .Be(StatusCodes.Status500InternalServerError);
+              .Be(StatusCodes.Status400BadRequest);
 
-        result.As<ObjectResult>().Value.Should().BeOfType<ProblemDetails>()
-              .Which.Detail.Should().Be(expectedErrorJson);
+        result.As<BadRequestObjectResult>().Value.Should().BeOfType<string>()
+              .Which.Should().Be(expectedErrorJson);
     }
 
     [Fact(DisplayName = "SetupTest when processor has data field, should return 200OK with samples processor payload")]
