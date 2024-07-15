@@ -14,16 +14,12 @@ public class NugetPackageUpdatedTrigger(IDataRepository<NugetPackageVersion> rep
     public async Task<TriggerResponse> ExecuteAsync(TriggerRequest triggerRequest, CancellationToken cancellationToken = default)
     {
         var watchedNuget = triggerRequest.TriggerFields.To<WatchedNugetTriggerFields>();
-        
+
         if (await repository.GetByName(watchedNuget.Name, cancellationToken) is not { } nugetPackageVersion)
         {
             return default!;
         }
-        
-        var (name, version, id, releaseDateTime) = nugetPackageVersion;
-        
-        var response = new WatchedNugetTriggerResponse(name, version, releaseDateTime.ToUnixTimeSeconds().ToString(), id, DateTimeOffset.UtcNow);
-        
-        return response;
+
+        return (WatchedNugetTriggerResponse)nugetPackageVersion;
     }
 }
