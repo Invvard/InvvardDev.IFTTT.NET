@@ -74,8 +74,8 @@ public class TestSetupControllerTests
               .Subject.Value.Should().BeEquivalentTo(expectedBody);
     }
 
-    [Fact(DisplayName = "SetupTest when there is an exception, should log an error and return 500InternalServerError")]
-    public async Task SetupTest_WhenThereIsAnException_ShouldReturn500InternalServerError()
+    [Fact(DisplayName = "SetupTest when there is an exception, should log an error and return 400 Bad Request")]
+    public async Task SetupTest_WhenThereIsAnException_ShouldReturn400BadRequestError()
     {
         // Arrange
         const string expectedErrorMessage = "Error while setting up test";
