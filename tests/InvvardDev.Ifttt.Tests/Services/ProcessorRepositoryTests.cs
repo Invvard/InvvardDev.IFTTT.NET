@@ -23,11 +23,12 @@ public class ProcessorRepositoryTests
     public async Task UpdateProcessor_WhenProcessorExists_UpdatesProcessorSuccessfully()
     {
         // Arrange
-        var sut = new ProcessorRepository();
         var processorTree = Given.A<ProcessorTree>();
+
+        var sut = new ProcessorRepository();
         await sut.AddProcessor(processorTree);
 
-        var updatedProcessorTree = Given.A<ProcessorTree>()with { ProcessorSlug = processorTree.ProcessorSlug, Kind = processorTree.Kind };
+        var updatedProcessorTree = Given.A<ProcessorTree>() with { ProcessorSlug = processorTree.ProcessorSlug, Kind = processorTree.Kind };
 
         // Act
         await sut.UpdateProcessor(updatedProcessorTree);

@@ -4,7 +4,7 @@ using InvvardDev.Ifttt.Models.Trigger;
 
 namespace InvvardDev.Ifttt.Services;
 
-internal abstract class ProcessorService(IProcessorRepository processorRepository) : IProcessorService
+internal abstract class ProcessorService(IProcessorRepository processorRepository, IServiceProvider serviceProvider) : IProcessorService
 {
     protected abstract ProcessorKind Kind { get; }
 
@@ -16,7 +16,7 @@ internal abstract class ProcessorService(IProcessorRepository processorRepositor
                    { } existingProcessorTree when existingProcessorTree.ProcessorType == processorTree.ProcessorType
                        => processorRepository.UpdateProcessor(processorTree),
                    { } pt when pt.ProcessorType != processorTree.ProcessorType
-                       => throw new InvalidOperationException($"Conflict: '{pt.Kind}' processor with slug '{pt.ProcessorSlug}' already exists (Type is '{pt.ProcessorType}')."),
+                       => throw new InvalidOperationException($"Conflict: '{pt.Kind}' processor with slug '{pt.ProcessorSlug}' already exists with '{pt.ProcessorType}' type."),
                    _ => throw new ArgumentOutOfRangeException(nameof(processorTree))
                });
     }
@@ -60,7 +60,7 @@ internal abstract class ProcessorService(IProcessorRepository processorRepositor
     public async Task<TInterface?> GetProcessorInstance<TInterface>(string processorSlug)
     {
         if (await GetProcessor(processorSlug) is { } processorTree
-            && Activator.CreateInstance(processorTree.ProcessorType) is TInterface processor)
+            && ActivatorUtilities.CreateInstance(serviceProvider, processorTree.ProcessorType) is TInterface processor)
         {
             return processor;
         }

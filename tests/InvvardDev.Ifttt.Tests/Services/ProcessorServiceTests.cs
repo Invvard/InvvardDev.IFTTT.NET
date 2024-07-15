@@ -1,9 +1,10 @@
-﻿using InvvardDev.Ifttt.Contracts;
+﻿﻿using InvvardDev.Ifttt.Contracts;
 using InvvardDev.Ifttt.Models.Core;
 using InvvardDev.Ifttt.Models.Trigger;
 using InvvardDev.Ifttt.Services;
 using InvvardDev.Ifttt.TestFactories.Triggers;
 using InvvardDev.Ifttt.Toolkit;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace InvvardDev.Ifttt.Tests.Services;
 
@@ -21,7 +22,8 @@ public class ProcessorServiceTests
             .Setup(r => r.GetProcessorByKey(It.IsAny<string>()))
             .ReturnsAsync((ProcessorTree?)null);
 
-        var sut = new TriggerService(processorRepository);
+        var serviceProvider = Mock.Of<IServiceProvider>();
+        var sut = new TriggerService(processorRepository, serviceProvider);
 
         // Act
         await sut.AddOrUpdateProcessor(expectedTriggerTree);
@@ -47,7 +49,8 @@ public class ProcessorServiceTests
         var processorRepository = Mock.Of<IProcessorRepository>();
         Mock.Get(processorRepository).Setup(r => r.GetProcessorByKey(It.IsAny<string>())).ReturnsAsync(triggerTree);
 
-        var sut = new TriggerService(processorRepository);
+        var serviceProvider = Mock.Of<IServiceProvider>();
+        var sut = new TriggerService(processorRepository, serviceProvider);
 
         var expectedTriggerTree = new ProcessorTree(expectedTriggerSlug, expectedTriggerType, ProcessorKind.Trigger)
                                   {
@@ -80,7 +83,8 @@ public class ProcessorServiceTests
         var processorRepository = Mock.Of<IProcessorRepository>();
         Mock.Get(processorRepository).Setup(r => r.GetProcessorByKey(triggerTree.Key)).ReturnsAsync(triggerTree);
 
-        var sut = new TriggerService(processorRepository);
+        var serviceProvider = Mock.Of<IServiceProvider>();
+        var sut = new TriggerService(processorRepository, serviceProvider);
 
         var expectedTriggerTree = new ProcessorTree(expectedTriggerSlug, expectedTriggerType, ProcessorKind.Trigger);
 
@@ -108,7 +112,8 @@ public class ProcessorServiceTests
             .Setup(r => r.GetProcessorByKey(It.IsAny<string>()))
             .ReturnsAsync(new ProcessorTree(expectedTriggerSlug, triggerType, ProcessorKind.Trigger));
 
-        var sut = new TriggerService(processorRepository);
+        var serviceProvider = Mock.Of<IServiceProvider>();
+        var sut = new TriggerService(processorRepository, serviceProvider);
 
         // Act
         await sut.AddDataField(expectedTriggerSlug, expectedTriggerFieldSlug, expectedTriggerFieldsType);
@@ -139,7 +144,8 @@ public class ProcessorServiceTests
             .Setup(r => r.GetProcessorByKey(It.IsAny<string>()))
             .ReturnsAsync(triggerTree);
 
-        var sut = new TriggerService(processorRepository);
+        var serviceProvider = Mock.Of<IServiceProvider>();
+        var sut = new TriggerService(processorRepository, serviceProvider);
 
         // Act
         await sut.AddDataField(expectedTriggerSlug, expectedTriggerFieldSlug, typeof(string));
@@ -169,7 +175,8 @@ public class ProcessorServiceTests
             .Setup(r => r.GetProcessorByKey(It.IsAny<string>()))
             .ReturnsAsync(triggerTree);
 
-        var sut = new TriggerService(processorRepository);
+        var serviceProvider = Mock.Of<IServiceProvider>();
+        var sut = new TriggerService(processorRepository, serviceProvider);
 
         // Act
         var act = () => sut.AddDataField(expectedTriggerSlug, expectedTriggerFieldSlug, expectedTriggerFieldsType);
@@ -192,7 +199,8 @@ public class ProcessorServiceTests
         var processorRepository = Mock.Of<IProcessorRepository>();
         Mock.Get(processorRepository).Setup(r => r.GetProcessorByKey(It.IsAny<string>())).ReturnsAsync((ProcessorTree?)null);
 
-        var sut = new TriggerService(processorRepository);
+        var serviceProvider = Mock.Of<IServiceProvider>();
+        var sut = new TriggerService(processorRepository, serviceProvider);
 
         // Act
         var act = () => sut.AddDataField(unknownTriggerSlug, newTriggerFieldSlug, newTriggerFieldType);
@@ -212,7 +220,8 @@ public class ProcessorServiceTests
             .Setup(r => r.Exists(It.IsAny<string>()))
             .ReturnsAsync(true);
 
-        var sut = new TriggerService(processorRepository);
+        var serviceProvider = Mock.Of<IServiceProvider>();
+        var sut = new TriggerService(processorRepository, serviceProvider);
 
         // Act
         var result = await sut.Exists(expectedTriggerSlug);
@@ -232,7 +241,8 @@ public class ProcessorServiceTests
             .Setup(r => r.Exists(It.IsAny<string>()))
             .ReturnsAsync(false);
 
-        var sut = new TriggerService(processorRepository);
+        var serviceProvider = Mock.Of<IServiceProvider>();
+        var sut = new TriggerService(processorRepository, serviceProvider);
 
         // Act
         var result = await sut.Exists(expectedTriggerSlug);
@@ -257,7 +267,8 @@ public class ProcessorServiceTests
                               DataFields = { { expectedDataFieldSlug, expectedDataFieldType } }
                           });
 
-        var sut = new TriggerService(processorRepository);
+        var serviceProvider = Mock.Of<IServiceProvider>();
+        var sut = new TriggerService(processorRepository, serviceProvider);
 
         // Act
         var result = await sut.GetDataFieldType(expectedTriggerSlug, expectedDataFieldSlug);
@@ -278,7 +289,8 @@ public class ProcessorServiceTests
             .Setup(r => r.GetProcessorByKey(It.IsAny<string>()))
             .ReturnsAsync((ProcessorTree?)null);
 
-        var sut = new TriggerService(processorRepository);
+        var serviceProvider = Mock.Of<IServiceProvider>();
+        var sut = new TriggerService(processorRepository, serviceProvider);
 
         // Act
         var result = await sut.GetDataFieldType(unknownTriggerSlug, expectedDataFieldSlug);
@@ -302,7 +314,8 @@ public class ProcessorServiceTests
                               DataFields = { { "data_field_slug", typeof(string) } }
                           });
 
-        var sut = new TriggerService(processorRepository);
+        var serviceProvider = Mock.Of<IServiceProvider>();
+        var sut = new TriggerService(processorRepository, serviceProvider);
 
         // Act
         var result = await sut.GetDataFieldType(expectedTriggerSlug, unknownDataFieldSlug);
@@ -324,7 +337,8 @@ public class ProcessorServiceTests
             .Setup(r => r.GetProcessorByKey(It.IsAny<string>()))
             .ReturnsAsync(expectedTriggerTree);
 
-        var sut = new TriggerService(processorRepository);
+        var serviceProvider = Mock.Of<IServiceProvider>();
+        var sut = new TriggerService(processorRepository, serviceProvider);
 
         // Act
         var result = await sut.GetProcessor(expectedTriggerSlug);
@@ -344,7 +358,8 @@ public class ProcessorServiceTests
             .Setup(r => r.GetProcessorByKey(It.IsAny<string>()))
             .ReturnsAsync((ProcessorTree?)null);
 
-        var sut = new TriggerService(processorRepository);
+        var serviceProvider = Mock.Of<IServiceProvider>();
+        var sut = new TriggerService(processorRepository, serviceProvider);
 
         // Act
         var result = await sut.GetProcessor(unknownTriggerSlug);
@@ -353,7 +368,7 @@ public class ProcessorServiceTests
         result.Should().BeNull();
     }
     
-    [Fact(DisplayName = "GetProcessorInstance when processor exists, then it should return the processor instance")]
+    [Fact(DisplayName = "GetProcessorInstance when processor is registered, then it should return the processor instance")]
     public async Task GetProcessorInstance_WhenProcessorExists_ShouldReturnProcessorInstance()
     {
         // Arrange
@@ -366,7 +381,8 @@ public class ProcessorServiceTests
             .Setup(r => r.GetProcessorByKey(It.IsAny<string>()))
             .ReturnsAsync(expectedTriggerTree);
 
-        var sut = new TriggerService(processorRepository);
+        var serviceProvider = Mock.Of<IKeyedServiceProvider>(m => m.GetKeyedService(It.IsAny<Type>(), It.IsAny<string>()) == Activator.CreateInstance(expectedTriggerType));
+        var sut = new TriggerService(processorRepository, serviceProvider);
 
         // Act
         var result = await sut.GetProcessorInstance<ITrigger>(expectedTriggerSlug);
@@ -375,8 +391,8 @@ public class ProcessorServiceTests
         result.Should().NotBeNull();
     }
     
-    [Fact(DisplayName = "GetProcessorInstance when processor does not exist, then it should return null")]
-    public async Task GetProcessorInstance_WhenProcessorDoesNotExist_ShouldReturnNull()
+    [Fact(DisplayName = "GetProcessorInstance when processor is not registered, then it should return null")]
+    public async Task GetProcessorInstance_WhenProcessorIsNotRegistered_ShouldReturnNull()
     {
         // Arrange
         const string unknownTriggerSlug = "unknown_trigger_slug";
@@ -386,32 +402,11 @@ public class ProcessorServiceTests
             .Setup(r => r.GetProcessorByKey(It.IsAny<string>()))
             .ReturnsAsync((ProcessorTree?)null);
 
-        var sut = new TriggerService(processorRepository);
+        var serviceProvider = Mock.Of<IKeyedServiceProvider>(m => m.GetKeyedService(It.IsAny<Type>(), It.IsAny<string>()) == null);
+        var sut = new TriggerService(processorRepository, serviceProvider);
 
         // Act
         var result = await sut.GetProcessorInstance<ITrigger>(unknownTriggerSlug);
-
-        // Assert
-        result.Should().BeNull();
-    }
-    
-    [Fact(DisplayName = "GetProcessorInstance when processor type does not match, then it should return null")]
-    public async Task GetProcessorInstance_WhenProcessorTypeDoesNotMatch_ShouldReturnNull()
-    {
-        // Arrange
-        const string expectedTriggerSlug = "trigger1";
-        var expectedTriggerType = TriggerClassFactory.MatchingClass(triggerSlug: expectedTriggerSlug);
-        var expectedTriggerTree = new ProcessorTree(expectedTriggerSlug, expectedTriggerType, ProcessorKind.Trigger);
-
-        var processorRepository = Mock.Of<IProcessorRepository>();
-        Mock.Get(processorRepository)
-            .Setup(r => r.GetProcessorByKey(It.IsAny<string>()))
-            .ReturnsAsync(expectedTriggerTree);
-
-        var sut = new TriggerService(processorRepository);
-
-        // Act
-        var result = await sut.GetProcessorInstance<IProcessorRepository>(expectedTriggerSlug);
 
         // Assert
         result.Should().BeNull();

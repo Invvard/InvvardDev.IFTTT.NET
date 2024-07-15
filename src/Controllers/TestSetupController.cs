@@ -23,13 +23,14 @@ public class TestSetupController : ControllerBase
     /// </summary>
     /// <returns>A list of test data for IFTTT to use.</returns>
     [HttpPost]
-    [Consumes("application/x-www-form-urlencoded", "application/json")]
-    [Produces("application/json")]
-    public async Task<IActionResult> SetupTest()
+    [ProducesResponseType(StatusCodes.Status200OK),
+     ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [Consumes("application/x-www-form-urlencoded")]
+    public async Task<IActionResult> SetupTest(CancellationToken cancellationToken)
     {
         try
         {
-            var processors = await testSetup.PrepareSetupListing();
+            var processors = await testSetup.PrepareSetupListing(cancellationToken);
 
             var samples = new SamplesPayload(processors);
             samples.SkimEmptyProcessors();
@@ -44,7 +45,7 @@ public class TestSetupController : ControllerBase
 
             var errorMessages = TopLevelErrorModel.Serialize(new[] { new ErrorMessage($"Error while setting up test: {ex.Message}") });
 
-            return Problem(errorMessages);
+            return BadRequest(errorMessages);
         }
     }
 }

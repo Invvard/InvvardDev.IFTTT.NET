@@ -15,10 +15,9 @@ public class TriggerController([FromKeyedServices(ProcessorKind.Trigger)] IProce
     /// <param name="triggerSlug">The trigger slug that is executed.</param>
     /// <param name="triggerRequest">The request parameters.</param>
     [HttpPost("{triggerSlug}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [Consumes("application/json")]
-    [Produces("application/json")]
+    [ProducesResponseType(StatusCodes.Status200OK),
+     ProducesResponseType(StatusCodes.Status404NotFound)]
+    [Consumes("application/json"), Produces("application/json")]
     public async Task<IActionResult> ExecuteTrigger(string triggerSlug, TriggerRequest triggerRequest)
     {
         if (await triggerService.GetProcessorInstance<ITrigger>(triggerSlug) is not { } trigger)
@@ -28,6 +27,6 @@ public class TriggerController([FromKeyedServices(ProcessorKind.Trigger)] IProce
 
         var result = await trigger.ExecuteAsync(triggerRequest);
 
-        return Ok(result.Serialize());
+        return Ok(result);
     }
 }
