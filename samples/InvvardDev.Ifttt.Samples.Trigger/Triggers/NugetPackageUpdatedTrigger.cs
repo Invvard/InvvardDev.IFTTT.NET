@@ -15,11 +15,8 @@ public class NugetPackageUpdatedTrigger(IDataRepository<NugetPackageVersion> rep
     {
         var watchedNuget = triggerRequest.TriggerFields.To<WatchedNugetTriggerFields>();
 
-        if (await repository.GetByName(watchedNuget.Name, cancellationToken) is not { } nugetPackageVersion)
-        {
-            return default!;
-        }
+        var nugetPackageVersions = await repository.GetCountByName(watchedNuget.Name, triggerRequest.Limit, cancellationToken);
 
-        return (WatchedNugetTriggerResponse)nugetPackageVersion;
+        return nugetPackageVersions.Select(n => (WatchedNugetTriggerResponse)n);
     }
 }
