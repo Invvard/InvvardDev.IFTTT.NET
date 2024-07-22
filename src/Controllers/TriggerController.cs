@@ -25,7 +25,16 @@ public class TriggerController([FromKeyedServices(ProcessorKind.Trigger)] IProce
             return NotFound();
         }
 
-        var result = await trigger.ExecuteAsync(triggerRequest);
+        if (await trigger.ExecuteAsync(triggerRequest) is not { } result)
+        {
+            throw new InvalidOperationException("The trigger response is invalid: the response is null.");
+        }
+
+        if (result.Count > triggerRequest.Limit)
+        {
+            logger.LogWarning("The trigger response data count ({DataCount}) is greater than the limit ({Limit}). Excess data will be removed ", result.Count, triggerRequest.Limit);
+            result = result.Take(triggerRequest.Limit).ToList();
+        }
 
         return Ok(result);
     }

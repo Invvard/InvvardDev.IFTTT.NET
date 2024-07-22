@@ -12,6 +12,6 @@ public interface ITrigger
     /// </summary>
     /// <param name="triggerRequest">The trigger request that contains the trigger fields data.</param>
     /// <param name="cancellationToken"></param>
-    /// <returns>The Trigger response.</returns>
-    Task<TriggerResponse> ExecuteAsync(TriggerRequest triggerRequest, CancellationToken cancellationToken = default); 
+    /// <returns>A list of <see cref="TriggerData"/> or derived class.</returns>
+    Task<IReadOnlyList<TriggerData>> ExecuteAsync(TriggerRequest triggerRequest, CancellationToken cancellationToken = default); 
 }
