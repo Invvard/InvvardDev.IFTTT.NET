@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace InvvardDev.Ifttt.Controllers;
 
 [ApiController, Route(IftttConstants.BaseTriggersApiPath)]
-public class TriggerController([FromKeyedServices(ProcessorKind.Trigger)] IProcessorService triggerService) : ControllerBase
+public class TriggerController([FromKeyedServices(ProcessorKind.Trigger)] IProcessorService triggerService, ILogger<TriggerController> logger) : ControllerBase
 {
     /// <summary>
     /// Execute a trigger 
