@@ -39,7 +39,7 @@ jobs:
         run: |
           dotnet restore ${{ env.SOLUTION_FILE }}
           dotnet build ${{ env.SOLUTION_FILE }} --configuration Release --no-restore
-          dotnet publish ${{ env.SOLUTION_FILE }} --no-build --property:PublishDir=${{ env.PUBLISH_DIR }}/
+          dotnet publish ${{ env.SOLUTION_FILE }} --no-build --framework net8.0 --property:PublishDir=${{ env.PUBLISH_DIR }}/
         working-directory: samples
 
       - name: Upload artifact for deployment job
