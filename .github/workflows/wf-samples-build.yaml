@@ -25,11 +25,6 @@ jobs:
     steps:
       - name: Checkout Samples directory
         uses: actions/checkout@v4
-        with:
-          sparse-checkout: |
-            samples
-            src
-          sparse-checkout-cone-mode: false
 
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v4.0.0
