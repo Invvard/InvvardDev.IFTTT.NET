@@ -8,6 +8,10 @@ on:
         description: "App name"
         type: string
         default: "sample-app"
+      solutionFile:
+        description: "Solution file"
+        type: string
+        default: "InvvardDev.Ifttt.Samples.sln"
 
 jobs:
   build:
@@ -16,7 +20,7 @@ jobs:
     env:
       APP_NAME: ${{ inputs.appName }}
       PUBLISH_DIR: ${{ github.workspace }}/publish
-      SOLUTION_FILE: InvvardDev.Ifttt.Samples.sln
+      SOLUTION_FILE: ${{ inputs.solutionFile }}
 
     steps:
       - name: Checkout Samples directory

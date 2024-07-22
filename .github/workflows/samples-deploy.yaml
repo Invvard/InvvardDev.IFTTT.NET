@@ -8,6 +8,15 @@ on:
       - "samples/**"
       - ".github/infra/**"
   workflow_dispatch:
+    inputs:
+      IFTTT_API_SOURCE:
+        description: "IFTTT API source"
+        type: choice
+        options:
+          - "Package"
+          - "Project"
+        required: true
+        default: "Package"
 
 concurrency:
   group: samples-${{ github.workflow }}-${{ github.actor_id }}
@@ -31,11 +40,30 @@ jobs:
       id-token: write
     secrets: inherit
 
+  prep_env:
+    name: Prepare environment
+    runs-on: ubuntu-latest  
+    outputs:
+      SOLUTION_FILE: ${{ steps.setEnv.outputs.SOLUTION_FILE }}
+
+    steps:
+      - name: Set env SOLUTION_FILE
+        id: setEnv
+        run: |
+          if [[ $GITHUB_EVENT_NAME == 'workflow_dispatch' && ${{ inputs.IFTTT_API_SOURCE }} == 'Project' ]]
+          then
+              echo "SOLUTION_FILE=InvvardDev.Ifttt.Samples.Full.sln" >> $GITHUB_OUTPUT
+          else
+              echo "SOLUTION_FILE=InvvardDev.Ifttt.Samples.sln" >> $GITHUB_OUTPUT
+          fi
+  
   build-trigger:
+    needs: [prep_env]
     name: Build & Publish Trigger App
     uses: ./.github/workflows/wf-samples-build.yaml
     with:
       appName: ${{ vars.SAMPLE_APP_TRIGGER_NAME }}
+      solutionFile: ${{ needs.prep_env.outputs.SOLUTION_FILE }}
 
   deploy-trigger:
     name: Deploy Trigger App
