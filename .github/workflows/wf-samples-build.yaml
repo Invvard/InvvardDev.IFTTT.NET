@@ -32,6 +32,9 @@ jobs:
           dotnet-version: 8.0.x
           dotnet-quality: ga
 
+      - name: Create packages directory
+        run: mkdir -p packages
+  
       - name: Build & Publish ${{ env.APP_NAME }}
         run: |
           dotnet restore ${{ env.SOLUTION_FILE }}
