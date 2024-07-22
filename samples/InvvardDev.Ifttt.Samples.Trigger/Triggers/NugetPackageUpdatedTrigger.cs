@@ -11,12 +11,12 @@ public class NugetPackageUpdatedTrigger(IDataRepository<NugetPackageVersion> rep
 {
     internal const string TriggerSlug = "nuget_package_updated";
 
-    public async Task<TriggerResponse> ExecuteAsync(TriggerRequest triggerRequest, CancellationToken cancellationToken = default)
+    public async Task<IReadOnlyList<TriggerData>> ExecuteAsync(TriggerRequest triggerRequest, CancellationToken cancellationToken = default)
     {
         var watchedNuget = triggerRequest.TriggerFields.To<WatchedNugetTriggerFields>();
 
         var nugetPackageVersions = await repository.GetCountByName(watchedNuget.Name, triggerRequest.Limit, cancellationToken);
 
-        return nugetPackageVersions.Select(n => (WatchedNugetTriggerResponse)n);
+        return nugetPackageVersions.Select(version => (WatchedNugetTriggerData)version).ToList();
     }
 }

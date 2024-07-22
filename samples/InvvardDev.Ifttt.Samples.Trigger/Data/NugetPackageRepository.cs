@@ -25,13 +25,14 @@ public class NugetPackageRepository : IDataRepository<NugetPackageVersion>
     public Task<IReadOnlyCollection<NugetPackageVersion>> GetAll(CancellationToken cancellationToken = default)
         => Task.FromResult<IReadOnlyCollection<NugetPackageVersion>>(nugetPackageVersions);
 
-    public Task<IReadOnlyCollection<NugetPackageVersion>> GetCountByName(string name, int count = 50, CancellationToken cancellationToken = bad)
+    public Task<IReadOnlyCollection<NugetPackageVersion>> GetCountByName(string name, int count = 50, CancellationToken cancellationToken = default)
     {
         var nugetPackageVersion = nugetPackageVersions.Where(x => x.PackageName == name)
                                                       .OrderByDescending(x => x.UpdatedDateTime)
-                                                      .Take(count);
+                                                      .Take(count)
+                                                      .ToList();
 
-        return Task.FromResult(nugetPackageVersion);
+        return Task.FromResult<IReadOnlyCollection<NugetPackageVersion>>(nugetPackageVersion);
     }
 
     public Task Add(NugetPackageVersion data, CancellationToken cancellationToken = default)
