@@ -34,12 +34,12 @@ jobs:
 
       - name: Create packages directory
         run: mkdir -p packages
-  
+
       - name: Build & Publish ${{ env.APP_NAME }}
         run: |
           dotnet restore ${{ env.SOLUTION_FILE }}
           dotnet build ${{ env.SOLUTION_FILE }} --configuration Release --no-restore
-          dotnet publish --no-build --property:PublishDir=${{ env.PUBLISH_DIR }}/
+          dotnet publish ${{ env.SOLUTION_FILE }} --no-build --property:PublishDir=${{ env.PUBLISH_DIR }}/
         working-directory: samples
 
       - name: Upload artifact for deployment job
